@@ -1,0 +1,68 @@
+/* Real installed Antistasi Plus logistics and JNA, with isolated test HQ/inventory. */
+params ["_assert","_landed"];
+[_landed getVariable ["DSD_antistasiRegistered",false], "landed crate receives Antistasi adapter"] call _assert;
+private _crate = createVehicle ["B_supplyCrate_F",[5000,5000,0],[],0,"CAN_COLLIDE"];
+private _manifest = [_crate,50] call DSD_fnc_fillSupplyCrate;
+_crate setVariable ["DSD_landed",true];
+[[_crate] call A3A_Logistics_fnc_isLoadable,"default crate recognized by native Antistasi cargo config"] call _assert;
+private _cargoCfg = [_crate] call A3A_Logistics_fnc_getCargoConfig;
+[getNumber (_cargoCfg >> "size") == 2,"default crate uses two Antistasi truck slots"] call _assert;
+private _truck = objNull;
+{
+    if ([_x] call A3A_Logistics_fnc_getVehCapacity >= 2) exitWith {_truck = createVehicle [_x,[5000,5010,0],[],0,"NONE"];};
+} forEach ["B_Truck_01_transport_F","I_Truck_02_transport_F","C_Van_01_transport_F"];
+[!isNull _truck,"native logistics truck with enough slots exists"] call _assert;
+private _load = [_truck,_crate] call A3A_Logistics_fnc_canLoad;
+[_load isEqualType [],"native canLoad accepts supply crate"] call _assert;
+if (_load isEqualType []) then {
+    _load pushBack true;
+    _load call A3A_Logistics_fnc_load;
+    sleep 1;
+    [attachedTo _crate == _truck,"native logistics actually loads the crate onto truck"] call _assert;
+    [!([_crate] call DSD_fnc_importAntistasiCrate),"no arsenal import away from HQ"] call _assert;
+    private _cargoBefore = str (_truck getVariable ["Cargo",[]]);
+    private _nodesBefore = str (_truck getVariable ["A3A_logistics_Nodes",[]]);
+    [(_truck getVariable ["A3A_logistics_Nodes",[]]) isNotEqualTo [],"native truck node state is initialized"] call _assert;
+    _truck setPosATL [6005,6000,0];
+    _truck setVelocity [0,0,0];
+    sleep 2;
+    private _readyData = jna_dataList;
+    jna_dataList = [];
+    [!([_crate] call DSD_fnc_importAntistasiCrate) && {weaponCargo _crate isNotEqualTo []},"uninitialized arsenal defers import without clearing cargo"] call _assert;
+    jna_dataList = _readyData;
+    _crate setVariable ["A3A_JNA_cargoToArsenal_busy",true];
+    [!([_crate] call DSD_fnc_importAntistasiCrate),"busy native cargo transfer deferred"] call _assert;
+    _crate setVariable ["A3A_JNA_cargoToArsenal_busy",false];
+    [[_crate] call DSD_fnc_importAntistasiCrate,"loaded crate imports at stationary HQ"] call _assert;
+    [!isNull _crate && {attachedTo _crate == _truck},"empty crate remains in truck slot"] call _assert;
+    [str (_truck getVariable ["Cargo",[]]) == _cargoBefore && {str (_truck getVariable ["A3A_logistics_Nodes",[]]) == _nodesBefore},"arsenal import preserves native cargo/node bookkeeping"] call _assert;
+    private _allImported = true;
+    {
+        _x params ["_kind","_class","_quantity"];
+        if (_kind == "Weapon") then {_class = _class call BIS_fnc_baseWeapon;};
+        if (_kind == "Backpack") then {_class = _class call A3A_fnc_basicBackpack;};
+        private _rhsOptic = getText (configFile >> "CfgWeapons" >> _class >> "rhs_optic_base");
+        if (_rhsOptic != "") then {_class = _rhsOptic;};
+        private _index = _class call jn_fnc_arsenal_itemType;
+        private _expected = if (_kind == "Magazine") then {_quantity * getNumber (configFile >> "CfgMagazines" >> _class >> "count")} else {_quantity};
+        private _count = if (_index < 0) then {0} else {[jna_dataList select _index,_class] call jn_fnc_arsenal_itemCount};
+        if (_count < _expected) then {_allImported = false; diag_log format ["[DSD TEST] Inventory mismatch %1: expected %2, got %3",_class,_expected,_count];};
+    } forEach _manifest;
+    [_allImported,"actual Antistasi JNA receives all gear and magazine rounds"] call _assert;
+    private _snapshot = str jna_dataList;
+    [!([_crate] call DSD_fnc_importAntistasiCrate) && {str jna_dataList == _snapshot},"repeat import cannot duplicate arsenal inventory"] call _assert;
+    [_truck,true] call A3A_Logistics_fnc_unload;
+    sleep 1;
+    [isNull attachedTo _crate && {(_truck getVariable ["Cargo",[]]) isEqualTo []},"native unload still works after arsenal import"] call _assert;
+};
+deleteVehicle _crate;
+if (!isNull _truck) then {deleteVehicle _truck;};
+// Test actual automatic watcher, including duplicate registration prevention.
+private _auto = createVehicle ["B_supplyCrate_F",[6007,6000,0],[],0,"CAN_COLLIDE"];
+[_auto,20] call DSD_fnc_fillSupplyCrate;
+_auto setVariable ["DSD_landed",true];
+[_auto] call DSD_fnc_registerAntistasiCrate;
+[_auto] call DSD_fnc_registerAntistasiCrate;
+sleep 7;
+[_auto getVariable ["DSD_arsenalImported",false],"HQ watcher automatically imports a landed crate"] call _assert;
+deleteVehicle _auto;

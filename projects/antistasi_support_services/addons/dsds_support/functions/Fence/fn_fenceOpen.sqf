@@ -1,0 +1,11 @@
+if (!hasInterface || {!alive player}) exitWith {};
+disableSerialization;
+private _npc=missionNamespace getVariable ["DSDS_fence",objNull];
+if (isNull _npc || {!alive _npc} || {player distance _npc > 6}) exitWith {};
+if !(createDialog "DSDS_FenceDialog") exitWith {hint "Could not open Fence menu.";};
+private _display=findDisplay 88410;
+private _mystic=missionNamespace getVariable ["DSDS_mysticInfo",[false,false,0,40,false]];
+(_display displayCtrl 1717) ctrlShow ((_mystic select 0) && {!(_mystic select 1)});
+_display setVariable ["DSDS_generation",missionNamespace getVariable ["DSDS_fenceGeneration",-1]];
+_display setVariable ["DSDS_stock",+(missionNamespace getVariable ["DSDS_fenceStock",[]])];
+["VEHICLES"] call DSDS_fnc_fenceTab;

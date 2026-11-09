@@ -1,0 +1,23 @@
+/* Ultimate's real HQ/black-market price functions, isolated tables only. */
+params ["_assert","_logicGroup"];
+private _sideLogic=_logicGroup createUnit ["Logic",[0,0,0],[],0,"NONE"];
+private _savedSides=missionNamespace getVariable ["sidesX",objNull];
+sidesX=_sideLogic;
+seaports=["DSDS_PORT_TEST"];resourcesX=["DSDS_RESOURCE_TEST"];
+sidesX setVariable ["DSDS_PORT_TEST",teamPlayer];sidesX setVariable ["DSDS_RESOURCE_TEST",teamPlayer];
+A3U_blackMarketStock=createHashMapFromArray [["Cars",createHashMapFromArray [["C_Offroad_01_F",1000]]]];
+A3U_blackMarketDiscountVehicle=2;
+server setVariable ["C_Offroad_01_F",2000];
+private _native=["C_Offroad_01_F"] call A3A_fnc_vehiclePrice;
+[["C_Offroad_01_F"] call DSDS_fnc_vehicleShopPrice==_native,"Ultimate cheapest HQ/market price matches actual native function"] call _assert;
+[["C_Offroad_01_F"] call DSDS_fnc_vehicleValue<=_native*0.5,"Ultimate vehicle sale capped below discounted black market purchase"] call _assert;
+server setVariable ["C_Offroad_01_F",nil];
+private _market=["C_Offroad_01_F"] call A3U_fnc_blackMarketVehiclePrice;
+[["C_Offroad_01_F"] call DSDS_fnc_vehicleShopPrice==_market,"market-only vehicles use actual discounted native price"] call _assert;
+A3U_blackMarketStock set ["Cars",createHashMap];
+server setVariable ["C_Offroad_01_F",2000];
+[["C_Offroad_01_F"] call DSDS_fnc_vehicleShopPrice==round (2000/1.12),"Ultimate HQ-only vehicle diminishing location discount"] call _assert;
+[["B_Plane_CAS_01_F"] call DSDS_fnc_vehicleShopPrice==0,"unknown native price does not invent 1000-credit resale cap"] call _assert;
+server setVariable ["C_Offroad_01_F",nil];
+A3U_blackMarketStock=createHashMap;A3U_blackMarketDiscountVehicle=0;
+seaports=[];resourcesX=[];sidesX=_savedSides;deleteVehicle _sideLogic;

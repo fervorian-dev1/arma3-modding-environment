@@ -1,0 +1,8 @@
+version=12;
+class Mission {
+    addOns[]={"A3_Characters_F_BLUFOR","A3_Map_Altis"};
+    addOnsAuto[]={"A3_Characters_F_BLUFOR","A3_Map_Altis"};
+    randomSeed=143253;
+    class Intel {briefingName="DSDS Fence Validation";year=2035;month=6;day=1;hour=12;minute=0;};
+    class Groups {items=1;class Item0 {side="WEST";class Vehicles {items=1;class Item0 {position[]={14000,0,16000};azimut=0;id=0;side="WEST";vehicle="B_Soldier_F";player="PLAY CDG";leader=1;skill=0.6;};};};};
+};

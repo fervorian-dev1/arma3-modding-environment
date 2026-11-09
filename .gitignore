@@ -1,0 +1,7 @@
+build/
+logs/
+temp/
+reference/
+*.pbo
+*.bisign
+*.biprivatekey

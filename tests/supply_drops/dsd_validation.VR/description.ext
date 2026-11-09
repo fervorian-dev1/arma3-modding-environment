@@ -1,0 +1,5 @@
+onLoadName = "DSD Automated Validation";
+respawn = 3;
+respawnDelay = 5;
+disabledAI = 0;
+class Header { gameType = "Sandbox"; minPlayers = 1; maxPlayers = 1; };

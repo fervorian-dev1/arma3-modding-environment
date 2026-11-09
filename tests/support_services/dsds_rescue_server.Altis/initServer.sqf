@@ -1,0 +1,48 @@
+[] spawn {
+ sleep 3;private _passes=0;private _failures=0;
+ private _assert={params ["_ok","_label"];if (_ok) then {_passes=_passes+1;} else {_failures=_failures+1;};diag_log format ["[RESCUE SERVER TEST] %1: %2",["FAIL","PASS"] select _ok,_label];};
+ [!isNil "CrawlAnim0" && {!isNil "UnconditionAnim0"},"installed PiR animation control functions available"] call _assert;
+ private _group=createGroup resistance;private _units=[];
+ private _make={private _u=_group createUnit ["I_G_Soldier_F",[14000+count _units*3,16000,0],[],0,"NONE"];_u disableAI "ALL";_u enableAI "ANIM";_u addBackpack "B_Carryall_oli";_units pushBack _u;_u};
+ private _u=call _make;_u addItem "DSDS_Adrenaline";_u addItem "DSDS_Morphine";
+ [([_u] call DSDS_fnc_lootDownState)==0,"healthy unit is not down"] call _assert;
+ _u switchMove "AmovPpneMstpSrasWrflDnon";sleep 0.3;
+ [([_u] call DSDS_fnc_lootRescueClass)=="","ordinary prone consumes no rescue drug"] call _assert;
+ _u setVariable ["dam_ignore_injured0",true];_u switchMove "PIR_CreepNon";sleep 0.3;
+ [([_u] call DSDS_fnc_lootDownState)==1,"native PiR creep animation is recognized"] call _assert;
+ [([_u] call DSDS_fnc_lootRescueClass)=="DSDS_Morphine","Morphine has priority for PiR crawling"] call _assert;
+ _u setUnconscious true;sleep 0.3;
+ [([_u] call DSDS_fnc_lootRescueClass)=="DSDS_Adrenaline","Adrenaline has priority for incapacitation"] call _assert;
+ private _ad={_x=="DSDS_Adrenaline"} count items _u;
+ _u setDamage 0.6;_u setHitPointDamage ["HitLegs",0.9];
+ [[_u,"SERVER_A","DSDS_Adrenaline"] call DSDS_fnc_lootRescueTake,"owner recovery consumes carried Adrenaline"] call _assert;
+ [({_x=="DSDS_Adrenaline"} count items _u)==_ad-1 && {"DSDS_Morphine" in items _u},"exactly one syringe consumed and other type preserved"] call _assert;
+ [damage _u==0 && {_u getHitPointDamage "HitLegs"==0} && {lifeState _u!="INCAPACITATED"},"recovery clears actual body/leg damage and unconsciousness"] call _assert;
+ private _after=items _u;[_u,"SERVER_A","DSDS_Adrenaline"] call DSDS_fnc_lootRescueTake;
+ [items _u isEqualTo _after,"duplicate delivery token consumes no extra item"] call _assert;
+ [([_u] call DSDS_fnc_lootRescueClass)=="","post-recovery holdoff avoids duplicate rescue requests"] call _assert;
+ [!([_u,"SERVER_NEW","DSDS_Morphine"] call DSDS_fnc_lootRescueTake),"healthy or cooling-down unit cannot spend another syringe"] call _assert;
+ // Exercise previously scheduled native PiR crawl and unconscious animation callbacks.
+ private _v=call _make;_v addItem "DSDS_Morphine";_v setVariable ["dam_ignore_injured0",true];_v setDamage 0.6;
+ _v switchMove "PIR_CreepNon";[_v,getPosATL _v,time+30,200,2] call CrawlAnim0;
+ [[_v,"SERVER_M","DSDS_Morphine"] call DSDS_fnc_lootRescueTake,"Morphine consumes itself for a PiR crawling actor"] call _assert;
+ [!("DSDS_Morphine" in items _v) && {damage _v==0},"Morphine restores combat health immediately"] call _assert;
+ [_v,"unconsciousrevivedefault"] call UnconditionAnim0;
+ sleep 6;
+ [alive _v && {lifeState _v!="INCAPACITATED"} && {damage _v==0},"scheduled native PiR animation callback cannot leave the recovered unit down"] call _assert;
+ [!(_v getVariable ["dam_ignore_injured0",true]) && {_v getVariable ["dam_krov_statys",0]==5},"PiR releases injury gate and restores its normal blood state"] call _assert;
+ // New damage must stop settling; the fix is not repeated healing or invulnerability.
+ _v setDamage 0.3;_v setVariable ["dam_ignore_injured0",true];sleep 0.5;
+ [damage _v>=0.29 && {_v getVariable ["dam_ignore_injured0",false]},"new damage remains and a fresh PiR injury is not cleared by the old rescue"] call _assert;
+ [!(_v getVariable ["dam_player_lecit0",true]),"fresh damage releases the temporary native treatment flag"] call _assert;
+ private _w=call _make;_w addItem "DSDS_Morphine";_w setVariable ["incapacitated",true];
+ [([_w] call DSDS_fnc_lootRescueClass)=="DSDS_Morphine","Morphine rescues incapacitation when Adrenaline is unavailable"] call _assert;
+ [[_w,"SERVER_FALLBACK","DSDS_Morphine"] call DSDS_fnc_lootRescueTake && {!(_w getVariable ["incapacitated",true])},"Morphine fallback consumes and clears down state"] call _assert;
+ private _dead=call _make;_dead addItem "DSDS_Adrenaline";_dead setDamage 1;
+ [([_dead] call DSDS_fnc_lootRescueClass)=="" && {!([_dead,"DEAD","DSDS_Adrenaline"] call DSDS_fnc_lootRescueTake)},"actual death cannot be reversed or consume a rescue drug"] call _assert;
+ private _empty=call _make;_empty setVariable ["incapacitated",true];
+ [([_empty] call DSDS_fnc_lootRescueClass)=="" && {!([_empty,"EMPTY","DSDS_Adrenaline"] call DSDS_fnc_lootRescueTake)},"no inventory injector means no free resurrection"] call _assert;
+ [!([_empty,"WRONG","DSDS_OLB1"] call DSDS_fnc_lootRescueTake),"unrelated stims cannot be substituted for rescue"] call _assert;
+ {deleteVehicle _x;} forEach _units;
+ diag_log format ["[RESCUE SERVER TEST] COMPLETE: %1 PASS, %2 FAIL",_passes,_failures];
+};

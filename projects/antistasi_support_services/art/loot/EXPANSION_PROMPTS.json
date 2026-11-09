@@ -1,0 +1,106 @@
+﻿[
+    {
+        "asset":  "rough_gems",
+        "prompt":  "Use case: product-mockup. Square inventory thumbnail for a military survival video game. Three rough uncut natural gemstones: a red ruby at upper left, a deep blue sapphire at upper right, a green emerald at bottom center. Jagged raw mineral crystals, clearly uncut and unpolished. Precisely triangular composition, all three separated. Realistic isolated object, centered three-quarter view, soft neutral studio lighting, crisp silhouette readable at 64px, generous margins. Transparent background. No people, hands, framing, promotional claims, dosing or use instructions. Subdued realistic game loot style matching the existing project inventory thumbnails.",
+        "method":  "built-in imagegen generation",
+        "source":  "C:\\Users\\mamaj\\.codex\\generated_images\\01a1b3e7-3b00-7651-abff-593200759e2a\\exec-f3a2cc4a-81bd-42c6-9d82-ad3337beacf4.png",
+        "runtime":  "addons/dsds_support/ui/loot/rough_gems.jpg",
+        "workspaceMaster":  "projects/antistasi_support_services/art/loot/rough_gems.png"
+    },
+    {
+        "asset":  "cut_gems",
+        "prompt":  "Use case: precise-object-edit. Edit the reference inventory thumbnail: preserve the three gems\u0027 EXACT center positions, triangular arrangement, relative sizes, framing and transparent background. Transform each rough uncut stone into a beautiful professionally faceted polished gemstone of the same color: red ruby upper left, blue sapphire upper right, green emerald bottom center. Brilliant clean facets, jewel sparkle under neutral studio light. No jewelry settings, no text, no extra stones, no props. Match the realistic inventory loot art style.",
+        "method":  "built-in imagegen edit using rough_gems reference",
+        "source":  "C:\\Users\\mamaj\\.codex\\generated_images\\01a1b3e7-3b00-7651-abff-593200759e2a\\exec-30cdaed3-f6ad-4ffd-b8f0-501ce0dffa27.png",
+        "runtime":  "addons/dsds_support/ui/loot/cut_gems.jpg",
+        "workspaceMaster":  "projects/antistasi_support_services/art/loot/cut_gems.png"
+    },
+    {
+        "asset":  "industrial_platinum",
+        "prompt":  "Use case: product-mockup. Square inventory thumbnail for a military survival video game. One compact sealed industrial platinum ingot, dull silvery white metal, simple stamped PLATINUM label. Realistic isolated object, centered three-quarter view, soft neutral studio lighting, crisp silhouette readable at 64px, generous margins. Transparent background. No people, hands, framing, promotional claims, dosing or use instructions. Subdued realistic game loot style matching the existing project inventory thumbnails.",
+        "method":  "built-in imagegen generation",
+        "source":  "C:\\Users\\mamaj\\.codex\\generated_images\\01a1b3e7-3b00-7651-abff-593200759e2a\\exec-2f5a877e-ceaa-4193-9031-a8126eb3af48.png",
+        "runtime":  "addons/dsds_support/ui/loot/industrial_platinum.jpg",
+        "workspaceMaster":  "projects/antistasi_support_services/art/loot/industrial_platinum.png"
+    },
+    {
+        "asset":  "palladium_sponges",
+        "prompt":  "Use case: product-mockup. Square inventory thumbnail for a military survival video game. One small clear laboratory jar containing porous grey metallic palladium sponge granules, closed black lid, restrained PALLADIUM label. Realistic isolated object, centered three-quarter view, soft neutral studio lighting, crisp silhouette readable at 64px, generous margins. Transparent background. No people, hands, framing, promotional claims, dosing or use instructions. Subdued realistic game loot style matching the existing project inventory thumbnails.",
+        "method":  "built-in imagegen generation",
+        "source":  "C:\\Users\\mamaj\\.codex\\generated_images\\01a1b3e7-3b00-7651-abff-593200759e2a\\exec-1033474c-c58f-4c98-bad8-f1e84d02c5ab.png",
+        "runtime":  "addons/dsds_support/ui/loot/palladium_sponges.jpg",
+        "workspaceMaster":  "projects/antistasi_support_services/art/loot/palladium_sponges.png"
+    },
+    {
+        "asset":  "silicon_wafers",
+        "prompt":  "Use case: product-mockup. Square inventory thumbnail for a military survival video game. A protective open cassette containing two high-purity circular silicon wafers with subtle iridescent rainbow reflections, semiconductor industry loot. Realistic isolated object, centered three-quarter view, soft neutral studio lighting, crisp silhouette readable at 64px, generous margins. Transparent background. No people, hands, framing, promotional claims, dosing or use instructions. Subdued realistic game loot style matching the existing project inventory thumbnails.",
+        "method":  "built-in imagegen generation",
+        "source":  "C:\\Users\\mamaj\\.codex\\generated_images\\01a1b3e7-3b00-7651-abff-593200759e2a\\exec-13692bee-b65f-4fe4-9720-01ef64178fa6.png",
+        "runtime":  "addons/dsds_support/ui/loot/silicon_wafers.jpg",
+        "workspaceMaster":  "projects/antistasi_support_services/art/loot/silicon_wafers.png"
+    },
+    {
+        "asset":  "microchips",
+        "prompt":  "Use case: product-mockup. Square inventory thumbnail for a military survival video game. A small black anti-static tray containing several valuable microprocessor chips with visible gold contacts. Realistic isolated object, centered three-quarter view, soft neutral studio lighting, crisp silhouette readable at 64px, generous margins. Transparent background. No people, hands, framing, promotional claims, dosing or use instructions. Subdued realistic game loot style matching the existing project inventory thumbnails.",
+        "method":  "built-in imagegen generation",
+        "source":  "C:\\Users\\mamaj\\.codex\\generated_images\\01a1b3e7-3b00-7651-abff-593200759e2a\\exec-dca1f6d4-cf52-46a3-ae20-fad7ac80ffac.png",
+        "runtime":  "addons/dsds_support/ui/loot/microchips.jpg",
+        "workspaceMaster":  "projects/antistasi_support_services/art/loot/microchips.png"
+    },
+    {
+        "asset":  "methamphetamine",
+        "prompt":  "Use case: product-mockup. Square inventory thumbnail for a military survival video game. A small clear sealed evidence-style bag containing translucent fictional contraband crystals, no paraphernalia, no consumption scene. Realistic isolated object, centered three-quarter view, soft neutral studio lighting, crisp silhouette readable at 64px, generous margins. Transparent background. No people, hands, framing, promotional claims, dosing or use instructions. Subdued realistic game loot style matching the existing project inventory thumbnails.",
+        "method":  "built-in imagegen generation",
+        "source":  "C:\\Users\\mamaj\\.codex\\generated_images\\01a1b3e7-3b00-7651-abff-593200759e2a\\exec-11a44844-0eef-46f0-8d69-fab5f5cb05f2.png",
+        "runtime":  "addons/dsds_support/ui/loot/methamphetamine.jpg",
+        "workspaceMaster":  "projects/antistasi_support_services/art/loot/methamphetamine.png"
+    },
+    {
+        "asset":  "morphine",
+        "prompt":  "Use case: product-mockup. Square inventory thumbnail for a military survival video game. One sealed medical morphine autoinjector, white and muted purple, clearly readable MORPHINE label. Fictional videogame prop, no dosage or medical instructions. Realistic isolated object, centered three-quarter view, soft neutral studio lighting, crisp silhouette readable at 64px, generous margins. Transparent background. No people, hands, framing, promotional claims, dosing or use instructions. Subdued realistic game loot style matching the existing project inventory thumbnails.",
+        "method":  "built-in imagegen generation",
+        "source":  "C:\\Users\\mamaj\\.codex\\generated_images\\01a1b3e7-3b00-7651-abff-593200759e2a\\exec-519d3253-aea8-4f38-8345-1bf4646fde02.png",
+        "runtime":  "addons/dsds_support/ui/loot/morphine.jpg",
+        "workspaceMaster":  "projects/antistasi_support_services/art/loot/morphine.png"
+    },
+    {
+        "asset":  "ahj_c",
+        "prompt":  "Use case: product-mockup. Square inventory thumbnail for a military survival video game. One futuristic military autoinjector labeled AHJ-C, black casing with cyan identification band. Fictional videogame prop, no dosage or instructions. Realistic isolated object, centered three-quarter view, soft neutral studio lighting, crisp silhouette readable at 64px, generous margins. Transparent background. No people, hands, framing, promotional claims, dosing or use instructions. Subdued realistic game loot style matching the existing project inventory thumbnails.",
+        "method":  "built-in imagegen generation",
+        "source":  "C:\\Users\\mamaj\\.codex\\generated_images\\01a1b3e7-3b00-7651-abff-593200759e2a\\exec-bf214c2d-b558-45ed-9e51-4addfde9f4a8.png",
+        "runtime":  "addons/dsds_support/ui/loot/ahj_c.jpg",
+        "workspaceMaster":  "projects/antistasi_support_services/art/loot/ahj_c.png"
+    },
+    {
+        "asset":  "m11",
+        "prompt":  "Use case: product-mockup. Square inventory thumbnail for a military survival video game. One futuristic military autoinjector labeled M11, black casing with yellow identification band. Fictional videogame prop, no dosage or instructions. Realistic isolated object, centered three-quarter view, soft neutral studio lighting, crisp silhouette readable at 64px, generous margins. Transparent background. No people, hands, framing, promotional claims, dosing or use instructions. Subdued realistic game loot style matching the existing project inventory thumbnails.",
+        "method":  "built-in imagegen generation",
+        "source":  "C:\\Users\\mamaj\\.codex\\generated_images\\01a1b3e7-3b00-7651-abff-593200759e2a\\exec-531ca104-8b6a-469b-9e5f-4c636ffb2aa9.png",
+        "runtime":  "addons/dsds_support/ui/loot/m11.jpg",
+        "workspaceMaster":  "projects/antistasi_support_services/art/loot/m11.png"
+    },
+    {
+        "asset":  "adrenaline",
+        "prompt":  "Use case: product-mockup. Square inventory thumbnail for a military survival video game. One medical adrenaline autoinjector labeled ADRENALINE, white casing with orange identification band. Fictional videogame prop, no dosage or medical instructions. Realistic isolated object, centered three-quarter view, soft neutral studio lighting, crisp silhouette readable at 64px, generous margins. Transparent background. No people, hands, framing, promotional claims, dosing or use instructions. Subdued realistic game loot style matching the existing project inventory thumbnails.",
+        "method":  "built-in imagegen generation",
+        "source":  "C:\\Users\\mamaj\\.codex\\generated_images\\01a1b3e7-3b00-7651-abff-593200759e2a\\exec-19c800dd-0525-4789-8b9c-6a9e447ec970.png",
+        "runtime":  "addons/dsds_support/ui/loot/adrenaline.jpg",
+        "workspaceMaster":  "projects/antistasi_support_services/art/loot/adrenaline.png"
+    },
+    {
+        "asset":  "olb_1",
+        "prompt":  "Use case: product-mockup. Square inventory thumbnail for a military survival video game. One ominous experimental autoinjector labeled OLB-1, black casing with crimson band and a small warning triangle. Fictional videogame prop, no dosage or instructions. Realistic isolated object, centered three-quarter view, soft neutral studio lighting, crisp silhouette readable at 64px, generous margins. Transparent background. No people, hands, framing, promotional claims, dosing or use instructions. Subdued realistic game loot style matching the existing project inventory thumbnails.",
+        "method":  "built-in imagegen generation",
+        "source":  "C:\\Users\\mamaj\\.codex\\generated_images\\01a1b3e7-3b00-7651-abff-593200759e2a\\exec-7f4560f2-1b36-4346-af28-d277480abc52.png",
+        "runtime":  "addons/dsds_support/ui/loot/olb_1.jpg",
+        "workspaceMaster":  "projects/antistasi_support_services/art/loot/olb_1.png"
+    },
+    {
+        "asset":  "olb_2",
+        "prompt":  "Use case: product-mockup. Square inventory thumbnail for a military survival video game. One experimental autoinjector labeled OLB-2, black casing with vivid green band. Fictional videogame prop, no dosage or instructions. Realistic isolated object, centered three-quarter view, soft neutral studio lighting, crisp silhouette readable at 64px, generous margins. Transparent background. No people, hands, framing, promotional claims, dosing or use instructions. Subdued realistic game loot style matching the existing project inventory thumbnails.",
+        "method":  "built-in imagegen generation",
+        "source":  "C:\\Users\\mamaj\\.codex\\generated_images\\01a1b3e7-3b00-7651-abff-593200759e2a\\exec-3c052355-195d-4305-9c23-ff547c40c69b.png",
+        "runtime":  "addons/dsds_support/ui/loot/olb_2.jpg",
+        "workspaceMaster":  "projects/antistasi_support_services/art/loot/olb_2.png"
+    }
+]

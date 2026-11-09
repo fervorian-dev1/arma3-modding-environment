@@ -1,0 +1,91 @@
+﻿DSDS_testRemoteFence={
+ params ["_actor",["_operation","STASH"],["_truck",objNull]];
+ if (!isRemoteExecuted || {remoteExecutedOwner!=2} || {_actor getVariable ["DSDS_testUID",""]!="MISSION_TEST"}) exitWith {};
+ DSDS_testRemoteSeen=isRemoteExecuted;
+ if (_operation=="UPGRADE") exitWith {DSDS_convoyUpgrades pushBack [_truck,Occupants,"","SPECIAL",serverTime];};
+ // Demonstrate the protected worker rejects RPC context, then use the actual Fence handler.
+ [_actor] call DSDS_fnc_requestContrabandStash;
+ DSDS_testDirectBlocked=count (missionNamespace getVariable ["DSDS_activeStash",createHashMap])==0;
+ private _dsdsAuthorizedPlayer=_actor;
+ DSDS_testQueueAccepted=["STASH",_actor,[]] call DSDS_fnc_fenceTransaction;
+};
+[] spawn {
+ sleep 3;DSDS_missionPasses=0;DSDS_missionFailures=0;
+ private _assert={params ["_ok","_label"];if (_ok) then {DSDS_missionPasses=DSDS_missionPasses+1;} else {DSDS_missionFailures=DSDS_missionFailures+1;};diag_log format ["[MISSIONS TEST] %1: %2",["FAIL","PASS"] select _ok,_label];};
+ {private _category=_x;{[!isNil ("DSDS_fnc_"+configName _x),"registered "+configName _x] call _assert;} forEach ("true" configClasses (configFile >> "CfgFunctions" >> "DSDS" >> _category));} forEach ["Debug"];
+ { [isClass (configFile >> "CfgPatches" >> _x),"new AI addon actually loaded: "+_x] call _assert;} forEach ["tws_aimfix","AI_behavior_modification_core","lambs_danger"];
+ [getNumber (configFile >> "CfgBrains" >> "DefaultSoldierBrain" >> "Components" >> "AIBrainAimingErrorComponent" >> "maxAngularError")>0.12,"AI Behavior Modification brain configuration retained"] call _assert;
+ [(toLower getText (configFile >> "CfgVehicles" >> "B_Soldier_F" >> "fsmDanger") find "lambs")>=0,"LAMBS native danger FSM retained"] call _assert;
+ teamPlayer=resistance;Occupants=west;Invaders=east;tierWar=5;distanceSPWN=1500;
+ A3A_faction_occ=createHashMapFromArray [["unitRifle",["B_Soldier_F","B_Soldier_F","B_Soldier_F"]],["unitPilot","B_Helipilot_F"],["unitCrew","B_crew_F"],["vehiclesHelisTransport",["B_Heli_Transport_01_F"]],["vehiclesHelisLight",["B_Heli_Light_01_F"]],["vehiclesTrucks",["B_Truck_01_transport_F"]],["vehiclesAmmoTrucks",["B_Truck_01_ammo_F"]],["vehiclesLightArmed",["B_MRAP_01_hmg_F"]]];
+ A3A_faction_inv=A3A_faction_occ;A3A_faction_reb=createHashMapFromArray [["lootCrate","B_supplyCrate_F"]];
+ aggressionOccupants=0;aggressionInvaders=0;
+ private _low=[west] call DSDS_fnc_convoyDefenseProfile;
+ aggressionOccupants=85;aggressionInvaders=10;tierWar=8;
+ private _high=[west] call DSDS_fnc_convoyDefenseProfile;private _inv=[east] call DSDS_fnc_convoyDefenseProfile;
+ [(_high get "groundEscorts")>(_low get "groundEscorts") && {(_high get "passengers")>(_low get "passengers")} && {(_high get "skill")>(_low get "skill")},"escort count passengers and tactical skill increase with aggression"] call _assert;
+ [(_high get "aggression")==85 && {(_inv get "aggression")==10} && {(_inv get "groundEscorts")==2},"occupant and invader aggression are read independently"] call _assert;
+ A3A_faction_occ set ["vehiclesAPCs",["B_APC_Wheeled_01_cannon_F"]];A3A_faction_occ set ["vehiclesTanks",["B_MBT_01_cannon_F"]];
+ private _escortPool=[west,_high] call DSDS_fnc_convoyEscortPool;
+ ["B_APC_Wheeled_01_cannon_F" in _escortPool && {"B_MBT_01_cannon_F" in _escortPool},"high aggression and war level enable actual faction armor"] call _assert;
+ [["B_Truck_01_transport_F",west] call DSDS_fnc_isConvoyCargoTruck && {!(["B_Truck_01_ammo_F",west] call DSDS_fnc_isConvoyCargoTruck)} && {!(["B_Truck_01_fuel_F",west] call DSDS_fnc_isConvoyCargoTruck)},"cargo selection excludes ammo and fuel truck specializations"] call _assert;
+ aggressionOccupants=0;aggressionInvaders=0;tierWar=5;
+ A3A_faction_all=createHashMap;private _logicGroup=createGroup sideLogic;A3A_customUnitTypes=_logicGroup createUnit ["Logic",[0,0,0],[],0,"NONE"];
+ private _group=createGroup resistance;private _actor=_group createUnit ["I_G_Soldier_F",[14000,16000,0],[],0,"NONE"];
+ _actor disableAI "ALL";_actor setVariable ["DSDS_testUID","MISSION_TEST"];_actor setVariable ["moneyX",1000];
+ private _civilian=createGroup civilian;DSDS_fence=_civilian createUnit ["C_man_1",[14000,16002,0],[],0,"NONE"];DSDS_fence disableAI "PATH";
+ [DSDS_fence,"FIXED"] call DSDS_fnc_configureAddonAI;
+ [DSDS_fence getVariable ["lambs_danger_disableAI",false] && {(group DSDS_fence) getVariable ["lambs_danger_disableGroupAI",false]},"stationary dealer opted out of LAMBS manoeuvres"] call _assert;
+ [_actor] remoteExecCall ["DSDS_testRemoteFence",2];
+ private _deadline=diag_tickTime+60;waitUntil {sleep 0.25;count (missionNamespace getVariable ["DSDS_activeStash",createHashMap])>0 || {diag_tickTime>_deadline}};
+ [missionNamespace getVariable ["DSDS_testRemoteSeen",false],"Fence test traverses a real remote execution boundary"] call _assert;
+ [missionNamespace getVariable ["DSDS_testDirectBlocked",false],"private stash worker retains direct RPC rejection"] call _assert;
+ [missionNamespace getVariable ["DSDS_testQueueAccepted",false],"remote Fence transaction enqueues stash successfully"] call _assert;
+ private _stash=missionNamespace getVariable ["DSDS_activeStash",createHashMap];
+ [count _stash>0,"queued remote Fence request actually creates a stash mission"] call _assert;
+ private _stashUnits=[];private _stashBox=objNull;
+ if (count _stash>0) then {
+  _stashUnits=+(_stash get "units");_stashBox=_stash get "box";
+  [[_stash get "id"] call BIS_fnc_taskExists && {getMarkerColor (_stash get "marker")!=""},"stash has a real task and public map marker"] call _assert;
+  private _goods=["DSDS_Marijuana","DSDS_Cocaine","DSDS_Methamphetamine","DSDS_NicotineVape","DSDS_Zyn"];
+  [(_goods findIf {!(_x in itemCargo _stashBox)})<0 && {count itemCargo _stashBox==30},"all five contraband goods guaranteed in actual stash inventory"] call _assert;
+  [typeOf _stashBox in ["DSDS_StashSacks","DSDS_StashGarbage","DSDS_StashPallet"] && {maxLoad _stashBox>=1000},"camouflaged scenery has real inventory capacity"] call _assert;
+  [((_stash get "groups") findIf {!(groupId _x in (_stash get "names"))})<0 && {count ((_stash get "names") arrayIntersect (_stash get "names"))==3},"three generated guard names are actual public group IDs"] call _assert;
+  _deadline=diag_tickTime+60;waitUntil {sleep 1;(_stashUnits findIf {!(_x getVariable ["DSDS_aiAccuracyIntegrated",false])})<0 || {diag_tickTime>_deadline}};
+  [(_stashUnits findIf {(_x skill "general")<0.8 || {(_x skill "commanding")<0.8} || {(_x skill "spotTime")<0.8}})<0,"guards retain high tactical skill after Accuracy Fix runs"] call _assert;
+  [(_stashUnits findIf {(_x skill "aimingAccuracy")>0.31001})<0,"Accuracy Fix aiming values (0.01 plus random 0.3) are preserved"] call _assert;
+  [(_stashUnits findIf {_x getVariable ["lambs_danger_disableAI",false]})<0,"LAMBS remains enabled on stash combat infantry"] call _assert;
+  {_x setDamage 1;} forEach _stashUnits;sleep 6;
+  [_stash get "complete" && {[_stash get "id"] call BIS_fnc_taskState=="SUCCEEDED"},"guard defeat completes the real stash task"] call _assert;
+ };
+ {private _cfg=configFile >> "DSDS_DebugMissions" >> _x;[isClass _cfg && {!isNil getText (_cfg >> "handler")},"DEBUG registry has callable mission: "+_x] call _assert;} forEach ["SPECIAL","ISOTOPE","STASH"];
+ private _before=count DSDS_debugMissions;["SPECIAL",_actor,ATLToASL getPosATL _actor] call DSDS_fnc_debugMissionRequest;
+ [count DSDS_debugMissions==_before,"public DEBUG entry rejects a non-player non-curator"] call _assert;
+ [!(["NOT_A_MISSION",_actor,[14000,16000,0],true] call DSDS_fnc_queueCustomMission),"unknown mission cannot dispatch arbitrary server code"] call _assert;
+ // Convoy DEBUG now delegates to real campaign-native routes and departure timers.
+ // This isolated stash fixture has no initialized campaign route/garrison graph.
+ private _busy=missionNamespace getVariable ["A3A_convoyInProgress",false];A3A_convoyInProgress=true;
+ private _vehicleCount=count vehicles;[_actor,[14000,16000,0],true,"SPECIAL"] call DSDS_fnc_startDebugConvoy;
+ [count vehicles==_vehicleCount && {count DSDS_debugMissions==_before},"DEBUG respects native active-convoy gate without creating a cursor-route replacement"] call _assert;
+ A3A_convoyInProgress=_busy;
+ [(str DSDS_fnc_startDebugConvoy find "call DSDS_nativeCargoConvoy")>=0,"DEBUG convoy dispatches installed native mission worker"] call _assert;
+ private _queuedTruck=createVehicle ["B_Truck_01_transport_F",[14000,16020,0],[],0,"NONE"];_queuedTruck setVariable ["ownerSide",Occupants];
+ [_actor,"UPGRADE",_queuedTruck] remoteExecCall ["DSDS_testRemoteFence",2];
+ _deadline=diag_tickTime+12;waitUntil {sleep 0.25;_queuedTruck getVariable ["DSDS_manifestID",""]!="" || {diag_tickTime>_deadline}};
+ [_queuedTruck getVariable ["DSDS_manifestID",""]!="" && {count (getItemCargo _queuedTruck select 0)==3},"remote-origin convoy upgrade queue fills actual cargo without remote worker rejection"] call _assert;
+ deleteVehicle _queuedTruck;
+ aggressionOccupants=85;tierWar=8;
+ aggressionOccupants=0;tierWar=5;
+ // Finished stash allows the DEBUG variant to bypass the ordinary lead cooldown.
+ private _oldID=if (count _stash>0) then {_stash get "id"} else {""};
+ ["STASH",_actor,[14000,16000,0],true] call DSDS_fnc_queueCustomMission;
+ _deadline=diag_tickTime+30;waitUntil {sleep 0.25;(missionNamespace getVariable ["DSDS_activeStash",createHashMap]) getOrDefault ["id",""]!=_oldID || {diag_tickTime>_deadline}};
+ private _next=missionNamespace getVariable ["DSDS_activeStash",createHashMap];
+ [count _next>0 && {_next getOrDefault ["debug",false]} && {_next get "id"!=_oldID},"DEBUG stash starts without ordinary cooldown settings"] call _assert;
+ if (count _next>0) then {_next set ["complete",true];{deleteVehicle _x;} forEach (_next get "units");{deleteGroup _x;} forEach (_next get "groups");deleteVehicle (_next get "box");deleteMarker (_next get "marker");[_next get "id"] call BIS_fnc_deleteTask;};
+ {deleteVehicle _x;} forEach _stashUnits;if (!isNull _stashBox) then {deleteVehicle _stashBox;};
+ if (count _stash>0) then {{deleteGroup _x;} forEach (_stash get "groups");deleteMarker (_stash get "marker");[_stash get "id"] call BIS_fnc_deleteTask;};
+ deleteVehicle _actor;deleteVehicle DSDS_fence;deleteGroup _group;deleteGroup _civilian;deleteVehicle A3A_customUnitTypes;deleteGroup _logicGroup;
+ diag_log format ["[MISSIONS TEST] COMPLETE: %1 PASS, %2 FAIL",DSDS_missionPasses,DSDS_missionFailures];
+};
+

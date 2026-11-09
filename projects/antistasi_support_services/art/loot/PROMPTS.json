@@ -1,0 +1,28 @@
+[
+  {
+    "key": "marijuana",
+    "prompt": "Use case: product-mockup. Asset: square inventory thumbnail for a fictional military survival video game, not an advertisement. Subject: a small clear sealed bag containing dried cannabis buds, restrained green botanical details, recognizable contents. Realistic isolated game inventory object, centered three-quarter view, soft neutral studio lighting, sharp silhouette readable at 64 pixels, generous empty margins. Transparent background, no frame, no people, no hands, no consumption scene, no promotional claims. One object or sealed package only. Consistent subdued realistic game-loot art style.",
+    "method": "OpenAI built-in image generation; transparent PNG master; System.Drawing 256px JPEG runtime thumbnail"
+  },
+  {
+    "key": "nicotine_vape",
+    "prompt": "Use case: product-mockup. Asset: square inventory thumbnail for a fictional military survival video game, not an advertisement. Subject: one compact modern disposable nicotine vape device, matte black and muted teal, no vapor plume. Realistic isolated game inventory object, centered three-quarter view, soft neutral studio lighting, sharp silhouette readable at 64 pixels, generous empty margins. Transparent background, no frame, no people, no hands, no consumption scene, no promotional claims. One object or sealed package only. Consistent subdued realistic game-loot art style.",
+    "method": "OpenAI built-in image generation; transparent PNG master; System.Drawing 256px JPEG runtime thumbnail"
+  },
+  {
+    "key": "cocaine",
+    "prompt": "Use case: product-mockup. Asset: square inventory thumbnail for a fictional military survival video game, not an advertisement. Subject: one small clear sealed bag of white powdered contraband, no loose powder or paraphernalia. Realistic isolated game inventory object, centered three-quarter view, soft neutral studio lighting, sharp silhouette readable at 64 pixels, generous empty margins. Transparent background, no frame, no people, no hands, no consumption scene, no promotional claims. One object or sealed package only. Consistent subdued realistic game-loot art style.",
+    "method": "OpenAI built-in image generation; transparent PNG master; System.Drawing 256px JPEG runtime thumbnail"
+  },
+  {
+    "key": "zyn",
+    "prompt": "Use case: product-mockup. Asset: square inventory thumbnail for a fictional military survival video game, not an advertisement. Subject: a white round ZYN nicotine pouch tin, small simple blue ZYN lettering, closed lid, clean readable silhouette. Realistic isolated game inventory object, centered three-quarter view, soft neutral studio lighting, sharp silhouette readable at 64 pixels, generous empty margins. Transparent background, no frame, no people, no hands, no consumption scene, no promotional claims. One object or sealed package only. Consistent subdued realistic game-loot art style.",
+    "method": "OpenAI built-in image generation; transparent PNG master; System.Drawing 256px JPEG runtime thumbnail"
+  },
+  {
+    "key": "gold",
+    "prompt": "Use case: product-mockup. Asset: square inventory thumbnail for a fictional military survival video game, not an advertisement. Subject: one heavy rectangular gold bullion bar, realistic gold metal, subtle stamped 999.9 FINE GOLD text. Realistic isolated game inventory object, centered three-quarter view, soft neutral studio lighting, sharp silhouette readable at 64 pixels, generous empty margins. Transparent background, no frame, no people, no hands, no consumption scene, no promotional claims. One object or sealed package only. Consistent subdued realistic game-loot art style.",
+    "method": "OpenAI built-in image generation; transparent PNG master; System.Drawing 256px JPEG runtime thumbnail"
+  }
+]
+

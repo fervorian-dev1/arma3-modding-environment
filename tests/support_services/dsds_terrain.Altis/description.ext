@@ -1,0 +1,3 @@
+onLoadName="DSDS Terrain Flight Validation";
+disabledAI=0;
+class Header {gameType="Sandbox";minPlayers=1;maxPlayers=1;};

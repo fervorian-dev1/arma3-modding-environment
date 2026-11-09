@@ -1,0 +1,46 @@
+[] spawn {
+ sleep 3;private _passes=0;private _failures=0;
+ private _assert={params ["_ok","_label"];if (_ok) then {_passes=_passes+1;} else {_failures=_failures+1;};diag_log format ["[MYSTIC STASH TEST] %1: %2",["FAIL","PASS"] select _ok,_label];};
+ teamPlayer=resistance;Occupants=west;Invaders=east;tierWar=5;
+ A3A_faction_occ=createHashMapFromArray [["unitRifle",["B_Soldier_F","B_Soldier_F","B_Soldier_F"]]];A3A_faction_inv=A3A_faction_occ;
+ A3A_saveTarget=[false,"DSDS_MYSTIC_STASH_TEST",worldName];A3A_saveData=createHashMapFromArray [["startType","new"]];[] call DSDS_fnc_mysticLoad;
+ private _civ=createGroup civilian;DSDS_mystic=_civ createUnit ["C_man_1",[14000,16000,0],[],0,"NONE"];DSDS_mystic disableAI "ALL";
+ private _group=createGroup resistance;private _actor=_group createUnit ["I_G_Soldier_F",[14001,16000,0],[],0,"NONE"];_actor disableAI "ALL";_actor setVariable ["DSDS_testUID","MYSTIC_STASH_ACTOR"];
+ private _logicGroup=createGroup sideLogic;private _wallet=_logicGroup createUnit ["Logic",[0,0,0],[],0,"NONE"];_wallet setVariable ["moneyX",100000];_actor setVariable ["owner",_wallet];
+ private _tx={params ["_op","_actor"];private _dsdsAuthorizedPlayer=_actor;[_op,_actor,[]] call DSDS_fnc_mysticTransaction};
+ [getNumber (configFile >> "DSDS_MysticDialog" >> "Controls" >> "Stash" >> "idc")==1837,"Mystic menu exposes the isotope stash option"] call _assert;
+ [getText (configFile >> "DSDS_DebugMissions" >> "ISOTOPE_STASH" >> "handler")=="DSDS_fnc_requestContrabandStash","Zeus debug entry reuses the exact Fence worker"] call _assert;
+ _actor setPosATL [14030,16000,0];[!(["STASH",_actor] call _tx),"stash requests require speaking to Mystic in person"] call _assert;_actor setPosATL [14001,16000,0];
+ [["STASH",_actor] call _tx,"authenticated Mystic transaction queues an actual stash"] call _assert;
+ [!(["STASH",_actor] call _tx),"pending request cannot enqueue a duplicate"] call _assert;
+ private _until=diag_tickTime+45;waitUntil {sleep 0.1;count (missionNamespace getVariable ["DSDS_activeStash",createHashMap])>0 || {diag_tickTime>_until}};
+ private _stash=missionNamespace getVariable ["DSDS_activeStash",createHashMap];
+ [count _stash>0,"real dispatcher creates a roadside isotope mission"] call _assert;
+ if (count _stash>0) then {
+  private _box=_stash get "box";private _title=_stash get "title";
+  [_title=="Industrial Isotopes Stash" && {markerText (_stash get "marker")==_title} && {[_stash get "id"] call BIS_fnc_taskExists},"mission has its isotope name, map marker and real task"] call _assert;
+  [typeOf _box in ["DSDS_StashSacks","DSDS_StashGarbage","DSDS_StashPallet"],"environment-matching Fence stash container retained"] call _assert;
+  [count itemCargo _box==10 && {(itemCargo _box findIf {_x!="DSDS_IndustrialIsotopes"})<0},"all ten cargo items are Industrial Isotopes with no drug filler"] call _assert;
+  [loadAbs _box<=maxLoad _box,"heavy isotope cargo fits the existing container capacity"] call _assert;
+  [count (_stash get "units")>=12 && {count (_stash get "units")<=18} && {count (_stash get "groups")==3},"same three guard squads and original twelve-to-eighteen troop range"] call _assert;
+  [count ((_stash get "names") arrayIntersect (_stash get "names"))==3,"procedural squad names retained"] call _assert;
+  private _skillUntil=diag_tickTime+45;waitUntil {sleep 0.1;((_stash get "units") findIf {!(_x getVariable ["DSDS_aiAccuracyIntegrated",false])})<0 || {diag_tickTime>_skillUntil}};
+  [((_stash get "units") findIf {skill _x<0.8 || {side group _x!=west}})<0,"same high-skill guards from current occupying faction"] call _assert;
+  [_wallet getVariable "moneyX"==100000,"lead stays free like Fence's existing stash lead"] call _assert;
+  [DSDS_nextStash>serverTime+2600 && {!DSDS_stashPending},"original forty-five-minute cooldown and pending unlock retained"] call _assert;
+  private _same=_box;[_actor,[],false,"STASH"] call DSDS_fnc_requestContrabandStash;
+  [(DSDS_activeStash get "box")==_same,"Fence and Mystic share the existing single active stash"] call _assert;
+  {_x setDamage 1;} forEach (_stash get "units");_until=diag_tickTime+10;waitUntil {sleep 0.1;_stash get "complete" || {diag_tickTime>_until}};
+  [_stash get "complete" && {[_stash get "id"] call BIS_fnc_taskState=="SUCCEEDED"},"original guard-clear completion works for isotope variant"] call _assert;
+  [markerText (_stash get "marker")=="Cleared Industrial Isotopes Stash","completion marker retains the correct isotope label"] call _assert;
+  [_actor,[],false,"INDUSTRIAL"] call DSDS_fnc_requestContrabandStash;
+  [(DSDS_activeStash get "box")==_same,"cooldown prevents immediate replacement after clearing"] call _assert;
+  // Exercise the original variant through the same worker after resetting only the test cooldown.
+  DSDS_nextStash=0;[_actor,[],false,"STASH"] call DSDS_fnc_requestContrabandStash;
+  private _original=DSDS_activeStash;
+  [(_original get "title")=="Contraband Stash" && {count itemCargo (_original get "box")==30} && {"DSDS_Cocaine" in itemCargo (_original get "box")} && {!("DSDS_IndustrialIsotopes" in itemCargo (_original get "box"))},"Fence's original thirty-item contraband mission stays unchanged"] call _assert;
+  {deleteVehicle _x;} forEach ((_stash get "units")+(_original get "units"));{deleteGroup _x;} forEach ((_stash get "groups")+(_original get "groups"));deleteVehicle _box;deleteVehicle (_original get "box");deleteMarker (_stash get "marker");deleteMarker (_original get "marker");
+ };
+ {deleteVehicle _x;} forEach [_actor,DSDS_mystic,_wallet];
+ diag_log format ["[MYSTIC STASH TEST] COMPLETE: %1 PASS, %2 FAIL",_passes,_failures];
+};
