@@ -6,7 +6,7 @@ The user requested the whole project on GitHub so friends can download it, and e
 
 `scripts/Build-GitHubDownload.ps1` packages both current compiled custom mods with portable installation instructions and SHA256SUMS.txt. It verifies the PBO copies and required ZIP entries. Output: `build/releases/Arma3-Custom-Mods-v3.6.zip` (397542 bytes).
 
-ZIP SHA256: `61685F0CF4D514365ACDC425DE9CD3811A6C95070A01EFC6F2C7A58DA5CC14AB`.
+ZIP SHA256: `FC45183DBD1BBC113FF65A3E818D4334343514BDED3573DD11829F1904CD8E89`.
 
 Included PBOs:
 - Dynamic Supply Drops: `F9656DFB9A999A9053A0B649A4DFEF108D31D631E3C470FB398BCB68C79CF4F6`.
