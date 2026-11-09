@@ -6,7 +6,8 @@ This workspace contains editable projects, local build output, and setup notes. 
 
 - projects/: editable addon source; one directory per project.
 - reference/: local copies or extracted reference material (ignored by Git).
-- build/: generated local mods (ignored by Git).
+- build/@DynamicSupplyDrops/ and build/@AntistasiSupportServices/: current, ready-to-use mod folders (tracked by Git).
+- Other build/: generated packages and temporary outputs (ignored by Git).
 - logs/: test profiles and logs (ignored by Git).
 - temp/: disposable working files (ignored by Git).
 - scripts/: repeatable local build helpers.
@@ -22,7 +23,7 @@ The player package contains both compiled custom addons, installation instructio
 
 ## Build a player download
 
-After building the two addons, run `scripts/Build-GitHubDownload.ps1`. The versioned player ZIP is written to `build/releases/`. Build output, test profiles/logs, local reference extracts and signing keys are excluded from Git.
+Build the two addons with their project scripts, then run `scripts/Build-GitHubDownload.ps1`. The versioned player ZIP is written to `build/releases/` and published on GitHub Releases. The current ready-to-use mod folders are also tracked in Git; temporary build output, test profiles/logs, local reference extracts and signing keys are excluded.
 ## Verify the environment
 
 From this directory in PowerShell:

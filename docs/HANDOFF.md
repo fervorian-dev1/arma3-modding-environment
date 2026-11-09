@@ -150,8 +150,8 @@ The v2.5 baseline was published in the standard `build/@AntistasiSupportServices
 - Workshop: `A:\SteamLibrary\steamapps\workshop\content\107410`.
 - Last inspected/tested: Arma 3 2.22.154089; **Ultimate 12.0.3** (Workshop 3020755032), with targeted Plus 2.3.2 fallback; CBA 3.19; ZEN 1.15.1.36. RHS USAF/AFRF, RHS GREF/SAF/3CB and FHQ/RKSL assets were used in relevant fixtures. Versions are snapshots, not a guarantee about future Workshop updates.
 - v2.0 also inspects/tests installed **Chemical Warfare PLUS** (Workshop3295358796, PHAN_CW.pbo, CBRN_scripts). Its native particle/exposure spawn exits on dedicated; actual visuals and client medical behavior remain a human acceptance step. Source references are extracted read-only under reference/chemical and reference/ultimate/garage.
-- `reference/`: ignored extracted read-only API/config references. `build/`: ignored generated local mods. `logs/`: ignored isolated profiles/test RPTs. `temp/`: ignored extraction/review output.
-- Source/docs are saved locally. No Git commit was created; the workspace was reported as untracked by Git during development. Do not assume a committed backup exists.
+- `reference/`: ignored extracted read-only API/config references. `build/@DynamicSupplyDrops` and `build/@AntistasiSupportServices`: current generated mod folders, tracked in Git. Other build outputs, `logs/` isolated profiles/test RPTs, and `temp/` extraction/review output are ignored.
+- Source, docs and the two current built mod folders are in Git. The ready-to-play ZIP is published separately under GitHub Releases; temporary and historical build variants are not tracked.
 
 ## Current release files
 

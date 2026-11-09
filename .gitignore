@@ -1,7 +1,13 @@
-build/
+build/*
+!build/@DynamicSupplyDrops/
+!build/@DynamicSupplyDrops/**
+!build/@AntistasiSupportServices/
+!build/@AntistasiSupportServices/**
 logs/
 temp/
 reference/
 *.pbo
+!build/@DynamicSupplyDrops/addons/dsd_supplydrops.pbo
+!build/@AntistasiSupportServices/addons/dsds_support.pbo
 *.bisign
 *.biprivatekey
