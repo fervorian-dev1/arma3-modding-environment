@@ -1,6 +1,6 @@
 class DSDS_Mystic {
  leadPrice=92235;offeringGoal=40;respawnDelay=1800;
- class Nuclear {class IED {item="DSDS_NuclearIED_Mag";price=174000;};};
+ class Nuclear {class IED {item="DSDS_NuclearIED_Mag";price=43500;};};
  class Trinkets {class Oswald {item="DSDS_Oswald";price=62000;};};
 };
 class RscPicture;

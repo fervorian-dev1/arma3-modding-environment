@@ -52,6 +52,7 @@ if (_kind == "GEAR") then {
             clearWeaponCargoGlobal _vehicle;clearMagazineCargoGlobal _vehicle;clearItemCargoGlobal _vehicle;clearBackpackCargoGlobal _vehicle;
             _vehicle setVariable ["ownerX",getPlayerUID _player,true];
             _vehicle setVariable ["DSDS_fencePurchase",true,true];
+            _vehicle setVariable ["DSDS_purchasePaid",_price,true];
             _vehicle setVehicleLock "UNLOCKED";
             // Native black-market vehicle initialization; no map/faction ownership edits.
             if (!isNil "A3A_activePlayerCount" && {!isNil "A3A_vehicleResourceCosts"}) then {

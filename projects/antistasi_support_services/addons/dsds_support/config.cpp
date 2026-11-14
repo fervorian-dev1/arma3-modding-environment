@@ -2,14 +2,14 @@ class CfgPatches {
     class dsds_support {
         name = "Antistasi Support Services";
         author = "Local Workspace";
-        version = 3.6;
+        version = 4.7;
         requiredVersion = 2.22;
         requiredAddons[] = {"dsd_supplydrops", "A3A_core", "A3A_scrt", "A3A_events", "A3A_garage", "A3_Weapons_F", "cba_common", "zen_modules", "A3_Weapons_F_Explosives", "A3_Structures_F_Civ_Garbage", "A3_Structures_F_Civ_Market"};
         units[] = {"DSDS_MysticNPC","DSDS_MechanicNPC","DSDS_StashSacks","DSDS_StashGarbage","DSDS_StashPallet"};
         weapons[] = {"DSDS_Oswald","DSDS_SupportTerminal", "DSDS_MechanicUniform", "DSDS_ValuableReceiver", "DSDS_Marijuana", "DSDS_NicotineVape", "DSDS_Cocaine", "DSDS_Zyn", "DSDS_GoldBullion", "DSDS_RoughGems", "DSDS_CutGems", "DSDS_IndustrialPlatinum", "DSDS_PalladiumSponges", "DSDS_SiliconWafers", "DSDS_Microchips", "DSDS_Methamphetamine", "DSDS_Morphine", "DSDS_AHJC", "DSDS_M11", "DSDS_Adrenaline", "DSDS_OLB1", "DSDS_OLB2", "DSDS_MedicalIsotopes", "DSDS_IndustrialIsotopes"};
     };
 };
-class A3U {class forbiddenItems {class DSDS_Oswald {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};};};
+class A3U {class forbiddenItems {class DSDS_AHJC {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_Cocaine {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_CutGems {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_GoldBullion {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_IndustrialIsotopes {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_IndustrialPlatinum {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_M11 {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_Marijuana {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_MedicalIsotopes {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_Methamphetamine {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_Microchips {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_NicotineVape {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_OLB1 {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_OLB2 {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_PalladiumSponges {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_RoughGems {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_SiliconWafers {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_ValuableReceiver {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_Zyn {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_Oswald {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};};};
 class CfgAmmo {
     class IEDUrbanSmall_Remote_Ammo;
     class DSDS_NuclearIED_Ammo: IEDUrbanSmall_Remote_Ammo {
@@ -94,7 +94,9 @@ class CfgVehicles {
 };
 class CfgFunctions {
     class SCRT {class Common {class common_unconsciousEventHandler {file="\dsds_support\functions\Compatibility\nativeReviveKeys.sqf";};};};
+    class A3U {class REINF {class blackMarketVehiclePrice {file="\dsds_support\functions\Compatibility\nativeCivilBMPrice.sqf";};};};
     class A3A {
+        class REINF {class vehiclePrice {file="\dsds_support\functions\Compatibility\nativeCivilHQPrice.sqf";};};
         class CREATE {class createUnit {file="\dsds_support\functions\Compatibility\nativeCreateUnit.sqf";};};
         class Missions {
             class convoy {file="\dsds_support\functions\Smuggling\nativeConvoy.sqf";};
@@ -104,6 +106,8 @@ class CfgFunctions {
         class Compatibility {
             file="\dsds_support\functions\Compatibility";
             class initGameplayHotfixes {postInit=1;};
+            class initSilentFriendlyFire {postInit=1;};
+            class initCivilianTransport {postInit=1;};
             class physicalDownState {};
             class repairReviveUI {};
             class protectOswaldArsenal {};
@@ -149,6 +153,7 @@ class CfgFunctions {
             class debugMissionRequest {};
             class startDebugConvoy {};
             class startDebugResponse {};
+            class runDebugTool {};
             class tickDebugMission {};
         };
         class Smuggling {
@@ -195,6 +200,7 @@ class CfgFunctions {
             class chemicalCloud {};
             class requestContrabandStash {};
             class createStashContainer {};
+            class cleanupContrabandStash {};
             class generateGuardName {};
             class salvageConvoy {};
         };
@@ -211,7 +217,7 @@ class CfgFunctions {
             class lootCommit {};
             class lootMorphineHealTick {};
             class lootCanRevive {};
-            class initPiRRescue {postInit=1;};
+            class initPiRRescue {preInit=1;postInit=1;};
             class lootDownState {};
             class lootRescueClass {};
             class lootRecover {};
@@ -248,6 +254,9 @@ class CfgFunctions {
             class changeWallet {};
             class vehicleValue {};
             class vehicleShopPrice {};
+            class travelSafe {};
+            class travelClient {};
+            class runFriendlyTravel {};
             class validateVehicleSale {};
             class sellMechanicVehicle {};
             class createMechanic {};
@@ -326,6 +335,7 @@ class CfgRemoteExec {
         class DSDS_fnc_serverRequest {allowedTargets = 2; jip = 0;};
         class DSDS_fnc_clientService {allowedTargets = 0; jip = 0;};
         class DSDS_fnc_boardSupportPassenger {allowedTargets = 0; jip = 0;};
+        class DSDS_fnc_travelClient {allowedTargets=1;jip=0;};
         class DSDS_fnc_jumpSupportPassenger {allowedTargets = 0; jip = 0;};
         class DSDS_fnc_reportHQNoise {allowedTargets = 2; jip = 0;};
         class DSDS_fnc_fenceRequest {allowedTargets = 2; jip = 0;};
@@ -344,7 +354,7 @@ class DSDS_HQRaid {
     decayPerSecond = 1;
     responseDelay = 90;
     responseRandom = 90;
-    recovery = 60;
+    recovery = 3600;
     landingMin = 800;
     landingMax = 1200;
     approachDistance = 4500;

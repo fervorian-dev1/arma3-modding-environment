@@ -2,8 +2,8 @@ class CfgPatches {
     class dsd_supplydrops {
         name = "Dynamic Supply Drops - ZEN";
         author = "Local Workspace";
-        version = 1.1;
-        versionStr = "1.1.0";
+        version = 1.2;
+        versionStr = "1.2.0";
         requiredVersion = 2.22;
         requiredAddons[] = {"cba_main", "zen_context_menu", "zen_dialog", "zen_custom_modules"};
         units[] = {};

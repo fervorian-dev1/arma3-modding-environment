@@ -46,7 +46,11 @@ if (_armed && {!(_class isKindOf "Air")}) then {_value = _value * 1.15;};
 // Preserve sensible proportions within each tier, without trusting extreme mod config costs.
 private _configCost = getNumber (_cfg >> "cost");
 _value = _value * (0.9 + ((_configCost min 10000000) max 0) / 50000000);
+// Market-listed vehicles use the actual discounted dealer price, not config cost tiers.
+private _market=[_class,true] call DSDS_fnc_vehicleShopPrice;
+if (_market>0) then {_value=_market*0.5*_condition;};
 // Prevent buying from Antistasi's vehicle store and immediately reselling at a profit.
 private _purchase=[_class] call DSDS_fnc_vehicleShopPrice;
 if (_purchase>0) then {_value=_value min (_purchase*0.5*_condition);};
-10 max round _value
+if !(_vehicleOrClass isEqualType "") then {_value=_value min (_vehicleOrClass getVariable ["DSDS_purchasePaid",1e12]);};
+if (_purchase>0) then {(round _value) max 0 min _purchase} else {10 max round _value}

@@ -1,5 +1,6 @@
 params ["_control","_index"];
 private _display = ctrlParent _control;
+if ((_display getVariable ["DSDS_mode",""])=="TRAVEL") exitWith {};
 _display setVariable ["DSDS_origin",[]];
 _display setVariable ["DSDS_destination",[]];
 _display setVariable ["DSDS_quote",[]];

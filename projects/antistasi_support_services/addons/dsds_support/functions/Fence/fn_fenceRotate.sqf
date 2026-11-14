@@ -22,10 +22,15 @@ private _stock=[] call DSDS_fnc_fenceBuildStock;
 DSDS_fenceStock=_stock;
 DSDS_fenceGeneration=(missionNamespace getVariable ["DSDS_fenceGeneration",0])+1;
 publicVariable "DSDS_fence";publicVariable "DSDS_fenceStock";publicVariable "DSDS_fenceGeneration";
-// Reuse the same community crate across camp moves; transported crates stay put.
+// Preserve the shared inventory and move the same crate to the new camp.
 private _community=missionNamespace getVariable ["DSDS_fenceCommunityBox",objNull];
-if (!isNull _community && {alive _community} && {isNull attachedTo _community} && {isNull isVehicleCargo _community} && {isNull ropeAttachedTo _community}) then {
+if (!isNull _community && {alive _community}) then {
+ detach _community;
+ private _carrier=isVehicleCargo _community;
+ if (!isNull _carrier) then {_carrier setVehicleCargo objNull;};
+ {ropeDestroy _x;} forEach ropes _community;
  private _cratePos=[_pos,8,25,3,0,0.3,0,[],[[0,0,0],[0,0,0]]] call BIS_fnc_findSafePos;
+ if (_cratePos distance2D [0,0,0]<=10) then {_cratePos=_tent modelToWorld [5,0,0];};
  if (_cratePos distance2D [0,0,0]>10) then {_community setPosATL _cratePos;_community setVelocity [0,0,0];};
 };
 private _oldGroup=group _old;

@@ -1,5 +1,6 @@
 /* Sale values shared by stock and cargo; custom goods override the generic tiers. */
 params ["_class",["_section","CfgWeapons"],["_customOnly",false]];
+if (_class in ["DSDS_Morphine","DSDS_Adrenaline"]) exitWith {0};
 private _cfg=configFile >> _section >> _class;
 if (!isClass _cfg) exitWith {0};
 private _custom=-1;

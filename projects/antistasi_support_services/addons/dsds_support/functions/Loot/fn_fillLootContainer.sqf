@@ -9,13 +9,14 @@ private _pool=switch (_mode) do {
  default {["DSDS_Marijuana","DSDS_NicotineVape","DSDS_Cocaine","DSDS_Zyn","DSDS_GoldBullion","DSDS_RoughGems","DSDS_CutGems","DSDS_Methamphetamine"]};
 };
 if (_pool isEqualTo []) exitWith {false};
+_count=round (_count*2.25);
 private _used=createHashMap;
-for "_i" from 1 to ((floor _count max 1) min 50) do {
+for "_i" from 1 to ((floor _count max 1) min 113) do {
     private _class="";
     if (_mode=="MEDICAL") then {
         // Rare OLB variants, at most two of any injector in one addition.
         private _weighted=[];
-        {if ((_used getOrDefault [_x,0])<2) then {_weighted append [_x,getNumber (configFile >> "DSDS_MedicalLoot" >> "Weights" >> _x) max 1];};} forEach _pool;
+        {if ((_used getOrDefault [_x,0])<5) then {_weighted append [_x,getNumber (configFile >> "DSDS_MedicalLoot" >> "Weights" >> _x) max 1];};} forEach _pool;
         if (_weighted isNotEqualTo []) then {_class=selectRandomWeighted _weighted;};
     } else {_class=selectRandom _pool;};
     if (_class=="") exitWith {};

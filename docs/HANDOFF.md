@@ -1,3 +1,51 @@
+## Latest adjustment: v4.7 ? travel exclusion radius150m
+
+Fast-travel hostile infantry exclusion changed400m->150m in fn_travelSafe.sqf and menu text in fn_openTerminal.sqf. Applies to requester and destination, including pre-jump recheck. Existing60-second combat timer and other safeguards retained. Official build checks only; no game test needed for this constant/text edit.
+
+## Latest update: v4.6 ? cheaper civilian land vehicles and DEBUG tools
+
+See [pricing/debug notes](CIVILIAN_DEBUG_46_NOTES.md). Civilian land purchases60% cheaper via tested native function adapters; PMC capped by reduced purchase prices, Fence receipts additionally capped. Zeus DEBUG now30 entries, including Respawn Mystic HERE/saved site, reveal/status, vendors/crates/arsenal/loot/HQ raids and every support service. Mystic spawn explicitly visible/simulated/grounded. Final smoke251/0, official build/source-PBO checks passed. Installed standard PBO after user closed Arma; all clients/server update/restart. No campaign save edits this turn.
+
+## Latest update: v4.5 ? Mystic campaign restoration and paid Oswald unlock
+
+See [Mystic repair notes](MYSTIC_PERSISTENCE_45_NOTES.md). Loader reads selected native saved state without fragile startType gate; schema2 remembers purchase-only Oswald unlimited arsenal unlock. IED43500. Live latest Green Sea save backed up and migrated, coordinates/progress retained; load with4.5. Official build passed;214/0 isolated smoke; human acceptance pending. Save normally after purchases. Private campaign backups ignored by Git.
+
+## Focused smoke validation completed ? 2026-11-13
+
+See [validation evidence](HOTFIX_SMOKE_VALIDATION.md). Current companion4.4 / Supply Drops1.2 rebuilt with config/package checks. Isolated dedicated smoke: **207 passed, 0 failures**, no SQF expression errors. Initial deletion-timing test corrected; gameplay unchanged. Owned test servers stopped. Human UI/travel/revive and broader campaign acceptance remain unverified.
+
+## Latest update: v4.4 ? friendly parachute travel
+
+See [travel notes](FRIENDLY_TRAVEL_44_NOTES.md). Player scroll menu travel to friendly units for fixed 350 personal credits; safety checks, five-second external aircraft camera, rear cargo seat then automatic parachute, backpack preserved. Existing transport fallback/refunds retained. No tests per user; restart clients/server.
+
+## Latest update: companion v4.3 / Supply Drops v1.2
+
+See [loot/support notes](LOOT_SUPPORT_43_NOTES.md). Custom loot quantities +125% (2.25x rounded/capacity-limited). Each faction-held airbase beyond first halves support request costs. Both addons rebuilt without tests per user; update BOTH and restart all clients/server.
+
+## Latest update: v4.2 ? isotope convoy IED cargo
+
+See [isotope IED notes](ISOTOPE_IED_LOOT_42_NOTES.md). New isotope convoys keep six isotopes and carry 12?18 native CWP chemical IED magazines instead of protective chemical gear. Six dug-in/urban asphyxiant/nerve/blister variants, runtime availability guards. No tests per user. Restart all clients/server; existing cargo untouched.
+
+## Latest update: v4.1 ? silent friendly-fire notifications
+
+See [friendly-fire notes](SILENT_FRIENDLY_FIRE_41_NOTES.md). Client chat filter hides friendly-fire system reports; matching native Antistasi warning hints suppressed. Damage/punishment unchanged. No tests per user. All players update/restart.
+
+## Latest update: v4.0 ? emptied stash cleanup
+
+See [stash cleanup notes](STASH_CLEANUP_40_NOTES.md). Empty/destroyed stash container, task and marker removed; active lead released. Also tracks old cleared but stocked stashes for later cleanup. Existing lead cooldown retained. No tests per user. Restart required; v3.7?3.9 retained.
+
+## Latest update: v3.9 ? vehicle pricing and civilian purchases
+
+See [vehicle economy notes](VEHICLE_ECONOMY_39_NOTES.md). Dealer-based PMC resale (50%, condition/native cheaper-store cap), Fence 2.8x resale retained. Native civilian car purchase lists gain up to 30 DLC-free unarmed passenger models, fastest configurations first. No tests per user. Restart all clients/server.
+
+## Latest update: v3.8 ? native Antistasi revive instead of PiR injuries
+
+See [native revive notes](NATIVE_REVIVE_38_NOTES.md). PiR player/AI injuries disabled; PiR bandages/medkits accepted by native teammate Revive. FULL restart required. No tests per user. v3.7 hotfixes retained.
+
+## Latest hotfix: v3.7 (2026-11-13)
+
+See [hotfix notes](HOTFIX_37_NOTES.md). User requested NO testing. Arsenal cleanup occurs on campaign load, then needs normal save; no offline save editing performed. Two uses EACH per life for Morphine/Adrenaline; all Fence resale blocked. Community crate follows Fence. Noise raid cooldown 60 minutes. Packaged without validation; in-game behavior unverified. GitHub publication remains pending authorization.
+
 ﻿# Arma 3 modding handoff
 
 Updated 2026-11-08. Start here when continuing this workspace. Detailed histories and exact file inventories are linked below. This note consolidates completed work, accepted decisions, current builds and remaining verification; it does not claim every feature has been verified by human players.

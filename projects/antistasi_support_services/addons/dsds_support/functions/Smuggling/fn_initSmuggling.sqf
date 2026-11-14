@@ -62,12 +62,10 @@ if (isServer) then {[] spawn {
   {if (_y get "kind"=="SPECIAL" && {!(_y get "finished")}) then {[_y] call DSDS_fnc_pursuitTick;};} forEach DSDS_smugglingRecords;
   DSDS_isotopeClouds=DSDS_isotopeClouds select {(_x select 2)>serverTime};
   private _stash=missionNamespace getVariable ["DSDS_activeStash",createHashMap];
-  if (count _stash>0 && {!(_stash get "complete")} && {{alive _x} count (_stash get "units")==0 || {isNull (_stash get "box") || {!alive (_stash get "box")}}}) then {
-   private _success=!isNull (_stash get "box") && {alive (_stash get "box")};
-   _stash set ["complete",true];[_stash get "id",if (_success) then {"SUCCEEDED"} else {"FAILED"},true] call BIS_fnc_taskSetState;
-   (_stash get "marker") setMarkerText (if (_success) then {"Cleared "+(_stash getOrDefault ["title","Contraband Stash"])} else {"Destroyed "+(_stash getOrDefault ["title","Contraband Stash"])});
-   {if (!isNil "A3A_fnc_groupDespawner") then {[_x] spawn A3A_fnc_groupDespawner;};} forEach (_stash get "groups");
-  };
+  [_stash] call DSDS_fnc_cleanupContrabandStash;
+  private _retired=missionNamespace getVariable ["DSDS_retiredStashes",[]];
+  {[_x] call DSDS_fnc_cleanupContrabandStash;} forEach _retired;
+  DSDS_retiredStashes=_retired select {!(_x getOrDefault ["removed",false])};
   };
   sleep 0.5;
  };

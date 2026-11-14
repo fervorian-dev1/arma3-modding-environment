@@ -64,6 +64,7 @@ for "_attempt" from 1 to 12 do {
             _x set [2, (_x select 2) max (_required getOrDefault [_x select 1, 0])];
         };
     } forEach _manifest;
+    {_x set [2,(round ((_x select 2)*2.25)) max 1];} forEach _manifest;
     private _sorted = _manifest apply {str _x};
     _sorted sort true;
     _signature = str _sorted;

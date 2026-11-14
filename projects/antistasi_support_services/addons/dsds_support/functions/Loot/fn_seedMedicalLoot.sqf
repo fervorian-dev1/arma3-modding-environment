@@ -21,8 +21,8 @@ if (_source=="MEDIC") exitWith {
     private _weighted=[];{_weighted append [_x,getNumber (_cfg >> "Weights" >> _x) max 1];} forEach _pool;
     private _class=selectRandomWeighted _weighted;
     private _containers=[backpackContainer _object,vestContainer _object,uniformContainer _object];
-    private _index=_containers findIf {!isNull _x && {_x canAdd [_class,1]}};
-    if (_index>=0) then {(_containers select _index) addItemCargoGlobal [_class,1];};
+    private _index=_containers findIf {!isNull _x && {_x canAdd [_class,2]}};
+    if (_index>=0) then {(_containers select _index) addItemCargoGlobal [_class,2];};
     true
 };
 private _prefix=if (_source=="CONVOY") then {"convoy"} else {"vehicle"};

@@ -2,7 +2,7 @@
    Plus: HQ server price + native seaport reduction.
    Ultimate 12: HQ price and nested black-market stock use shared diminishing discounts.
    No campaign price/faction tables are modified. Zero means unknown, never a made-up default. */
-params ["_class"];
+params ["_class",["_marketOnly",false]];
 private _hq=0;
 private _market=0;
 if (!isNil "server" && {!isNull server}) then {
@@ -39,5 +39,10 @@ if (_ultimate) then {
         if (_native>0) then {_hq=_native;};
     };
 };
+if (_ultimate && {_class isKindOf "LandVehicle"} && {getNumber (configFile >> "CfgVehicles" >> _class >> "side")==3}) then {
+ if (_hq>0) then {_hq=(round (_hq*0.4)) max 1;};
+ if (_market>0) then {_market=(round (_market*0.4)) max 1;};
+};
+if (_marketOnly) exitWith {_market};
 private _prices=[_hq,_market] select {_x>0};
 if (_prices isEqualTo []) then {0} else {selectMin _prices}

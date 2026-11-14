@@ -16,6 +16,9 @@ if (_op=="CACHE") exitWith {
     { _x addCuratorEditableObjects [[_box],false]; } forEach allCurators;
 };
 if (_op=="BEGIN" && {(_args param [0,""]) in ["DSDS_Adrenaline","DSDS_Morphine"]} && {([_unit] call DSDS_fnc_lootDownState)>0}) then {_op="RESCUE_BEGIN";};
+private _limited=["DSDS_Morphine","DSDS_Adrenaline"];
+private _uses=_unit getVariable ["DSDS_rescueUses",createHashMap];
+if (_op=="BEGIN" && {(_args param [0,""]) in _limited} && {(_uses getOrDefault [_args select 0,0])>=2}) exitWith {};
 if (_op=="RESCUE_BEGIN") exitWith {
     private _manual=_unit getVariable ["DSDS_lootPending",[]];
     if (_manual isNotEqualTo [] && {(_manual select 3)>diag_tickTime}) exitWith {};

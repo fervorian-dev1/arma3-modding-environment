@@ -8,6 +8,17 @@ private _message = {
 private _petros = missionNamespace getVariable ["petros",objNull];
 if (_operation in ["ISSUE","HIRE"] && {isNull _petros || {!alive _petros} || {_player distance _petros > 6}}) exitWith {false};
 switch (_operation) do {
+ case "TRAVEL": {
+  private _friend=_args param [0,objNull,[objNull]];
+  if (isNull _friend || {_friend==_player} || {side group _friend!=teamPlayer} || {!isNull objectParent _player} || {_player getVariable ["DSDS_travelPending",false]} || {!([_player] call DSDS_fnc_travelSafe)} || {!([_friend] call DSDS_fnc_travelSafe)}) exitWith {["Travel requires a safe, conscious friendly and an on-foot requester outside combat."] call _message;false};
+  if (serverTime<(_player getVariable ["DSDS_travelNext",0])) exitWith {false};
+  if (!([_player,-350] call DSDS_fnc_changeWallet)) exitWith {["Travel costs 350 personal credits."] call _message;false};
+  _player setVariable ["DSDS_travelPending",true,true];_player setVariable ["DSDS_travelNext",serverTime+30];
+  DSDS_jobSequence=DSDS_jobSequence+1;private _id=str DSDS_jobSequence;
+  private _holder=_player getVariable ["owner",_player];
+  DSDS_jobs set [_id,createHashMapFromArray [["player",_player],["friend",_friend],["holder",_holder],["uid",getPlayerUID _player],["balanceAfter",_holder getVariable ["moneyX",0]],["cost",350],["type","PARADROP"],["fastTravel",true],["target",getPosATL _friend],["origin",getPosATL _friend],["state","paid"]]];
+  [_id] spawn DSDS_fnc_runFriendlyTravel;true
+ };
     case "ISSUE": {
         if ("DSDS_SupportTerminal" in assignedItems _player) exitWith {["Your Support Terminal is already equipped."] call _message; false};
         if (((getUnitLoadout _player select 9) param [1,""]) != "") exitWith {["Stow your GPS/UAV terminal first. No credits were charged."] call _message; false};
@@ -64,7 +75,7 @@ switch (_operation) do {
         if (!("DSDS_SupportTerminal" in assignedItems _player)) exitWith {false};
         private _entry = ([] call DSDS_fnc_serviceCatalogue) select {(_x select 0) == _id};
         if (_entry isEqualTo []) exitWith {false};
-        private _cost = ((_entry select 0) select 2) max 5000;
+        private _cost = ((_entry select 0) select 2) max 1;
         private _origin = [_args param [1,[]]] call DSDS_fnc_validateServicePosition;
         private _target = [_args param [2,[]]] call DSDS_fnc_validateServicePosition;
         if (_origin isEqualTo [] || {_target isEqualTo []}) exitWith {false};

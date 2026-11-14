@@ -1,0 +1,5 @@
+# Isotope convoy chemical IED loot v4.2 ? 2026-11-13
+
+Replaces protective masks, filters, tape, sealant and antidote rewards in fillChemicalCargo with native Chemical Warfare PLUS placeable IED magazines. Six classes from installed reference/chemical/PHAN_CW/cbrn_ieds/config.cpp: LandSmall and UrbanSmall Type1 (asphyxiant), Type2 (nerve), Type3 (blister) Remote_Mag variants. Each gets 2?3 for 12?18 IEDs if all classes available. Runtime class, public scope, no-DLC and ammo existence checks; missing types logged/skipped. No loose live bombs spawned; cargo is inventory ammunition using native mod deployment/detonation. Existing six isotope items, isotope variant selection, truck rupture, pursuit and escorts unchanged. New convoy spawns only; does not mutate already spawned/owned cargo. Medical convoy loot unchanged.
+
+Files: functions/Smuggling/fn_fillChemicalCargo.sqf, config.cpp version, mod.cpp version, notes/HANDOFF. FileBank packaging only; no tests, config validation or game launch per user. All clients/server update and restart. Behavior unverified in game.

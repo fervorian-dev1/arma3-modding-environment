@@ -3,6 +3,12 @@ params ["_unit","_class",["_now",serverTime],["_roll",-1],["_autoRescue",false]]
 if (isRemoteExecuted && {isNil "_dsdsLootAuthorized"}) exitWith {false};
 if !(_class in ([] call DSDS_fnc_consumableClasses)) exitWith {false};
 if (!isServer || {isNull _unit} || {!alive _unit}) exitWith {false};
+if (_class in ["DSDS_Morphine","DSDS_Adrenaline"] && {((_unit getVariable ["DSDS_rescueUses",createHashMap]) getOrDefault [_class,0])>=2}) exitWith {false};
+if (_class in ["DSDS_Morphine","DSDS_Adrenaline"]) then {
+ private _uses=_unit getVariable ["DSDS_rescueUses",createHashMap];
+ private _count=_uses getOrDefault [_class,0];
+ if (_count<2) then {_uses set [_class,_count+1];_unit setVariable ["DSDS_rescueUses",_uses,true];};
+};
 private _cfg=configFile >> "DSDS_Consumables";
 private _profile=configFile >> "DSDS_Effects" >> _class;
 if (isClass _profile && {getNumber (_profile >> "killChance")>0}) then {

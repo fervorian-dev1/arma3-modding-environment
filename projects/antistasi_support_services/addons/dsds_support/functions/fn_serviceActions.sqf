@@ -13,3 +13,10 @@ private _petros = missionNamespace getVariable ["petros",objNull];
 private _npc = missionNamespace getVariable ["DSDS_mechanic",objNull];
 [_npc,"Sell a vehicle",{["DEALER"] call DSDS_fnc_openTerminal;},"alive _target && alive _this && isNull attachedTo _target"] call _addOnce;
 [_npc,"Move PMC mechanic",{["MOVE_BEGIN",player,[]] remoteExecCall ["DSDS_fnc_serverRequest",2];},"alive _target && alive _this && isNull attachedTo _target",6,1.4] call _addOnce;
+
+[player,"Travel to friendlies (350 credits)",{["TRAVEL"] call DSDS_fnc_openTerminal;},"alive _this && isNull objectParent _this && !(_this getVariable ['incapacitated',false])",-1] call _addOnce;
+if !(player getVariable ["DSDS_travelCombatEH",false]) then {
+ player setVariable ["DSDS_travelCombatEH",true];
+ player addEventHandler ["FiredMan",{(_this select 0) setVariable ["DSDS_travelCombatAt",serverTime,true];}];
+ player addEventHandler ["Hit",{(_this select 0) setVariable ["DSDS_travelCombatAt",serverTime,true];}];
+};

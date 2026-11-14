@@ -1,5 +1,9 @@
 private _display = findDisplay 88400;
 private _combo = _display displayCtrl 1750;
+if ((_display getVariable ["DSDS_mode",""])=="TRAVEL") exitWith {
+ private _friends=_display getVariable ["DSDS_travelFriends",[]];private _i=lbCurSel _combo;
+ if (_i>=0 && {_i<count _friends}) then {["TRAVEL",player,[_friends select _i]] remoteExecCall ["DSDS_fnc_serverRequest",2];closeDialog 0;};
+};
 if ((_display getVariable ["DSDS_mode","SUPPORT"]) == "DEALER") exitWith {
     private _vehicles = _display getVariable ["DSDS_vehicles",[]];
     private _index = lbCurSel _combo;

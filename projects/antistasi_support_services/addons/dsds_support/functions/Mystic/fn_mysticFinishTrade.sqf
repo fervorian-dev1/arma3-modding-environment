@@ -15,6 +15,11 @@ if (_success && {_op=="OFFER"}) then {
  [] call DSDS_fnc_mysticSave;[] call DSDS_fnc_mysticPublish;
  ["MESSAGE",[if (_s get "ready") then {"Mystic: You have kept your word."} else {format ["Mystic: %1 of forty. I remember every one.",_s get "count"]}]] remoteExecCall ["DSDS_fnc_mysticClient",_actor];
 };
+if (_success && {_op=="BUY"} && {_deliveryClass=="DSDS_Oswald"}) then {
+ _s set ["oswaldUnlocked",true];
+ [] call DSDS_fnc_mysticSave;
+ [] call DSDS_fnc_protectOswaldArsenal;
+};
 if (!_success) then {
  if (_price>0) then {
   if (!isNull _holder) then {_holder setVariable ["moneyX",(_holder getVariable ["moneyX",0])+_price,true];} else {

@@ -17,14 +17,14 @@ if (_kind=="SPECIAL") then {
  _selection params ["_themeID","_themeLabel","_pool"];
  _record set ["theme",_themeID];_record set ["themeLabel",_themeLabel];_truck setVariable ["DSDS_cargoTheme",_themeID,true];
  _record set ["pool",_pool];
- { _truck addItemCargoGlobal [_x,if (_x=="DSDS_GoldBullion") then {1} else {1+floor random 4}];} forEach _pool;
+ { _truck addItemCargoGlobal [_x,round (2.25*(if (_x=="DSDS_GoldBullion") then {1} else {1+floor random 4}))];} forEach _pool;
  _truck addMPEventHandler ["MPHit",{if (isServer) then {[_this select 0] call DSDS_fnc_alertConvoy;};}];
  _truck addMPEventHandler ["MPKilled",{if (isServer) then {private _truck=_this select 0;[_truck] call DSDS_fnc_alertConvoy;[_truck] spawn {params ["_truck"];sleep 3;[_truck] call DSDS_fnc_salvageConvoy;};};}];
  if (_task!="") then {[_task,["Intercept this rare high-value shipment. Its escorts can call a large response force; spotting helicopters will track stolen goods until neutralized.","Special Convoy",""]] call BIS_fnc_taskSetDescription;};
 } else {if (_kind=="MEDICAL") then {
  _record set ["label","Medical Supplies"];
  _truck lockInventory false;[_truck] remoteExecCall ["DSDS_fnc_isotopeInventory",0,_truck];
- _truck addItemCargoGlobal ["FirstAidKit",20+floor random 11];_truck addItemCargoGlobal ["Medikit",2];
+ _truck addItemCargoGlobal ["FirstAidKit",round (2.25*(20+floor random 11))];_truck addItemCargoGlobal ["Medikit",5];
  [_truck,8+floor random 5,"MEDICAL"] call DSDS_fnc_fillLootContainer;
  _record set ["pool",["FirstAidKit","Medikit"]+([] call DSDS_fnc_medicalPool)];
  _truck addMPEventHandler ["MPKilled",{if (isServer) then {[_this select 0,_this param [1,objNull],_this param [2,objNull]] call DSDS_fnc_convoyHit;};}];
@@ -33,7 +33,7 @@ if (_kind=="SPECIAL") then {
  private _label=selectRandom ["Medical Isotopes","Industrial Isotopes"];
  _record set ["label",_label];_truck setVariable ["DSDS_isotopeLabel",_label,true];_truck lockInventory false;
  [_truck] remoteExecCall ["DSDS_fnc_isotopeInventory",0,_truck];
- _truck addItemCargoGlobal [if (_label=="Medical Isotopes") then {"DSDS_MedicalIsotopes"} else {"DSDS_IndustrialIsotopes"},6];
+ _truck addItemCargoGlobal [if (_label=="Medical Isotopes") then {"DSDS_MedicalIsotopes"} else {"DSDS_IndustrialIsotopes"},14];
  _record set ["chemicalRewards",[_truck] call DSDS_fnc_fillChemicalCargo];
  _record set ["pool",["DSDS_MedicalIsotopes","DSDS_IndustrialIsotopes"]];
  _truck addMPEventHandler ["MPKilled",{if (isServer) then {[_this select 0,_this param [1,objNull],_this param [2,objNull]] call DSDS_fnc_convoyHit;DSDS_isotopeDeaths pushBackUnique (_this select 0);};}];

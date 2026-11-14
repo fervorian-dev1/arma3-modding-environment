@@ -5,6 +5,7 @@ private _industrial=_variant=="INDUSTRIAL";
 private _title=if (_industrial) then {"Industrial Isotopes Stash"} else {"Contraband Stash"};
 private _message={params ["_text"];["MESSAGE",[_text]] remoteExecCall ["DSDS_fnc_clientService",_player];};
 private _old=missionNamespace getVariable ["DSDS_activeStash",createHashMap];
+[_old] call DSDS_fnc_cleanupContrabandStash;
 if (count _old>0 && {!(_old get "complete")}) exitWith {[format ["The active stash is marked at grid %1.",mapGridPosition (_old get "box")]] call _message;DSDS_stashPending=false;};
 if (!_debug && {serverTime<(missionNamespace getVariable ["DSDS_nextStash",0])}) exitWith {[if (_industrial) then {"No fresh isotope lead yet."} else {"No fresh contraband lead yet."}] call _message;DSDS_stashPending=false;};
 private _faction=[] call DSDS_fnc_smugglingFaction;
@@ -25,9 +26,9 @@ private _box=[_position] call DSDS_fnc_createStashContainer;
 if (isNull _box) exitWith {DSDS_stashPending=false;["The stash container could not be created. Nothing charged."] call _message;};
 if (_industrial) then {
  private _item=configFile >> "CfgWeapons" >> "DSDS_IndustrialIsotopes";
- if (isClass _item) then {private _count=(floor ((maxLoad _box)/((getNumber (_item >> "ItemInfo" >> "mass")) max 1))) min 30;_box addItemCargoGlobal ["DSDS_IndustrialIsotopes",_count max 1];};
+ if (isClass _item) then {private _count=(floor ((maxLoad _box)/((getNumber (_item >> "ItemInfo" >> "mass")) max 1))) min 68;_box addItemCargoGlobal ["DSDS_IndustrialIsotopes",_count max 1];};
 } else {
- {_box addItemCargoGlobal [_x,3];} forEach ["DSDS_Marijuana","DSDS_Cocaine","DSDS_Methamphetamine","DSDS_NicotineVape","DSDS_Zyn"];
+ {_box addItemCargoGlobal [_x,7];} forEach ["DSDS_Marijuana","DSDS_Cocaine","DSDS_Methamphetamine","DSDS_NicotineVape","DSDS_Zyn"];
  [_box,15,"STASH"] call DSDS_fnc_fillLootContainer;
 };
 private _units=[];private _groups=[];private _names=[];
@@ -45,6 +46,11 @@ if (count _units<8) exitWith {{deleteVehicle _x;} forEach _units;{deleteGroup _x
 private _marker=createMarker [_id,_position];_marker setMarkerType "mil_unknown";_marker setMarkerColor "ColorOrange";_marker setMarkerText _title;
 private _description=format ["Recover %1 concealed among discarded bags or supplies. High-skill guard squads: %2.",if (_industrial) then {"industrial isotopes"} else {"contraband"},_names joinString ", "];
 [[missionNamespace getVariable ["teamPlayer",resistance],civilian],_id,[_description,_title,_id],_position,false,0,true,"box",true] call BIS_fnc_taskCreate;
+// Keep cleared but still stocked older locations under cleanup until emptied.
+if (count _old>0 && {!(_old getOrDefault ["removed",false])}) then {
+ private _retired=missionNamespace getVariable ["DSDS_retiredStashes",[]];
+ _retired pushBack _old;DSDS_retiredStashes=_retired;
+};
 DSDS_activeStash=createHashMapFromArray [["title",_title],["id",_id],["box",_box],["units",_units],["groups",_groups],["names",_names],["marker",_marker],["complete",false],["debug",_debug]];
 if (!_debug) then {DSDS_nextStash=serverTime+getNumber (configFile >> "DSDS_Smuggling" >> "stashCooldown");};
 DSDS_stashPending=false;

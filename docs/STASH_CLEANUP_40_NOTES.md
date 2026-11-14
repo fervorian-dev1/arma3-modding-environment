@@ -1,0 +1,7 @@
+# Empty stash cleanup v4.0 ? 2026-11-13
+
+User requested emptied contraband stashes disappear and never be reused as new leads. No tests, config validation or game launch performed.
+
+New server-only cleanupContrabandStash checks all item/magazine/weapon/backpack cargo. An empty live stash succeeds even if some guards remain; a destroyed stash fails. Removes depleted/destroyed container, map marker and native task, marks record removed, clears matching active record. Existing guard-defeat completion retained; stocked containers remain lootable until emptied. Uses existing native group despawner once on completion, preserving its player-proximity cleanup rules. Shared five-second maintenance calls helper; request worker also calls it before returning an old lead, closing the request-before-maintenance gap. Cleared older but still-stocked stashes stay in retired cleanup records when a new mission replaces them. No change to 45-minute fresh-lead cooldown, faction, guard strength or loot. Applies to shared contraband and industrial-isotope stash implementation.
+
+Files: new functions/Smuggling/fn_cleanupContrabandStash.sqf; fn_initSmuggling.sqf; fn_requestContrabandStash.sqf; config.cpp registration/version; mod.cpp version; notes/HANDOFF. Built directly with FileBank only. Restart host/server and all players with companion v4.0. Behavior unverified in game, per no-testing instruction.

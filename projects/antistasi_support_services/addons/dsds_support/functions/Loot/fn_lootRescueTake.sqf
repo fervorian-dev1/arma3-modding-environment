@@ -2,6 +2,7 @@
 params ["_unit","_token","_class"];
 if (isMultiplayer && {isRemoteExecuted} && {remoteExecutedOwner!=2}) exitWith {false};
 if (isNull _unit || {!local _unit} || {!alive _unit} || {!(_class in ["DSDS_Adrenaline","DSDS_Morphine"])}) exitWith {false};
+if (((_unit getVariable ["DSDS_rescueUses",createHashMap]) getOrDefault [_class,0])>=2) exitWith {false};
 private _receipts=_unit getVariable ["DSDS_autoRescueReceipts",createHashMap];
 if (!isNil {_receipts get _token}) exitWith {_receipts get _token};
 private _ok=false;

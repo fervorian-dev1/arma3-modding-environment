@@ -11,3 +11,5 @@ reference/
 !build/@AntistasiSupportServices/addons/dsds_support.pbo
 *.bisign
 *.biprivatekey
+
+backups/
