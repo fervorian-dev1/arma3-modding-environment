@@ -13,13 +13,16 @@ if (_mode=="TRAVEL") exitWith {
  (_display displayCtrl 100) ctrlSetText "Travel to friendlies | 350 credits";
  (_display displayCtrl 1000) ctrlShow false;(_display displayCtrl 1711) ctrlShow false;
  (_display displayCtrl 1712) ctrlSetText "Travel";
- private _friends=allUnits select {_x!=player && {side group _x==(missionNamespace getVariable ["teamPlayer",side group player])} && {[_x] call DSDS_fnc_travelSafe}};
- _display setVariable ["DSDS_travelFriends",_friends];
- {private _i=_combo lbAdd format ["%1 | %2",name _x,mapGridPosition _x];_combo lbSetValue [_i,_forEachIndex];} forEach _friends;
- (_display displayCtrl 1701) ctrlSetText "Cargo-plane insertion near the selected friendly. Both players must be outside combat; no hostile troops within 150 m. Your backpack is retained.";
  (_display displayCtrl 1751) ctrlSetText "Cost: 350 personal credits";
- if (_friends isEqualTo []) then {(_display displayCtrl 1712) ctrlEnable false;};
- _combo lbSetCurSel 0;
+ [_display] call DSDS_fnc_refreshTravelDestinations;
+ [_display] spawn {
+  disableSerialization;params ["_display"];
+  while {!isNull _display} do {
+   sleep 1;
+   if (!alive player) exitWith {if (!isNull _display) then {_display closeDisplay 2;};};
+   [_display] call DSDS_fnc_refreshTravelDestinations;
+  };
+ };
 };
 if (_mode == "SUPPORT") then {
     {

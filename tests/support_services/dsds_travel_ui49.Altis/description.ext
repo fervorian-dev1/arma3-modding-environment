@@ -1,0 +1,2 @@
+respawn=3;respawnDelay=2;
+class Extended_PreInit_EventHandlers {class DSDS_TravelFixture {init="DSDS_fenceInitialized=true;DSDS_mysticInitialized=true;DSDS_civilTransportInit=true;DSDS_customMissionsInitialized=true;DSDS_noiseInitialized=true;DSDS_initialized=true;";};};

@@ -22,7 +22,7 @@ switch (_operation) do {
   private _flag=missionNamespace getVariable ["flagX",objNull];
   if (isNull _flag || {_player distance _flag>6}) exitWith {["Request friendly travel at the HQ flag."] call _message;false};
   private _friend=_args param [0,objNull,[objNull]];
-  if (isNull _friend || {_friend==_player} || {side group _friend!=teamPlayer} || {!isNull objectParent _player} || {_player getVariable ["DSDS_travelPending",false]} || {!([_player] call DSDS_fnc_travelSafe)} || {!([_friend] call DSDS_fnc_travelSafe)}) exitWith {["Travel requires a safe, conscious friendly and an on-foot requester outside combat."] call _message;false};
+  if (isNull _friend || {!isPlayer _friend} || {_friend isKindOf "HeadlessClient_F"} || {getPlayerUID _friend==""} || {_friend==_player} || {side group _friend!=teamPlayer} || {!isNull objectParent _player} || {_player getVariable ["DSDS_travelPending",false]} || {!([_player] call DSDS_fnc_travelSafe)} || {!([_friend] call DSDS_fnc_travelSafe)}) exitWith {["Travel requires a safe, conscious friendly and an on-foot requester outside combat."] call _message;false};
   if (serverTime<(_player getVariable ["DSDS_travelNext",0])) exitWith {false};
   if (!([_player,-350] call DSDS_fnc_changeWallet)) exitWith {["Travel costs 350 personal credits."] call _message;false};
   _player setVariable ["DSDS_travelPending",true,true];_player setVariable ["DSDS_travelNext",serverTime+30];

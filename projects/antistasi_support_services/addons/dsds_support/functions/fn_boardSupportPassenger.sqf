@@ -8,6 +8,7 @@ private _seats=(fullCrew [_aircraft,"cargo",true]) select {isNull (_x select 0) 
 if (_seats isEqualTo []) exitWith {diag_log "[DSDS] Parachute transport has no free cargo seat.";false};
 private _indices=_seats apply {_x select 2};_indices sort false;
 private _index=_indices select 0;
+if (isNull objectParent _unit) then {_unit setVariable ["DSDS_boardOrigin",getPosATL _unit];};
 if (vehicle _unit != _unit) then {moveOut _unit;};
 unassignVehicle _unit;
 _unit assignAsCargoIndex [_aircraft,_index];

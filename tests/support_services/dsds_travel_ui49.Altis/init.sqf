@@ -1,0 +1,27 @@
+if (!hasInterface) exitWith {};
+[] spawn {
+ waitUntil {sleep 0.1;!isNull player && {time>2}};sleep 3;
+ private _pass=0;private _fail=0;
+ private _assert={params [["_ok",false],"_label"];if (_ok) then {_pass=_pass+1;} else {_fail=_fail+1;};diag_log format ["[PARACHUTE49] %1: %2",["FAIL","PASS"] select _ok,_label];};
+ teamPlayer=side group player;DSDS_jobs=createHashMap;DSDS_jobSequence=0;
+ private _start=getPosATL player;
+ flagX=createVehicle ["FlagPole_F",_start,[],0,"NONE"];
+ private _g=createGroup teamPlayer;private _npc=_g createUnit ["I_G_Soldier_F",player getPos [10,0],[],0,"NONE"];
+ _npc disableAI "PATH";_npc setBehaviour "CARELESS";
+ private _dest=[objNull] call DSDS_fnc_travelDestinations;
+ [player in _dest,"human player included in destination candidates"] call _assert;
+ [!(_npc in _dest),"NPC excluded from destination candidates"] call _assert;
+ player setVariable ["DSDS_travelCombatAt",serverTime];
+ [player in ([objNull] call DSDS_fnc_travelDestinations),"temporarily unsafe human remains visible"] call _assert;
+ player setVariable ["DSDS_travelCombatAt",-1000];
+ ["TRAVEL"] call DSDS_fnc_openTerminal;sleep 0.1;
+ [!isNull (findDisplay 88400) && {lbSize ((findDisplay 88400) displayCtrl 1750)==0},"travel UI never lists NPCs when no other humans connected"] call _assert;
+ sleep 1.2;
+ private _display=findDisplay 88400;
+ [!isNull _display,"travel dialog remains open during automatic refresh"] call _assert;
+ [!isNil {_display getVariable "DSDS_travelSnapshot"},"live destination snapshot populated"] call _assert;
+ [!isNull _display && {lbSize (_display displayCtrl 1750)==0},"automatic refresh still excludes every NPC"] call _assert;
+ [!isNull _display && {!ctrlEnabled (_display displayCtrl 1712)},"no-destination travel button disabled"] call _assert;
+ closeDialog 0;deleteVehicle _npc;deleteGroup _g;
+ diag_log format ["[PARACHUTE49] DONE %1 passes, %2 failures",_pass,_fail];
+};

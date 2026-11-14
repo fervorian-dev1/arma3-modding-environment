@@ -2,7 +2,7 @@ class CfgPatches {
     class dsds_support {
         name = "Antistasi Support Services";
         author = "Local Workspace";
-        version = 4.8;
+        version = 4.9;
         requiredVersion = 2.22;
         requiredAddons[] = {"dsd_supplydrops", "A3A_core", "A3A_scrt", "A3A_events", "A3A_garage", "A3_Weapons_F", "cba_common", "zen_modules", "A3_Weapons_F_Explosives", "A3_Structures_F_Civ_Garbage", "A3_Structures_F_Civ_Market"};
         units[] = {"DSDS_MysticNPC","DSDS_MechanicNPC","DSDS_StashSacks","DSDS_StashGarbage","DSDS_StashPallet"};
@@ -260,6 +260,9 @@ class CfgFunctions {
             class vehicleValue {};
             class vehicleShopPrice {};
             class travelSafe {};
+            class travelDestinations {};
+            class refreshTravelDestinations {};
+            class confirmPassengerJump {};
             class travelClient {};
             class runFriendlyTravel {};
             class validateVehicleSale {};

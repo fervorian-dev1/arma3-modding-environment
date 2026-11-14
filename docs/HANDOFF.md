@@ -1,3 +1,7 @@
+## Latest update: v4.9 ? safe parachute deployment and players-only travel
+
+See [parachute/player notes](PARACHUTE_PLAYERS_49_NOTES.md). Human-only destinations, server rejects NPCs, live list refresh survives target respawn/reconnect. Verified owner nonce + actual parachute seat before fulfilment; safe return/refund on failure; no early2m ejection. RHS C-130 safety/landing20/0 plus live UI8/0, no SQF expression errors. Local-client tests only; full multiplayer timing remains unverified. Standard companion4.9 installed, restart everyone; no campaign save edits. GitHub still4.8 until upload.
+
 ## GitHub updated to v4.8 ? 2026-11-14
 
 Source and compiled folders pushed; v4.8 set as latest public release. Downloaded player ZIP and verified SHA256 against local package. See GITHUB_DISTRIBUTION_NOTES.md.

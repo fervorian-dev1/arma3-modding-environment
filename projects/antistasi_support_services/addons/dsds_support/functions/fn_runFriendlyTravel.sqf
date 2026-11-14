@@ -24,9 +24,7 @@ _aircraft setVariable ["DSD_departing",true];_group setCurrentWaypoint (_waypoin
 if (!alive _aircraft || {!alive _unit} || {_aircraft distance2D _target>=180} || {!([_friend] call DSDS_fnc_travelSafe)} || {_friend distance2D _target>250}) exitWith {
  [_unit,_aircraft,_start] remoteExecCall ["DSDS_fnc_travelClient",owner _unit];["Insertion canceled; destination or transport became unsafe."] call _fail;
 };
-[_unit,_aircraft] remoteExecCall ["DSDS_fnc_jumpSupportPassenger",owner _unit];
-_until=diag_tickTime+6;
-waitUntil {sleep 0.1;vehicle _unit!=_aircraft || {!alive _unit} || {diag_tickTime>_until}};
+private _jumped=[_unit,_aircraft,_start] call DSDS_fnc_confirmPassengerJump;
 _unit setVariable ["DSDS_travelPending",false,true];
-if (vehicle _unit==_aircraft) exitWith {[_unit,_aircraft,_start] remoteExecCall ["DSDS_fnc_travelClient",owner _unit];["Parachute deployment failed."] call _fail;};
+if (!_jumped) exitWith {["Parachute deployment failed; returned to departure point."] call _fail;};
 [_jobID,true] call DSDS_fnc_finishSupportContract;

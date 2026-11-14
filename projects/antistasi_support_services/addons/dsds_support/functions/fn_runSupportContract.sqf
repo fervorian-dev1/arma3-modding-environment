@@ -5,6 +5,7 @@ private _job = DSDS_jobs get _jobID;
 if ((_job get "state") != "paid") exitWith {};
 _job set ["state","deploying"];
 private _type = _job get "type";
+if (_type=="PARADROP") then {_job set ["departure",getPosATL (_job get "player")];};
 private _target = _job get "target";
 // Native smoke/illumination payloads, without invoking the commander's shared marker state.
 if (_type in ["SMOKE","FLARE"]) exitWith {
@@ -69,8 +70,9 @@ if (_type == "RECON") exitWith {
     [_jobID,true] call DSDS_fnc_finishSupportContract;
 };
 if (_type == "PARADROP") exitWith {
-    [_job get "player",_aircraft] remoteExecCall ["DSDS_fnc_jumpSupportPassenger",_job get "player"];
-    [_jobID,true] call DSDS_fnc_finishSupportContract;
+    private _unit=_job get "player";
+    private _jumped=[_unit,_aircraft,_job getOrDefault ["departure",_job get "origin"]] call DSDS_fnc_confirmPassengerJump;
+    [_jobID,_jumped] call DSDS_fnc_finishSupportContract;
 };
 private _payloadClass = "B_supplyCrate_F";
 if (_type == "VEH_AIRDROP") then {
