@@ -1,3 +1,7 @@
+## GitHub updated ? 2026-11-13
+
+Published v4.7 and updated source/main plus both tracked mod folders. [Latest player download](https://github.com/fervorian-dev1/arma3-modding-environment/releases/latest). Public ZIP downloaded and hash-matched. See GITHUB_DISTRIBUTION_NOTES.md.
+
 ## Latest adjustment: v4.7 ? travel exclusion radius150m
 
 Fast-travel hostile infantry exclusion changed400m->150m in fn_travelSafe.sqf and menu text in fn_openTerminal.sqf. Applies to requester and destination, including pre-jump recheck. Existing60-second combat timer and other safeguards retained. Official build checks only; no game test needed for this constant/text edit.

@@ -1,3 +1,9 @@
+## Latest published update: v4.7 (2026-11-13)
+
+Source pushed to main (release commit2c59dbc). Public latest release: https://github.com/fervorian-dev1/arma3-modding-environment/releases/tag/v4.7
+
+Ready player ZIP: https://github.com/fervorian-dev1/arma3-modding-environment/releases/download/v4.7/Arma3-Custom-Mods-v4.7.zip (404578 bytes). Contains companion4.7 and Supply Drops1.2. Downloaded public asset and verified its SHA256 equals local ZIP. Replaces v3.6 as latest. Both compiled mod folders also updated on main. Private campaign saves/backups remain excluded.
+
 ﻿# GitHub distribution
 
 The user requested the whole project on GitHub so friends can download it, and explicitly chose a **public download repository**.
@@ -25,3 +31,5 @@ Friends extract the release ZIP and add both @ folders through Launcher > Mods >
 The repository includes editable projects/artwork, build/test scripts and documentation. Existing ignores exclude generated build output, logs/profiles, temporary files, extracted third-party references, PBOs/signatures/private signing keys. Compiled mods will be attached to a release, not mixed into source history. No >100MiB files or recognized access-token/private-key patterns were found in the upload set.
 
 The source was published on the `main` branch after verifying the initial upload set. The repository excludes local build output, logs/profiles, temporary files, extracted references and signing keys. The `v3.6` player ZIP is attached to the public release.
+
+Latest v4.7 ZIP SHA256: 3D13E4C499712FFB72DA37D39D9208616DABDD88A4D36C4A8B4ABD418B573331
