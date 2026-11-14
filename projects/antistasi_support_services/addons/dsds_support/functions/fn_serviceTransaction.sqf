@@ -8,7 +8,19 @@ private _message = {
 private _petros = missionNamespace getVariable ["petros",objNull];
 if (_operation in ["ISSUE","HIRE"] && {isNull _petros || {!alive _petros} || {_player distance _petros > 6}}) exitWith {false};
 switch (_operation) do {
+ case "GARAGE_SLOT": {
+  private _box=missionNamespace getVariable ["vehicleBox",objNull];
+  if (isNull _box || {_player distance _box>6} || {isNil "DSDS_extraGarageSlots"} || {isNil "HR_GRG_VehCap"}) exitWith {false};
+  if (serverTime<(_player getVariable ["DSDS_garageBuyNext",0])) exitWith {false};
+  _player setVariable ["DSDS_garageBuyNext",serverTime+1];
+  if !([_player,-800] call DSDS_fnc_changeWallet) exitWith {["An additional shared garage slot costs 800 personal credits."] call _message;false};
+  DSDS_extraGarageSlots=DSDS_extraGarageSlots+1;publicVariable "DSDS_extraGarageSlots";
+  ["DSDS_extraGarageSlots",DSDS_extraGarageSlots] call A3A_fnc_setStatVariable;
+  [format ["Garage expanded by one slot. Shared capacity: %1.",call HR_GRG_VehCap]] call _message;true
+ };
  case "TRAVEL": {
+  private _flag=missionNamespace getVariable ["flagX",objNull];
+  if (isNull _flag || {_player distance _flag>6}) exitWith {["Request friendly travel at the HQ flag."] call _message;false};
   private _friend=_args param [0,objNull,[objNull]];
   if (isNull _friend || {_friend==_player} || {side group _friend!=teamPlayer} || {!isNull objectParent _player} || {_player getVariable ["DSDS_travelPending",false]} || {!([_player] call DSDS_fnc_travelSafe)} || {!([_friend] call DSDS_fnc_travelSafe)}) exitWith {["Travel requires a safe, conscious friendly and an on-foot requester outside combat."] call _message;false};
   if (serverTime<(_player getVariable ["DSDS_travelNext",0])) exitWith {false};

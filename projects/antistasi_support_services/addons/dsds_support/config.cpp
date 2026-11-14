@@ -2,7 +2,7 @@ class CfgPatches {
     class dsds_support {
         name = "Antistasi Support Services";
         author = "Local Workspace";
-        version = 4.7;
+        version = 4.8;
         requiredVersion = 2.22;
         requiredAddons[] = {"dsd_supplydrops", "A3A_core", "A3A_scrt", "A3A_events", "A3A_garage", "A3_Weapons_F", "cba_common", "zen_modules", "A3_Weapons_F_Explosives", "A3_Structures_F_Civ_Garbage", "A3_Structures_F_Civ_Market"};
         units[] = {"DSDS_MysticNPC","DSDS_MechanicNPC","DSDS_StashSacks","DSDS_StashGarbage","DSDS_StashPallet"};
@@ -93,6 +93,10 @@ class CfgVehicles {
     };
 };
 class CfgFunctions {
+    class DB {class FPV {
+        class fpv_getSignal {file="\dsds_support\functions\Compatibility\fpvFullSignal.sqf";};
+        class fpv_ppfx_start {file="\dsds_support\functions\Compatibility\fpvClearVideo.sqf";};
+    };};
     class SCRT {class Common {class common_unconsciousEventHandler {file="\dsds_support\functions\Compatibility\nativeReviveKeys.sqf";};};};
     class A3U {class REINF {class blackMarketVehiclePrice {file="\dsds_support\functions\Compatibility\nativeCivilBMPrice.sqf";};};};
     class A3A {
@@ -108,6 +112,7 @@ class CfgFunctions {
             class initGameplayHotfixes {postInit=1;};
             class initSilentFriendlyFire {postInit=1;};
             class initCivilianTransport {postInit=1;};
+            class initGarageSlots {postInit=1;};
             class physicalDownState {};
             class repairReviveUI {};
             class protectOswaldArsenal {};

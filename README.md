@@ -12,7 +12,7 @@ This workspace contains editable projects, local build output, and setup notes. 
 - temp/: disposable working files (ignored by Git).
 - scripts/: repeatable local build helpers.
 
-Current companion: **v4.7**, with Dynamic Supply Drops **v1.2**. Includes expanded Zeus DEBUG tools, Mystic persistence, civilian vehicle discounts, updated loot and friendly parachute travel (150 m enemy exclusion). See [handoff notes](docs/HANDOFF.md).
+Current companion: **v4.8**, with Dynamic Supply Drops **v1.2**. Includes expanded Zeus DEBUG tools, Mystic persistence, civilian vehicle discounts, updated loot and friendly parachute travel (150 m enemy exclusion). See [handoff notes](docs/HANDOFF.md).
 
 
 ## Download and play

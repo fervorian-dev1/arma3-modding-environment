@@ -2,6 +2,7 @@ params [["_mode","SUPPORT"]];
 if (!hasInterface || {!alive player}) exitWith {};
 if (_mode == "SUPPORT" && {!("DSDS_SupportTerminal" in assignedItems player)}) exitWith {hint "Equip your Support Terminal in the GPS slot.";};
 if (_mode == "DEALER" && {isNull DSDS_mechanic || {player distance DSDS_mechanic > 6}}) exitWith {};
+if (_mode=="TRAVEL" && {isNull (missionNamespace getVariable ["flagX",objNull]) || {player distance (missionNamespace getVariable ["flagX",objNull])>6}}) exitWith {hint "Request friendly travel at the HQ flag.";};
 disableSerialization;
 if (!createDialog "DSDS_SupportTerminalDialog") exitWith {hint "Support menu could not open. Check that Antistasi Support Services is enabled."; diag_log "[DSDS] Failed to create support/dealer dialog.";};
 private _display = findDisplay 88400;
@@ -12,7 +13,7 @@ if (_mode=="TRAVEL") exitWith {
  (_display displayCtrl 100) ctrlSetText "Travel to friendlies | 350 credits";
  (_display displayCtrl 1000) ctrlShow false;(_display displayCtrl 1711) ctrlShow false;
  (_display displayCtrl 1712) ctrlSetText "Travel";
- private _friends=allUnits select {_x!=player && {side group _x==side group player} && {[_x] call DSDS_fnc_travelSafe}};
+ private _friends=allUnits select {_x!=player && {side group _x==(missionNamespace getVariable ["teamPlayer",side group player])} && {[_x] call DSDS_fnc_travelSafe}};
  _display setVariable ["DSDS_travelFriends",_friends];
  {private _i=_combo lbAdd format ["%1 | %2",name _x,mapGridPosition _x];_combo lbSetValue [_i,_forEachIndex];} forEach _friends;
  (_display displayCtrl 1701) ctrlSetText "Cargo-plane insertion near the selected friendly. Both players must be outside combat; no hostile troops within 150 m. Your backpack is retained.";

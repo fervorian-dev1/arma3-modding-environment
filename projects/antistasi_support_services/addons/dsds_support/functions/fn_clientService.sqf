@@ -1,4 +1,4 @@
-if (isRemoteExecuted && {remoteExecutedOwner != 2}) exitWith {};
+if (isRemoteExecuted && {isMultiplayer} && {remoteExecutedOwner != 2}) exitWith {};
 if (!hasInterface) exitWith {};
 params ["_operation",["_data",[]]];
 switch (_operation) do {

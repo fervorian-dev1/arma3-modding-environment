@@ -1,4 +1,4 @@
-if (!hasInterface || {!isRemoteExecuted} || {remoteExecutedOwner!=2}) exitWith {};
+if (!hasInterface || {!isRemoteExecuted} || {isMultiplayer && {remoteExecutedOwner!=2}}) exitWith {};
 params ["_unit","_aircraft",["_return",[]]];
 if (_unit!=player || {!local _unit}) exitWith {};
 if (_return isNotEqualTo []) exitWith {if (alive _unit) then {moveOut _unit;_unit setPosATL _return;};};

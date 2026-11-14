@@ -1,5 +1,5 @@
 params ["_jobID"];
-if (!isServer || {isRemoteExecuted}) exitWith {};
+if (!isServer || {isNil "DSDS_jobs"} || {isNil {DSDS_jobs get _jobID}}) exitWith {};
 private _dsdsContractJob=_jobID;
 private _job=DSDS_jobs get _jobID;
 private _unit=_job get "player";private _friend=_job get "friend";

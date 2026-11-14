@@ -1,5 +1,5 @@
 /* Execute where the passenger is local. Works for humans and future squad services. */
-if (isRemoteExecuted && {remoteExecutedOwner != 2}) exitWith {false};
+if (isRemoteExecuted && {isMultiplayer} && {remoteExecutedOwner != 2}) exitWith {false};
 params ["_unit","_aircraft"];
 if (!local _unit || {!alive _unit} || {isNull _aircraft} || {!alive _aircraft}) exitWith {false};
 // Explicitly select an empty rear cargo proxy. Never let the engine choose a

@@ -1,4 +1,4 @@
-if (isRemoteExecuted && {remoteExecutedOwner != 2}) exitWith {false};
+if (isRemoteExecuted && {isMultiplayer} && {remoteExecutedOwner != 2}) exitWith {false};
 params ["_unit","_aircraft"];
 if (!local _unit || {!alive _unit} || {vehicle _unit != _aircraft}) exitWith {false};
 private _position = (getPosASL _unit) vectorAdd [0,0,-8];

@@ -14,9 +14,13 @@ private _npc = missionNamespace getVariable ["DSDS_mechanic",objNull];
 [_npc,"Sell a vehicle",{["DEALER"] call DSDS_fnc_openTerminal;},"alive _target && alive _this && isNull attachedTo _target"] call _addOnce;
 [_npc,"Move PMC mechanic",{["MOVE_BEGIN",player,[]] remoteExecCall ["DSDS_fnc_serverRequest",2];},"alive _target && alive _this && isNull attachedTo _target",6,1.4] call _addOnce;
 
-[player,"Travel to friendlies (350 credits)",{["TRAVEL"] call DSDS_fnc_openTerminal;},"alive _this && isNull objectParent _this && !(_this getVariable ['incapacitated',false])",-1] call _addOnce;
+[missionNamespace getVariable ["flagX",objNull],"Travel to friendlies (350 credits)",{["TRAVEL"] call DSDS_fnc_openTerminal;},"alive _this && isNull objectParent _this && !(_this getVariable ['incapacitated',false])",5] call _addOnce;
 if !(player getVariable ["DSDS_travelCombatEH",false]) then {
  player setVariable ["DSDS_travelCombatEH",true];
  player addEventHandler ["FiredMan",{(_this select 0) setVariable ["DSDS_travelCombatAt",serverTime,true];}];
  player addEventHandler ["Hit",{(_this select 0) setVariable ["DSDS_travelCombatAt",serverTime,true];}];
 };
+
+[missionNamespace getVariable ["vehicleBox",objNull],"Buy garage slot (800 credits)",{["GARAGE_SLOT",player,[]] remoteExecCall ["DSDS_fnc_serverRequest",2];},"alive _this",5] call _addOnce;
+// Remove legacy body actions, including after native respawn action rebuilding.
+{if (((player actionParams _x) param [0,""])=="Travel to friendlies (350 credits)") then {player removeAction _x;};} forEach actionIDs player;

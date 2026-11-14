@@ -1,0 +1,24 @@
+# Travel / purchased garage slots / unlimited FPV signal v4.8 ? 2026-11-14
+
+Travel:
+- Player-body/global scroll action removed. Action only on HQ flagX within5m. Local menu entry AND authoritative server request require within6m of flag. Legacy action removed from current player body; existing service action maintenance re-adds flag/garage actions after native action clearing, player replacement or flag replacement.
+- runFriendlyTravel no longer rejects a legitimate job merely for inherited remote-execution context. Still server-only and requires a server-owned DSDS_jobs entry; function is not a permitted remote entry. Existing authenticated serverRequest/wallet gate retained.
+- Destination list uses teamPlayer rather than transient current player-side state after respawn.150m exclusion and60-second combat activity checks retained.350 personal credits, aircraft/camera/rear cargo/parachute and failure refund flow retained.
+- Single-player/local test RPC origin0 is now accepted only when NOT multiplayer. Multiplayer retains exact sender/player ownership and server-origin checks. Relevant serverRequest/clientService/boarding/jumping/travelClient guards changed for this; no multiplayer authentication relaxation.
+
+Garage:
+- vehicleBox action Buy garage slot (800 credits). Server checks owning connected player, faction, proximity, funds, initialized capacity; transaction unscheduled/atomic,1-second per-player repeat guard.
+- Each purchase increases shared faction garage capacity by1, charges buyer800 personal credits. Native HR_GRG_VehCap is wrapped once to add replicated DSDS_extraGarageSlots to the original war-level/CBA base. Native storage and UI use same function. Extra slots loaded with native returnSavedStat and written with setStatVariable under current campaign. Save campaign normally after purchases to persist to disk. No vehicles deleted/replaced.
+
+FPV:
+- Optional ArmaFPV DB/FPV CfgFunctions adapters replace fpv_getSignal with full1.0 for living drones/operators, clearing terrain/obstacle/jammer/lost-link state and advertising effectively unlimited range. Native camera, control, HUD, battery and damage remain.
+- fpv_ppfx_start adapter stops only native FPV signal postprocessing and holds signal quality1.0; no signal noise/glitch/blackout effects. Other mods' postprocessing unchanged. Does not make destroyed or battery-depleted drones operational.
+
+Files: fn_serviceActions.sqf, fn_openTerminal.sqf, fn_serviceTransaction.sqf, fn_serverRequest.sqf, fn_runFriendlyTravel.sqf, fn_clientService.sqf, fn_boardSupportPassenger.sqf, fn_jumpSupportPassenger.sqf, fn_travelClient.sqf; new Compatibility/fn_initGarageSlots.sqf, fpvFullSignal.sqf, fpvClearVideo.sqf; config.cpp/mod.cpp version/registration; test fixtures/scripts, README/HANDOFF/these notes.
+
+Validation:
+- Official configuration check, extraction/source hash comparison and published candidate comparison passed,185 fn files plus native compatibility adapters. Installed standard build/@AntistasiSupportServices updated to4.8. Original supply addon unchanged1.2.
+- Isolated real player-client test passed23/0 with no SQF expression errors in final run logs/travel-garage-client-validation/arma3_x64_2026-11-13_23-46-17.rpt. Actual menu/submit RPC completed a paid job: RHS cargo-plane transport, automatic steerable parachute at[14356.4,16405.5,344.723] near selected friendly, correct350 deduction. Actual800 payment and24->25 capacity, native campaign hashmap slot write, away-from-flag/garage rejection, flag-only action restoration after body/action replacement, FPV signal at>4km with jammer input and disabled FPV video effects passed. No player-backpack replacement in code.
+- Initial fixture had invalid unary removeAllActions syntax (corrected). Next single-player run exposed expected strict multiplayer-style RPC origin checks; guarded SP compatibility added without changing MP validation. These earlier failed fixture/RPC runs are superseded, not claimed as passing.
+- Separate dedicated+player multiplayer attempt did NOT yield valid gameplay results: client never joined/entered mission. Corrected fixture role to PLAY CDG and retried sequential startup/known port. No networked pass claimed. Actual multiplayer death/respawn test therefore remains unverified; local body-replacement/action reset passed. No complete campaign/native revive lifecycle, JIP, natural parachute landing or live FPV feed long-distance flight acceptance claimed.
+- Tests use isolated profiles/missions, not Green Sea. Owned test processes35096/47300/12792 (local) and33116/704/32976/27612 plus7112/41884 (network attempt) stopped after matching command-line identity. Never stopped a user game. Copied game test fixtures may remain for repeatability; source fixtures and logs retained. No campaign save modified. Current update is local, not uploaded to GitHub automatically.
