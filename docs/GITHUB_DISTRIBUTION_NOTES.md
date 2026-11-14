@@ -1,3 +1,9 @@
+## Latest published update: v4.9 (2026-11-14)
+
+Published source and compiled mod folders on main (release commit4c379e9). Latest release: https://github.com/fervorian-dev1/arma3-modding-environment/releases/tag/v4.9
+
+Player ZIP: https://github.com/fervorian-dev1/arma3-modding-environment/releases/download/v4.9/Arma3-Custom-Mods-v4.9.zip (407077 bytes). Companion4.9 + Supply Drops1.2. Public download hash matched local artifact. Release notes retain local-client validation and multiplayer limitation. Private saves/backups excluded.
+
 ## Latest published update: v4.8 (2026-11-14)
 
 Published source/build folders on main (release commit d3d8207). Latest public release: https://github.com/fervorian-dev1/arma3-modding-environment/releases/tag/v4.8
@@ -41,3 +47,5 @@ The source was published on the `main` branch after verifying the initial upload
 Latest v4.7 ZIP SHA256: 3D13E4C499712FFB72DA37D39D9208616DABDD88A4D36C4A8B4ABD418B573331
 
 Latest v4.8 ZIP SHA256: 1E8BA073FDA1FBD2B5D76F40A181335EB5F5B855AA78E5B60ED97FB83BBEFFA0
+
+Latest v4.9 ZIP SHA256: 21C09BC3851593C8FE9DE4F538ACBA261BEC3F218733462729BADFAFED9DA06D
