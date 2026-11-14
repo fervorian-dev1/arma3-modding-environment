@@ -1,3 +1,7 @@
+## GitHub updated to v4.8 ? 2026-11-14
+
+Source and compiled folders pushed; v4.8 set as latest public release. Downloaded player ZIP and verified SHA256 against local package. See GITHUB_DISTRIBUTION_NOTES.md.
+
 ## Latest update: v4.8 ? flag-only travel, garage expansion, full FPV signal
 
 See [implementation and validation](TRAVEL_GARAGE_FPV_48_NOTES.md). Friendly travel now HQ flag-only with server proximity check and worker RPC-context blocker removed; destination faction stable after respawn. Garage box buys shared slot for800 personal credits; save normally to persist slots. Native ArmaFPV signal/video interference disabled. Official build passed; real isolated player-client workflow23/0. Separate server/client could not enter mission, so networked death/respawn/JIP remain unverified. Standard addon updated; all players/server restart. No Green Sea save edits; no GitHub upload this turn.
