@@ -9,6 +9,10 @@ if (_class in ["DSDS_Morphine","DSDS_Adrenaline"]) then {
  private _count=_uses getOrDefault [_class,0];
  if (_count<2) then {_uses set [_class,_count+1];_unit setVariable ["DSDS_rescueUses",_uses,true];};
 };
+if (_class=="DSDS_GummyBears") exitWith {
+ _unit setVariable ["DSDS_gummyUntil",_now+getNumber (configFile >> "DSDS_LuckyWheel" >> "gummyDuration"),true];
+ ["MESSAGE",_unit,["Sugar rush. Your ride feels lively."]] remoteExecCall ["DSDS_fnc_lootClient",owner _unit];true
+};
 private _cfg=configFile >> "DSDS_Consumables";
 private _profile=configFile >> "DSDS_Effects" >> _class;
 if (isClass _profile && {getNumber (_profile >> "killChance")>0}) then {

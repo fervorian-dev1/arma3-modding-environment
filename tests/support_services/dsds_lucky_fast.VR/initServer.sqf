@@ -1,0 +1,34 @@
+[] spawn {sleep 3;
+ private _pass=0;private _fail=0;private _assert={params ["_ok","_label"];if (_ok) then {_pass=_pass+1;} else {_fail=_fail+1;};diag_log format ["[LUCKY FAST] %1: %2",["FAIL","PASS"] select _ok,_label];};
+ teamPlayer=resistance;A3A_saveTarget=[false,"lucky_fast","VR"];A3A_saveDataHM=createHashMap;A3A_saveData=createHashMap;[] call DSDS_fnc_casinoLoad;
+ DSD_supplyPools=createHashMapFromArray [["AssaultRifle",["arifle_MX_F","arifle_Katiba_F"]],["Optic",["optic_Holosight"]],["Backpack",["B_AssaultPack_blk"]]];
+ jna_dataList=[[["arifle_MX_F",-1]]];unlockedWeapons=["arifle_MX_F"];unlockedItems=["optic_Holosight"];unlockedBackpacks=[];
+ private _ok=true;private _beg=diag_tickTime;
+ for "_i" from 1 to 100 do {private _r=[] call DSDS_fnc_luckyMystery;if (_r isEqualTo [] || {(_r select 1) in ["arifle_MX_F","optic_Holosight"]} || {!([_r select 1,_r select 0] call DSD_fnc_isSupplyAssetAllowed)}) then {_ok=false;};};
+ [_ok,"optimized selector excludes both ledger and category unlocks"] call _assert;
+ [diag_tickTime-_beg<5,"one hundred cached selections stay below5seconds"] call _assert;
+ unlockedWeapons pushBack "arifle_Katiba_F";unlockedBackpacks=["B_AssaultPack_blk"];
+ [([] call DSDS_fnc_luckyMystery) isEqualTo [],"fully unlocked catalogue yields no mystery item"] call _assert;
+ private _p=["fast_uid"] call DSDS_fnc_luckyProfile;["fast_uid",6] call DSDS_fnc_luckyAward;
+ [_p get "tokens"==1 && {(_p get "items") isEqualTo []},"unavailable mystery refunds token without creating equipment"] call _assert;
+ DSD_supplyPools=nil;[([] call DSDS_fnc_luckyMystery) isEqualTo [],"not-ready catalogue never blocks or starts rebuild"] call _assert;
+ [isClass (configFile >> "DSDS_DebugMissions" >> "TOOL_LUCKY_TOKEN") && {isClass (configFile >> "DSDS_DebugMissions" >> "TOOL_LUCKY_RAID")},"both casino curator debug tools registered"] call _assert;
+
+ Occupants=west;Invaders=east;west setFriend [resistance,0];resistance setFriend [west,0];tierWar=1;
+ A3A_faction_occ=createHashMapFromArray [["unitRifle","B_Soldier_F"],["unitPilot","B_Helipilot_F"],["unitCrew","B_crew_F"]];A3A_faction_all=createHashMap;
+ private _pg=createGroup resistance;petros=_pg createUnit ["I_G_Soldier_F",[5000,5000,0],[],0,"NONE"];
+ private _lg=createGroup sideLogic;A3A_customUnitTypes=_lg createUnit ["Logic",[0,0,0],[],0,"NONE"];
+ DSDS_noise=createHashMapFromArray [["phase","quiet"],["generation",0]];
+ private _plan=["fast_uid",true] call DSDS_fnc_luckyRaid;
+ [count _plan>0 && {count (_plan get "flights")==4},"final VTOL variant has four nearby safe approaches"] call _assert;
+ if (count _plan>0) then {
+  private _raid=createHashMapFromArray [["id",999],["hq",getPosATL petros],["petros",petros],["ended",false],["vehicles",[]],["units",[]],["groups",[]],["pads",[]],["infantry",[]],["landingsDone",0],["landingsTotal",0]];
+  [_raid,_plan] spawn DSDS_fnc_runHQRaid;private _until=diag_tickTime+40;
+  waitUntil {sleep 0.2;_raid getOrDefault ["spawnComplete",false] || {_raid get "ended"} || {diag_tickTime>_until}};sleep 2;
+  [({alive _x} count (_raid get "vehicles"))==4 && {({alive _x} count (_raid get "infantry"))==48},"all four actual Ospreys and48specialists survive initial deployment"] call _assert;
+  _raid set ["ended",true];sleep 1;
+  {deleteVehicle _x;} forEach (_raid get "units");{deleteVehicle _x;} forEach (_raid get "vehicles");{deleteVehicle _x;} forEach (_raid get "pads");{deleteGroup _x;} forEach (_raid get "groups");
+ };
+ deleteVehicle petros;deleteGroup _pg;deleteVehicle A3A_customUnitTypes;deleteGroup _lg;
+ diag_log format ["[LUCKY FAST] DONE %1 passes, %2 failures",_pass,_fail];
+};

@@ -10,7 +10,7 @@ private _deadline = diag_tickTime + (DSDS_raidConfig get "landingTimeout");
 private _ordered = false;
 waitUntil {
     sleep 1;
-    if (!_ordered && {_heli distance2D _landing < 500}) then {_heli land "GET OUT"; _ordered = true;};
+    if (!_ordered && {_heli distance2D _landing < 500}) then {if (getNumber (configOf _heli >> "vtol")>0) then {_ordered=_heli landAt [_pad,"GetOut"];} else {_heli land "GET OUT";_ordered=true;};};
     _raid get "ended" || {!alive _heli} || {!alive driver _heli} || {diag_tickTime > _deadline} || {_heli distance2D _landing < 100 && {getPosATL _heli select 2 < 3} && {abs speed _heli < 6}}
 };
 private _landed = alive _heli && {getPosATL _heli select 2 < 3} && {abs speed _heli < 6};
@@ -41,7 +41,7 @@ if (_landed && {!(_raid get "ended")}) then {
 };
 _raid set ["landingsDone",(_raid get "landingsDone") + 1];
 if (alive _heli && {alive driver _heli} && {{isPlayer _x} count crew _heli == 0}) then {
-    _heli land "NONE"; _heli flyInHeight 160;
+    if (getNumber (configOf _heli >> "vtol")>0) then {_heli landAt [_pad,"None"];};_heli land "NONE"; _heli flyInHeight 160;
     private _wp = _pilots addWaypoint [_origin,0]; _wp setWaypointType "MOVE"; _wp setWaypointBehaviour "CARELESS"; _pilots setCurrentWaypoint _wp;
     // Keep helipad until the aircraft has actually left the landing area.
     private _clearDeadline = diag_tickTime + 120;

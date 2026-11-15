@@ -32,4 +32,6 @@ class DSDS_DebugMissions {
  class TOOL_SUPPORT_CLUSTER {displayName="Test support - Cluster strike";handler="DSDS_fnc_runDebugTool";variant="SUPPORT_CLUSTER";};
  class TOOL_SUPPORT_NAPALM {displayName="Test support - Napalm strike";handler="DSDS_fnc_runDebugTool";variant="SUPPORT_NAPALM";};
  class TOOL_SUPPORT_CHEMICAL {displayName="Test support - Chemical strike";handler="DSDS_fnc_runDebugTool";variant="SUPPORT_CHEMICAL";};
+ class TOOL_LUCKY_TOKEN {displayName="Casino - grant yourself one lucky token";handler="DSDS_fnc_runDebugTool";variant="LUCKY_TOKEN";};
+ class TOOL_LUCKY_RAID {displayName="Casino - start four-Osprey HQ raid";handler="DSDS_fnc_runDebugTool";variant="LUCKY_RAID";};
 };

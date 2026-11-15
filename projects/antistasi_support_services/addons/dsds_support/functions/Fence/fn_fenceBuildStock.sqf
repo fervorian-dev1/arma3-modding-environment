@@ -38,7 +38,7 @@ private _take={
     true
 };
 // Missing optional mods/categories yield their slots to the remaining valid pools.
-{if (count _selected<_count) then {[_x,true] call _take;};} forEach ["FPV","FPV","UAV","TERMINAL","AA","AA"];
+{if (count _selected<_count) then {[_x,true] call _take;};} forEach ["FIBER","FPV","FPV","UAV","TERMINAL","AA","AA"];
 while {count _selected<_count} do {
     private _all=[];
     { _all append ((DSDS_fenceItemPools get _x) select {!((_x select 0) in _selected)}); } forEach keys DSDS_fenceItemPools;

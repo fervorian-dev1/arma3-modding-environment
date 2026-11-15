@@ -1,4 +1,4 @@
-﻿# Arma 3 modding workspace
+# Arma 3 modding workspace
 
 This workspace contains editable projects, local build output, and setup notes. Original game and Workshop files are kept outside the workspace.
 
@@ -12,7 +12,7 @@ This workspace contains editable projects, local build output, and setup notes. 
 - temp/: disposable working files (ignored by Git).
 - scripts/: repeatable local build helpers.
 
-Current companion: **v4.9**, with Dynamic Supply Drops **v1.2**. Includes expanded Zeus DEBUG tools, Mystic persistence, civilian vehicle discounts, updated loot and friendly parachute travel (150 m enemy exclusion). See [handoff notes](docs/HANDOFF.md).
+Current companion: **v5.2**, with Dynamic Supply Drops **v1.2**. Adds Roxie's token-based Lucky Wheel, gummy-bear vehicle boosts, the campaign-persistent casino and KVN fiber-optic drones at Fence, retaining expanded Zeus DEBUG tools, Mystic persistence, civilian discounts and friendly parachute travel. See [handoff notes](docs/HANDOFF.md).
 
 
 ## Download and play

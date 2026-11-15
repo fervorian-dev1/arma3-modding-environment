@@ -1,0 +1,79 @@
+/* All purchases and bets execute atomically on the server; clients supply intentions only. */
+if (!isServer) exitWith {};
+params [["_op","",[""]],["_actor",objNull,[objNull]],["_dealer",objNull,[objNull]],["_args",[],[[]]]];
+private _sender=if (isMultiplayer && {isRemoteExecuted}) then {remoteExecutedOwner} else {owner _actor};
+if (isNull _actor || {!isPlayer _actor} || {!alive _actor} || {owner _actor!=_sender} || {isNil "DSDS_casinoState"} || {!(missionNamespace getVariable ["serverInitDone",false])}) exitWith {};
+if (side group _actor!=missionNamespace getVariable ["teamPlayer",resistance]) exitWith {};
+private _dsdsAuthorizedPlayer=_actor;private _uid=getPlayerUID _actor;if (_uid=="") exitWith {};
+private _tell={params ["_text"];["MESSAGE",[_text]] remoteExecCall ["DSDS_fnc_clientService",_actor];};
+private _cfg=configFile >> "DSDS_Casino";
+if (_op=="BEGIN_BUILD") exitWith {
+ private _flag=missionNamespace getVariable ["flagX",objNull];
+ if (isNull _flag || {_actor distance _flag>6}) exitWith {["Buy the casino at your HQ flag."] call _tell;};
+ if ((DSDS_casinoState getOrDefault ["position",[]]) isNotEqualTo [] || {missionNamespace getVariable ["DSDS_casinoBuildLock",false]}) exitWith {["The faction already owns a casino."] call _tell;};
+ if (!isClass (configFile >> "CfgFaces" >> "Man_A3" >> "B_female_bun_01")) exitWith {["Enable Task Force Timberwolf Female Characters before buying the casino."] call _tell;};
+ private _classes=getArray (_cfg >> "buildings");private _index=_classes findIf {isClass (configFile >> "CfgVehicles" >> _x)};
+ if (_index<0) exitWith {["Casino building assets are unavailable."] call _tell;};
+ private _holder=_actor getVariable ["owner",_actor];private _price=getNumber (_cfg >> "purchasePrice");
+ if ((_holder getVariable ["moneyX",0])<_price) exitWith {[format ["The casino costs %1 personal credits.",_price]] call _tell;};
+ DSDS_casinoSequence=DSDS_casinoSequence+1;private _token=format ["build:%1:%2",_uid,DSDS_casinoSequence];
+ _actor setVariable ["DSDS_casinoBuildToken",[_token,_classes select _index,serverTime+300]];
+ ["PLACE",[_token,_classes select _index,_price]] remoteExecCall ["DSDS_fnc_casinoClient",_actor];
+};
+if (_op=="CANCEL_BUILD") exitWith {private _p=_actor getVariable ["DSDS_casinoBuildToken",[]];if (_p isNotEqualTo [] && {(_p select 0)==(_args param [0,""])}) then {_actor setVariable ["DSDS_casinoBuildToken",nil];};};
+if (_op=="PLACE") exitWith {
+ private _pending=_actor getVariable ["DSDS_casinoBuildToken",[]];
+ _args params [["_token","",[""]],["_pos",[],[[]]],["_dir",0,[0]]];
+ if (count _pending!=3 || {_pending select 0!=_token} || {_pending select 2<serverTime} || {missionNamespace getVariable ["DSDS_casinoBuildLock",false]} || {(DSDS_casinoState get "position") isNotEqualTo []}) exitWith {["Placement authorization expired. Return to the flag."] call _tell;};
+ private _error=[_pos,_dir] call DSDS_fnc_casinoValidateSite;
+ if (_error!="") exitWith {[_error] call _tell;};
+ _pos=+_pos;_pos set [2,0];
+ private _price=getNumber (_cfg >> "purchasePrice");
+ if !([_actor,-_price] call DSDS_fnc_changeWallet) exitWith {["Insufficient personal credits."] call _tell;};
+ _actor setVariable ["DSDS_casinoBuildToken",nil];DSDS_casinoBuildLock=true;
+ DSDS_casinoState set ["pendingBuild",[_uid,_price]];
+ private _holder=_actor getVariable ["owner",_actor];["player_"+_uid+"_moneyX",_holder getVariable ["moneyX",0]] call A3A_fnc_setStatVariable;
+ [] call DSDS_fnc_casinoSave;
+ DSDS_casinoBuildQueue pushBack [_actor,_uid,_pending select 1,_pos,_dir,_price];
+};
+if (missionNamespace getVariable ["DSDS_casinoBuildLock",false]) exitWith {};
+private _pairs=missionNamespace getVariable ["DSDS_casinoDealers",[]];private _index=_pairs findIf {(_x select 1)==_dealer};
+if (_index<0 || {isNull _dealer} || {_actor distance _dealer>7}) exitWith {};
+private _game=(_pairs select _index) select 0;private _gameCfg=_cfg >> "Games" >> _game;
+if (!isClass _gameCfg) exitWith {};
+if (_game=="WHEEL") exitWith {[_op,_actor,_dealer,_args] call DSDS_fnc_luckyRequest;};
+private _s=DSDS_casinoSessions getOrDefault [_uid,createHashMap];
+private _active=count _s>0 && {_s getOrDefault ["phase","finished"]!="finished"};
+if (_active && {_s get "game"!=_game}) exitWith {["Finish your current game at its dealer first."] call _tell;};
+private _send={params [["_open",false]];[if (_open) then {"OPEN"} else {"STATE"},[_dealer,[_game,_s,_actor] call DSDS_fnc_casinoSnapshot]] remoteExecCall ["DSDS_fnc_casinoClient",_actor];};
+if (_actor getVariable ["DSDS_casinoBetToken",""]=="") then {DSDS_casinoSequence=DSDS_casinoSequence+1;_actor setVariable ["DSDS_casinoBetToken",format ["bet:%1:%2",_uid,DSDS_casinoSequence]];};
+if (_op=="OPEN") exitWith {if (alive _dealer) then {[true] call _send;};};
+if (_op=="READ") exitWith {if (serverTime>=(_actor getVariable ["DSDS_casinoReadAt",0])) then {_actor setVariable ["DSDS_casinoReadAt",serverTime+0.35];[] call _send;};};
+private _handler=missionNamespace getVariable [getText (_gameCfg >> "handler"),{}];
+if (_op=="BET") exitWith {
+ _args params [["_bet",0,[0]],["_choice","",[""]],["_token","",[""]]];
+ if (_active || {!alive _dealer} || {!finite _bet} || {_bet!=floor _bet} || {_bet<getNumber (_cfg >> "minimumBet")} || {_bet>getNumber (_cfg >> "maximumBet")} || {_token==""} || {_token!=(_actor getVariable ["DSDS_casinoBetToken",""])}) exitWith {["Choose a valid stake and finish any active round first."] call _tell;};
+ private _choices=getArray (_gameCfg >> "choices");
+ private _valid=_choice in _choices;
+ if (_game=="ROULETTE" && {(_choice find "N:")==0}) then {private _n=parseNumber (_choice select [2]);_valid=_choice==format ["N:%1",_n] && {_n>=0 && {_n<=36} && {_n==floor _n}};};
+ if (!_valid) exitWith {};
+ if !([_actor,-_bet] call DSDS_fnc_changeWallet) exitWith {["Not enough personal credits for that stake."] call _tell;};
+ DSDS_casinoSequence=DSDS_casinoSequence+1;private _id=format ["round:%1:%2",_uid,DSDS_casinoSequence];
+ _actor setVariable ["DSDS_casinoBetToken",_id+":next"];
+ _s=createHashMapFromArray [["id",_id],["uid",_uid],["actor",_actor],["game",_game],["dealer",_dealer],["bet",_bet],["choice",_choice],["started",serverTime],["expires",serverTime+120],["revision",1],["phase","playing"],["message",""],["payout",0],["settled",false],["deck",[] call DSDS_fnc_casinoShoe]];
+ DSDS_casinoSessions set [_uid,_s];[_s,"START"] call _handler;[_s] call DSDS_fnc_casinoSettle;
+ private _holder=_actor getVariable ["owner",_actor];["player_"+_uid+"_moneyX",_holder getVariable ["moneyX",0]] call A3A_fnc_setStatVariable;
+ [] call DSDS_fnc_casinoSave;[] call _send;
+};
+if (_op=="ACTION") exitWith {
+ _args params [["_id","",[""]],["_revision",-1,[0]],["_action","",[""]]];
+ if (!_active || {_s get "id"!=_id} || {_s get "revision"!=_revision} || {!(_action in getArray (_gameCfg >> "actions"))}) exitWith {[] call _send;};
+ if (_action=="DOUBLE") then {
+  if (_game=="BLACKJACK" && {count (_s getOrDefault ["playerCards",[]])==2} && {(_s get "bet")*2<=getNumber (_cfg >> "maximumBet")} && {[_actor,-(_s get "bet")] call DSDS_fnc_changeWallet}) then {_s set ["bet",(_s get "bet")*2];private _holder=_actor getVariable ["owner",_actor];["player_"+_uid+"_moneyX",_holder getVariable ["moneyX",0]] call A3A_fnc_setStatVariable;} else {_action="";};
+ };
+ if (_action=="") exitWith {["Cannot double this hand or insufficient funds."] call _tell;[] call _send;};
+ _s set ["revision",(_s get "revision")+1];[_s,_action] call _handler;[_s] call DSDS_fnc_casinoSettle;[] call DSDS_fnc_casinoSave;[] call _send;
+};
+if (_op=="CLOSE" && {_active}) then {
+ [_s,if (_game=="CRASH") then {"CASHOUT"} else {"TIMEOUT"}] call _handler;[_s] call DSDS_fnc_casinoSettle;[] call DSDS_fnc_casinoSave;
+};

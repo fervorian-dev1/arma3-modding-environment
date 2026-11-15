@@ -1,6 +1,6 @@
 /* Server-side campaign arsenal sanitation. Native campaign saves persist the cleaned ledger. */
 if (!isServer || {isRemoteExecuted}) exitWith {false};
-private _blocked=["DSDS_AHJC", "DSDS_Cocaine", "DSDS_CutGems", "DSDS_GoldBullion", "DSDS_IndustrialIsotopes", "DSDS_IndustrialPlatinum", "DSDS_M11", "DSDS_Marijuana", "DSDS_MedicalIsotopes", "DSDS_Methamphetamine", "DSDS_Microchips", "DSDS_NicotineVape", "DSDS_OLB1", "DSDS_OLB2", "DSDS_PalladiumSponges", "DSDS_RoughGems", "DSDS_SiliconWafers", "DSDS_ValuableReceiver", "DSDS_Zyn", "DSDS_Oswald"];
+private _blocked=["DSDS_GummyBears","DSDS_AHJC", "DSDS_Cocaine", "DSDS_CutGems", "DSDS_GoldBullion", "DSDS_IndustrialIsotopes", "DSDS_IndustrialPlatinum", "DSDS_M11", "DSDS_Marijuana", "DSDS_MedicalIsotopes", "DSDS_Methamphetamine", "DSDS_Microchips", "DSDS_NicotineVape", "DSDS_OLB1", "DSDS_OLB2", "DSDS_PalladiumSponges", "DSDS_RoughGems", "DSDS_SiliconWafers", "DSDS_ValuableReceiver", "DSDS_Zyn", "DSDS_Oswald"];
 private _unlocked=(missionNamespace getVariable ["DSDS_mysticState",createHashMap]) getOrDefault ["oswaldUnlocked",false];
 if (_unlocked) then {_blocked=_blocked-["DSDS_Oswald"];};
 private _changed=false;

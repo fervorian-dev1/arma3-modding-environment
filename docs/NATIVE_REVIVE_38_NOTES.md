@@ -1,3 +1,5 @@
+> AI behavior superseded by v5.2: keep player PiR injuries disabled, but restore AI injuries. See [restoration notes](PIR_AI_RESTORATION_52_NOTES.md). Do not restore the old AI-disable line.
+
 # Native revive bridge v3.8 ? 2026-11-13
 
 User requests removing PiR knockdown/crawl medical system and using existing teammate Revive with PiR medical supplies. No tests performed, per standing instruction.

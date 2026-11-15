@@ -7,6 +7,7 @@ class DSDS_ContrabandVisuals {
  class Zyn {effect="OVERLAY";fade=180;priority=0;opacity=0.05;texture="\dsds_support\ui\loot\zyn_overlay.jpg";};
 };
 class RscTitles {
+ #include "lucky_hud.hpp"
  class DSDS_ContrabandTintOverlay {
   idd=-1;duration=1e10;fadeIn=0;fadeOut=0;movingEnable=0;
   onLoad="uiNamespace setVariable ['DSDS_contrabandTintDisplay',_this select 0]";

@@ -57,3 +57,5 @@ class DSDS_OLB2: DSDS_ValuableReceiver {
  displayName="OLB-2"; picture="\dsds_support\ui\loot\olb_2.jpg";
  descriptionShort="A green-banded experimental endurance injector."; class ItemInfo: InventoryItem_Base_F {type=302;mass=0.5;};
 };
+
+class DSDS_GummyBears: DSDS_ValuableReceiver {displayName="Bag of Gummy Bears";descriptionShort="A bag of colorful gummy bears.";picture="\dsds_support\ui\loot\gummy_bears.jpg";class ItemInfo: InventoryItem_Base_F {type=302;mass=1;};};

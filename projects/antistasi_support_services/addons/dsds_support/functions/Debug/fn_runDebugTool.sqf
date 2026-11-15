@@ -11,6 +11,8 @@ if ((_tool find "SUPPORT_")==0) exitWith {
  [_id] spawn DSDS_fnc_runSupportContract;
 };
 switch (_tool) do {
+ case "LUCKY_TOKEN": {if (!isNil "DSDS_luckyPlayers") then {private _p=[getPlayerUID _actor] call DSDS_fnc_luckyProfile;_p set ["tokens",(_p get "tokens")+1];[] call DSDS_fnc_luckySave;[_actor,false,true] call DSDS_fnc_luckySync;};};
+ case "LUCKY_RAID": {[getPlayerUID _actor] spawn DSDS_fnc_luckyRaid;};
  case "MYSTIC";case "MYSTIC_HERE": {
   private _s=missionNamespace getVariable ["DSDS_mysticState",createHashMap];
   if (!(_s getOrDefault ["loaded",false])) then {[] call DSDS_fnc_mysticLoad;_s=DSDS_mysticState;};

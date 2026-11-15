@@ -1,21 +1,22 @@
-/* Use Antistasi's native revive, retaining PiR inventory supplies.
+/* Keep native player revive and PiR medical supplies; restore PiR AI injuries.
    Runs before mission startup and again at postInit. No injury EH removal. */
 if (isRemoteExecuted) exitWith {};
-private _disable={
+private _apply={
  if (isNil "PiR_injuriplayer_on" && {!fileExists "\PiR\Functions\PiRinit.sqf"}) exitWith {};
  PiR_injuriplayer_on=false;
- PiR_injuriAI_on=false;
+ PiR_injuriAI_on=true;
 };
-call _disable;
+call _apply;
 if (missionNamespace getVariable ["DSDS_nativeReviveBridge",false]) exitWith {};
 DSDS_nativeReviveBridge=true;
-["CBA_settingsInitialized",_disable] call CBA_fnc_addEventHandler;
+["CBA_settingsInitialized",_apply] call CBA_fnc_addEventHandler;
 [] spawn {
  waitUntil {sleep 0.2;!isNil "A3A_faction_reb"};
  while {true} do {
-  // Enforce after settings synchronization, including hosted/server/JIP machines.
+  // Player medical authority stays native; AI retains PiR hit/knockdown reactions.
+  // Enforce both independent switches after hosted/server/JIP settings sync.
   if (!isNil "PiR_injuriplayer_on") then {
-   PiR_injuriplayer_on=false;PiR_injuriAI_on=false;
+   PiR_injuriplayer_on=false;PiR_injuriAI_on=true;
    private _faks=+(A3A_faction_reb getOrDefault ["firstAidKits",[]]);
    private _kits=+(A3A_faction_reb getOrDefault ["mediKits",[]]);
    {

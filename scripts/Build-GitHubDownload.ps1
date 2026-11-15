@@ -1,4 +1,4 @@
-param([string]$Version='4.9')
+param([string]$Version='5.2')
 $ErrorActionPreference='Stop'
 $root=Split-Path $PSScriptRoot -Parent
 if($Version -notmatch '^\d+\.\d+(\.\d+)?$'){throw 'Use a numeric release version.'}
@@ -36,6 +36,11 @@ ARMA 3 CUSTOM MODS - SUPPORT SERVICES v$Version
 Core dependencies: CBA_A3, Zeus Enhanced and Antistasi Ultimate.
 The host's other Workshop content mods are required for the same vehicles/equipment.
 Chemical Warfare PLUS is needed for isotope contamination features.
+Task Force Timberwolf Female Characters (2021778690) supplies casino dealer heads.
+KVN Fiber-Optic FPV Drone (3533734689) enables the new Fence drone stock.
+Dodge Charger SRT Hellcat 2018 (3386639372) supplies wheel car prizes.
+3CB Factions (1673456286), with its RHS dependencies, supplies containment Ospreys.
+PiR AI injuries are restored; player PiR knockdown stays disabled.
 This ZIP contains our custom mods only; it does not contain Arma or Workshop mods.
 
 Updating: replace your previous copies of these two folders and restart Arma.

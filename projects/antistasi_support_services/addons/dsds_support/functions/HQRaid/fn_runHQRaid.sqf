@@ -1,8 +1,8 @@
-params ["_raid"];
+params ["_raid",["_planOverride",createHashMap]];
 if (!isServer || {isRemoteExecuted}) exitWith {};
 private _id = _raid get "id";
 private _hq = _raid get "hq";
-private _plan = [_hq] call DSDS_fnc_planHQRaid;
+private _plan = if (count _planOverride>0) then {_planOverride} else {[_hq] call DSDS_fnc_planHQRaid;};
 if (count _plan == 0) exitWith {[_raid,"no safe faction-compatible deployment"] call DSDS_fnc_endHQRaid;};
 _raid set ["war",_plan get "war"]; _raid set ["plannedMen",_plan get "men"];
 _raid set ["landingsTotal",count (_plan get "flights")];
@@ -20,6 +20,8 @@ private _troopTypes = _plan get "troops";
         private _pilots = createGroup [_side,true]; (_raid get "groups") pushBack _pilots;
         private _pilot = [_pilots,_plan get "pilot",_spawn,_raid] call DSDS_fnc_spawnRaidUnit;
         if (!isNull _pilot) then {_pilot assignAsDriver _heli; _pilot moveInDriver _heli;};
+        // VTOL plane variant uses the same initial flight state as containment insertion.
+        if (getNumber (configOf _heli >> "vtol")>0) then {_heli engineOn true;_heli setVelocityModelSpace [0,60,0];};
         private _cargo = createGroup [_side,true]; (_raid get "groups") pushBack _cargo;
         private _capacity = _count min (_heli emptyPositions "cargo");
         for "_i" from 1 to _capacity do {

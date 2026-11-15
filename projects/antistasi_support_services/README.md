@@ -1,4 +1,14 @@
-﻿# Antistasi Support Services
+# Antistasi Support Services
+
+Version **5.2** restores **PiR AI injuries and knockdown reactions**, correcting the overly broad v3.8 disable. Player PiR knockdown stays **off**; native Antistasi teammate Revive with PiR medical supplies and the stale R-to-respawn protection remain. Restart Arma on the host/server and every client so AI injury handlers initialize correctly. No campaign reset. [Cause, exact scope and verification](../../docs/PIR_AI_RESTORATION_52_NOTES.md).
+
+Version **5.1** adds **Roxie's Lucky Wheel** as the sixth casino dealer. Hostile infantry kills have a **1%** chance to award a personal, campaign-persistent spin token, with a counter and chime. The wheel offers cash, Hellcats, free spins, locked-arsenal mystery equipment, a rare **100,000-credit jackpot**, and a nearby **four-Osprey CBRN HQ raid**. Roxie sells **Bag of Gummy Bears** for **150 credits**: consume on foot for a nonstacking **10-minute ground-vehicle assist**, with a **135% configured-speed allowance** and extra acceleration/hill force. All probabilities and constraints are in the game dialog. Car prizes require **Dodge Charger SRT Hellcat 2018 (3386639372)**; raid aircraft require installed **3CB Factions (1673456286)** with its RHS dependencies. [Complete behavior, artwork, tests and limits](../../docs/LUCKY_WHEEL_51_NOTES.md).
+
+Save the campaign normally to retain tokens and uncollected prize entitlements. Existing purchased casinos gain Roxie after updating/restarting/loading; no second purchase is required. Curator DEBUG includes a token grant and a wheel-raid test button. AI-driven transport is not boosted, and actual achieved speed depends on traction/terrain/handling mods.
+
+Version **5.0** adds the **Aurum Casino**: buy it at the HQ flag for **100,000 personal credits**, choose a clear map location and heading, then visit five named dealers for Blackjack, Roulette, Crash, Craps and Baccarat. Stakes are 100–10,000 personal credits. Placement and interrupted bets use native campaign persistence; save normally. Enable **Task Force Timberwolf Female Characters (2021778690)** for its female head models and **KVN Fiber-Optic FPV Drone (3533734689)** for the new reserved Fence item offer. These mods remain separate Workshop downloads. Restart all clients and host/server. [Rules, files and validation](../../docs/CASINO_50_NOTES.md).
+
+The casino uses a furnished white hotel, unique civilian dealers with Timberwolf heads, a dedicated game dialog and server-controlled betting. Game/dealer definitions and separate SQF handlers are modular for later additions. Existing campaign gameplay is preserved. Isolated server checks **55/0**, actual player-client workflow **25/0**; full multi-human network/JIP acceptance remains unverified.
 
 Version3.6 targets player-host enemy-spawn spikes: scheduled hostile units created through Antistasi's native factory share a50ms creation budget on the host. Counts, loadouts and original initialization remain; friendly/civilian/unscheduled calls and dedicated/HC authority bypass pacing. Addon AI Accuracy Fix integration uses one bounded shared worker instead of one polling script per unit. No graphics/global AI changes or measured live FPS claim. Restart everyone with the updated companion. [Host spawn notes and test limits](../../docs/HOST_SPAWN_36_NOTES.md).
 
@@ -14,7 +24,7 @@ Version3.1 seats parachute-support passengers in an explicitly selected rear car
 
 Version3.0 connects **Petros -> Convoy mission** to a shuffled rotation: **Special, Medical, Isotope, ordinary** (one of each per cycle, when dependencies/faction assets support them). Petros requests bypass the ambient rare-convoy cooldown; ambient rolls remain rare. Custom shipments use a valid faction cargo/medical truck and Antistasi's original ammunition-convoy capture/destroy handling, routes, departure delay, rewards, escorts and cleanup. They contain the existing themed valuables, medical supplies/injectors or shielded isotopes/CWP rewards. Containment Response debug launches no longer show a preparation notification. Restart everyone with the updated companion; no campaign reset. [Integration and verification notes](../../docs/PETROS_CONVOY_INTEGRATION_NOTES.md).
 
-Companion addon **v3.6** for **Antistasi Ultimate 12.0.3**, using the existing Dynamic Supply Drops addon. Original supply-drop gameplay and Workshop files are preserved. Earlier features have historical Plus2.3.2 verification; new mission integration is validated on Ultimate.
+Companion addon **v5.2** for **Antistasi Ultimate 12.0.3**, using the existing Dynamic Supply Drops addon. Original supply-drop gameplay and Workshop files are preserved. Earlier features have historical Plus2.3.2 verification; new mission integration is validated on Ultimate.
 
 Version2.9 adds Mystic's **Source Industrial Isotopes stash** option by reusing Fence's existing guarded roadside stash mission. Same containers, guards, names and completion behavior; the new variant contains **10 Industrial Isotopes**. The vendors share the existing active-stash limit and45-minute cooldown. Also available through the existing Zeus DEBUG mission registry. [Exact changes and validation](../../docs/MYSTIC_STASH_NOTES.md).
 
@@ -157,12 +167,3 @@ The v1.0 backend passed 106 assertions covering all eleven services and mechanic
 After restarting, check that a noncommander can collect/equip the terminal, open its menu and call support; then open the mechanic's sale menu, obtain an offer and confirm. Save/reload your campaign to check the restored mechanic stays friendly. Your friend/server also needs the updated companion folder. To run the disposable real-client test with a visible window yourself, close Arma first and run `scripts/Test-SupportServicesUI.ps1 -Visible -Edition Ultimate`; it uses its own profile and test mission. Test helpers default to Ultimate; `-Edition Plus` selects the previous edition and separate profile. Other Antistasi versions/updates and custom remote-execution allowlists need separate compatibility checks.
 
 Version 1.3 passed **140 full server assertions plus 5 real Altis terrain-flight checks**, with zero failures/SQF errors. Flat-map strike releases measured 150 m clearance at 1,440 km/h. The Altis test survived a route across 335.5 m of elevation change with minimum measured clearance about 104 m. The lower flight calculation includes sea-surface clearance on water approaches. Human HUD rendering and sonic-boom audibility still need in-game confirmation. Repeat the separate terrain test with `scripts/Test-SupportServicesTerrain.ps1` after removing any prior owned fixture and stopping its server.
-
-
-
-
-
-
-
-
-

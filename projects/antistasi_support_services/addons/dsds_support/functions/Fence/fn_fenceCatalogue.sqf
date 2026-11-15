@@ -8,7 +8,7 @@ private _vehicles=[];
 private _pools=[] call DSD_fnc_buildSupplyPools;
 private _gear=[];
 DSDS_fenceItemPools=createHashMap;
-{DSDS_fenceItemPools set [_x,[]];} forEach ["FPV","UAV","TERMINAL","AA","PREMIUM"];
+{DSDS_fenceItemPools set [_x,[]];} forEach ["FIBER","FPV","UAV","TERMINAL","AA","PREMIUM"];
 DSDS_fenceItemRoles=createHashMap;
 // Medical injectors are found as loot, never offered for purchase. Apply this
 // exclusion to every discovery route, even if a later config makes one scope 2.
@@ -73,6 +73,12 @@ if (!isNil "DB_fnc_fpv_createUavOnItemCheck") then {
     private _name=getText (_x >> "classname");private _section=getText (_x >> "section");
     if (getNumber (_x >> "stock")==1 && {_section in ["CfgWeapons","CfgMagazines","CfgVehicles"]} && {_section!="CfgVehicles" || {_name isKindOf "Bag_Base"}}) then {[_name,_section,"PREMIUM"] call _register;};
 } forEach ("true" configClasses (configFile >> "DSDS_FenceGoods"));
+// Installed KVN kits use the mod's own drop-to-deploy handler and current faction prefix.
+if (!isNil "DB_vnd_fnc_fpv_createKVNOnItemCheck") then {
+ {[_x,"CfgMagazines","FIBER"] call _register;} forEach ["Item_KVN_AT","Item_KVN_AP","Item_KVN_AT_TI","Item_KVN_AP_TI"];
+ private _prefix=switch (missionNamespace getVariable ["teamPlayer",resistance]) do {case west:{"B"};case east:{"O"};default {"I"};};
+ {[_prefix+_x,"CfgVehicles","FIBER"] call _register;} forEach ["_KVN_AT_Bag","_KVN_AP_Bag","_KVN_AT_TI_Bag","_KVN_AP_TI_Bag"];
+};
 DSDS_fencePools=[_vehicles,_gear];
 diag_log format ["[DSDS Fence] Discovered %1 vehicles and %2 items; roles %3.",count _vehicles,count _gear,(keys DSDS_fenceItemPools) apply {[_x,count (DSDS_fenceItemPools get _x)]}];
 DSDS_fencePools

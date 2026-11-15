@@ -11,7 +11,7 @@ if (_custom >= 0) exitWith {_custom};
 if (_customOnly) exitWith {0};
 private _roles=missionNamespace getVariable ["DSDS_fenceItemRoles",createHashMap];
 private _role=(_roles getOrDefault [_section+":"+_class,[]]) param [0,""];
-private _special=switch (_role) do {case "FPV":{1500};case "UAV":{2500};case "TERMINAL":{1250};case "AA":{3000};default {0};};
+private _special=switch (_role) do {case "FIBER":{4000};case "FPV":{1500};case "UAV":{2500};case "TERMINAL":{1250};case "AA":{3000};default {0};};
 if (_special>0) exitWith {_special};
 if (_section == "CfgVehicles") exitWith {if (_class isKindOf "Bag_Base") then {150} else {[_class] call DSDS_fnc_vehicleValue}};
 if (_section == "CfgMagazines") exitWith {

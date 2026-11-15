@@ -1,0 +1,1 @@
+params ["_cards"];(_cards apply {private _rank=(_x mod 13)+1;format ["%1%2",if (_rank==1) then {"A"} else {if (_rank>10) then {["J","Q","K"] select (_rank-11)} else {str _rank}},["S","H","D","C"] select (floor (_x/13) mod 4)]}) joinString "   "

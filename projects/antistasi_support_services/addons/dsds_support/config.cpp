@@ -2,14 +2,14 @@ class CfgPatches {
     class dsds_support {
         name = "Antistasi Support Services";
         author = "Local Workspace";
-        version = 4.9;
+        version = 5.2;
         requiredVersion = 2.22;
         requiredAddons[] = {"dsd_supplydrops", "A3A_core", "A3A_scrt", "A3A_events", "A3A_garage", "A3_Weapons_F", "cba_common", "zen_modules", "A3_Weapons_F_Explosives", "A3_Structures_F_Civ_Garbage", "A3_Structures_F_Civ_Market"};
         units[] = {"DSDS_MysticNPC","DSDS_MechanicNPC","DSDS_StashSacks","DSDS_StashGarbage","DSDS_StashPallet"};
-        weapons[] = {"DSDS_Oswald","DSDS_SupportTerminal", "DSDS_MechanicUniform", "DSDS_ValuableReceiver", "DSDS_Marijuana", "DSDS_NicotineVape", "DSDS_Cocaine", "DSDS_Zyn", "DSDS_GoldBullion", "DSDS_RoughGems", "DSDS_CutGems", "DSDS_IndustrialPlatinum", "DSDS_PalladiumSponges", "DSDS_SiliconWafers", "DSDS_Microchips", "DSDS_Methamphetamine", "DSDS_Morphine", "DSDS_AHJC", "DSDS_M11", "DSDS_Adrenaline", "DSDS_OLB1", "DSDS_OLB2", "DSDS_MedicalIsotopes", "DSDS_IndustrialIsotopes"};
+        weapons[] = {"DSDS_GummyBears","DSDS_Oswald","DSDS_SupportTerminal", "DSDS_MechanicUniform", "DSDS_ValuableReceiver", "DSDS_Marijuana", "DSDS_NicotineVape", "DSDS_Cocaine", "DSDS_Zyn", "DSDS_GoldBullion", "DSDS_RoughGems", "DSDS_CutGems", "DSDS_IndustrialPlatinum", "DSDS_PalladiumSponges", "DSDS_SiliconWafers", "DSDS_Microchips", "DSDS_Methamphetamine", "DSDS_Morphine", "DSDS_AHJC", "DSDS_M11", "DSDS_Adrenaline", "DSDS_OLB1", "DSDS_OLB2", "DSDS_MedicalIsotopes", "DSDS_IndustrialIsotopes"};
     };
 };
-class A3U {class forbiddenItems {class DSDS_AHJC {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_Cocaine {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_CutGems {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_GoldBullion {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_IndustrialIsotopes {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_IndustrialPlatinum {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_M11 {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_Marijuana {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_MedicalIsotopes {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_Methamphetamine {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_Microchips {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_NicotineVape {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_OLB1 {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_OLB2 {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_PalladiumSponges {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_RoughGems {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_SiliconWafers {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_ValuableReceiver {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_Zyn {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_Oswald {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};};};
+class A3U {class forbiddenItems {class DSDS_GummyBears {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_AHJC {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_Cocaine {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_CutGems {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_GoldBullion {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_IndustrialIsotopes {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_IndustrialPlatinum {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_M11 {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_Marijuana {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_MedicalIsotopes {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_Methamphetamine {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_Microchips {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_NicotineVape {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_OLB1 {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_OLB2 {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_PalladiumSponges {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_RoughGems {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_SiliconWafers {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_ValuableReceiver {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_Zyn {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};class DSDS_Oswald {addons[]={"dsds_support"};unlimited=0;appearInCrates=0;};};};
 class CfgAmmo {
     class IEDUrbanSmall_Remote_Ammo;
     class DSDS_NuclearIED_Ammo: IEDUrbanSmall_Remote_Ammo {
@@ -107,6 +107,49 @@ class CfgFunctions {
         };
     };
     class DSDS {
+        class Casino {
+            class luckyAward {};
+            class luckyBoost {};
+            class luckyBoostPlan {};
+            class luckyCrate {};
+            class luckyDeliver {};
+            class luckyKill {};
+            class luckyLoad {};
+            class luckyMystery {};
+            class luckyPick {};
+            class luckyProfile {};
+            class luckyRaid {};
+            class luckyRequest {};
+            class luckySave {};
+            class luckySync {};
+            class luckyTick {};
+            class luckyUI {};
+
+            file="\dsds_support\functions\Casino";
+            class initCasino {postInit=1;};
+            class casinoBaccarat {};
+            class casinoBlackjack {};
+            class casinoCardsText {};
+            class casinoClient {};
+            class casinoCraps {};
+            class casinoCrash {};
+            class casinoCredit {};
+            class casinoDraw {};
+            class casinoFinishRound {};
+            class casinoLoad {};
+            class casinoRequest {};
+            class casinoRoulette {};
+            class casinoSave {};
+            class casinoScore {};
+            class casinoSettle {};
+            class casinoShoe {};
+            class casinoSnapshot {};
+            class casinoSpawn {};
+            class casinoSpawnDealer {};
+            class casinoTick {};
+            class casinoUI {};
+            class casinoValidateSite {};
+        };
         class Compatibility {
             file="\dsds_support\functions\Compatibility";
             class initGameplayHotfixes {postInit=1;};
@@ -340,6 +383,8 @@ class CfgRemoteExec {
         class DSDS_fnc_chemicalCloud {allowedTargets=0;jip=0;};
         class DSDS_fnc_lootRequest {allowedTargets = 2; jip = 0;};
         class DSDS_fnc_lootClient {allowedTargets = 0; jip = 0;};
+        class DSDS_fnc_casinoRequest {allowedTargets=2;jip=0;};
+        class DSDS_fnc_casinoClient {allowedTargets=1;jip=0;};
         class DSDS_fnc_serverRequest {allowedTargets = 2; jip = 0;};
         class DSDS_fnc_clientService {allowedTargets = 0; jip = 0;};
         class DSDS_fnc_boardSupportPassenger {allowedTargets = 0; jip = 0;};
@@ -395,6 +440,8 @@ class DSDS_SupportActions {
 #include "convoys.hpp"
 #include "contraband_visuals.hpp"
 #include "mystic.hpp"
+#include "casino.hpp"
+#include "lucky.hpp"
 class DSDS_Fence {
     intervalMin = 2700;
     intervalMax = 5700;
