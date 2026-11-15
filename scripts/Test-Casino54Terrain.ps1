@@ -30,6 +30,3 @@ $arguments=@('-autoInit','-noSound','-ip=127.0.0.1','-port=24537','-name=DSDSCas
 $process=Start-Process -FilePath "$game\arma3server_x64.exe" -WorkingDirectory $game -ArgumentList $arguments -WindowStyle Hidden -PassThru
 $process.Id | Set-Content (Join-Path $testProfileDirectory 'server.pid')
 Write-Host "Expansion validation PID $($process.Id). RPT: $testProfileDirectory"
-
-
-

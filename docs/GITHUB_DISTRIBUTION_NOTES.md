@@ -1,3 +1,7 @@
+## GitHub published v5.5 (2026-11-15)
+
+All local v5.3-v5.5 updates, source and compiled mod folders are now public. Release commit 9c44aad. Latest release: https://github.com/fervorian-dev1/arma3-modding-environment/releases/tag/v5.5 . Ready player ZIP contains Support Services5.5 + Supply Drops1.2: https://github.com/fervorian-dev1/arma3-modding-environment/releases/download/v5.5/Arma3-Custom-Mods-v5.5.zip . Public unauthenticated download verified SHA256 93F77E11A99C9CA932564B5B767793CD2E9BED12F387E046D8ACA040B14E976A (708476 bytes). Existing older statements below about not yet publishing are historical. No private campaign saves/profiles/backups or Workshop assets uploaded. Replace both custom mod folders and restart everyone; no campaign reset.
+
 ## Latest published update: v5.2 (2026-11-15)
 
 Source and compiled custom-mod folders pushed to main (release commitff0ce9b). Published **v5.2** as the latest public release, covering the casino, Lucky Wheel/gummy bears, KVN fiber stock and PiR AI/player split. Player ZIP includes companion5.2 + Supply Drops1.2, updated installation/dependency instructions and PBO checksums. No Workshop assets, private saves, profiles, backups or extracted references uploaded.

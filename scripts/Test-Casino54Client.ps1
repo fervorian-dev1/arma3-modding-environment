@@ -28,4 +28,3 @@ $arguments=@('-filePatching','-noSplash','-skipIntro','-noSound','-noPause','-wi
 $process=Start-Process -FilePath "$game\arma3_x64.exe" -WorkingDirectory $game -ArgumentList $arguments -WindowStyle Hidden -PassThru
 $process.Id | Set-Content -LiteralPath (Join-Path $profile 'client.pid')
 Write-Host "Owned casino client PID $($process.Id), separate profile $profile"
-

@@ -4,4 +4,3 @@ class Mission {
  class Intel {briefingName="DSDS Hotfix53 Validation";year=2035;month=6;day=1;hour=12;minute=0;};
  class Groups {items=1;class Item0 {side="GUER";class Vehicles {items=1;class Item0 {position[]={4000,0,4000};azimut=0;id=0;side="GUER";vehicle="I_G_Soldier_F";player="PLAYER COMMANDER";leader=1;skill=0.6;};};};};
 };
-
