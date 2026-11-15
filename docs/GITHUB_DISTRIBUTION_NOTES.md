@@ -1,3 +1,15 @@
+## Latest published update: v5.2 (2026-11-15)
+
+Source and compiled custom-mod folders pushed to main (release commitff0ce9b). Published **v5.2** as the latest public release, covering the casino, Lucky Wheel/gummy bears, KVN fiber stock and PiR AI/player split. Player ZIP includes companion5.2 + Supply Drops1.2, updated installation/dependency instructions and PBO checksums. No Workshop assets, private saves, profiles, backups or extracted references uploaded.
+
+Release: https://github.com/fervorian-dev1/arma3-modding-environment/releases/tag/v5.2
+
+Player ZIP: https://github.com/fervorian-dev1/arma3-modding-environment/releases/download/v5.2/Arma3-Custom-Mods-v5.2.zip (519901 bytes).
+
+ZIP SHA256: `8333F87700D201B0AF6265CDBE391EED4DE2DF19FE1598B822677D99E49D57A5`.
+
+Downloaded the public ZIP without credentials and verified its SHA256 matches the local package; both contained PBOs separately match installed build copies. Everyone fully restarts Arma with both replacement mod folders and the host's Workshop preset. No campaign reset required. Release notes retain actual validation limits and native third-party diagnostics.
+
 ## Latest published update: v4.9 (2026-11-14)
 
 Published source and compiled mod folders on main (release commit4c379e9). Latest release: https://github.com/fervorian-dev1/arma3-modding-environment/releases/tag/v4.9
