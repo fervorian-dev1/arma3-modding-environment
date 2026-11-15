@@ -1,4 +1,4 @@
-params ["_s","_op"];if (_op=="START") exitWith {_s set ["phase","spinning"];_s set ["due",serverTime+3];true};
+params ["_s","_op"];if (_op=="START") exitWith {_s set ["phase","spinning"];_s set ["due",serverTime+8];true};
 if !(_op in ["RESOLVE","TIMEOUT"]) exitWith {false};
 private _n=floor random 37;private _red=_n in [1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36];private _choice=_s get "choice";private _mult=0;
 if ((_choice find "N:")==0) then {if (_n==parseNumber (_choice select [2])) then {_mult=36;};} else {

@@ -1,6 +1,4 @@
 [] spawn {sleep 3;
-{
- private _cfg=configFile >> "CfgVehicles" >> _x;
- if (isClass _cfg) then {private _o=createVehicle [_x,[4000,4000,0],[],0,"NONE"];diag_log format ["[CASINO ASSET] %1 name=%2 positions=%3 box=%4 model=%5",_x,getText (_cfg >> "displayName"),count (_o buildingPos -1),boundingBoxReal _o,getText (_cfg >> "model")];deleteVehicle _o;} else {diag_log format ["[CASINO ASSET] MISSING %1",_x];};
-} forEach ["Land_Hotel_02_F","Land_Hotel_01_F","Land_i_House_Big_02_V1_F","Land_Offices_01_V1_F","Land_Sofa_01_F","Land_ArmChair_01_F","Land_TableBig_01_F","Land_TableDesk_F","Land_RattanTable_01_F","Land_RattanChair_01_F","Land_FlowerPot_01_F","Land_FlowerPot_02_F"];
-diag_log "[CASINO ASSET] DONE";};
+ {diag_log format ['[CASINO54 BODY] %1 label=%2 nakedUniform=%3 uniform=%4 model=%5',configName _x,getText(_x>>'displayName'),getText(_x>>'nakedUniform'),getText(_x>>'uniformClass'),getText(_x>>'model')];} forEach ("((toLower configName _x) find 'gen_')>=0 || {((toLower getText(_x>>'displayName')) find 'underwear')>=0}" configClasses(configFile>>'CfgVehicles'));
+ diag_log '[CASINO54 ASSET] DONE';
+};

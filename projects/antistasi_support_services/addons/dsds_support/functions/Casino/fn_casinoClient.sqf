@@ -1,6 +1,7 @@
 if (!hasInterface || {isMultiplayer && {(!isRemoteExecuted) || {remoteExecutedOwner!=2}}}) exitWith {};
 params ["_op",["_data",[]]];
 switch (_op) do {
+ case "SITE": {["SITE_RESULT",_data] call DSDS_fnc_casinoUI;};
  case "LUCKY": {["SYNC",_data] call DSDS_fnc_luckyUI;};
  case "PLACE": {["PLACE_OPEN",_data] call DSDS_fnc_casinoUI;};
  case "BUILT": {if (!isNull findDisplay 88471) then {closeDialog 0;};systemChat "Aurum Casino is open. Its location is marked on the map.";};

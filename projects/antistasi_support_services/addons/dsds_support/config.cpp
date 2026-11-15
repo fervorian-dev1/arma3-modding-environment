@@ -2,7 +2,7 @@ class CfgPatches {
     class dsds_support {
         name = "Antistasi Support Services";
         author = "Local Workspace";
-        version = 5.2;
+        version = 5.5;
         requiredVersion = 2.22;
         requiredAddons[] = {"dsd_supplydrops", "A3A_core", "A3A_scrt", "A3A_events", "A3A_garage", "A3_Weapons_F", "cba_common", "zen_modules", "A3_Weapons_F_Explosives", "A3_Structures_F_Civ_Garbage", "A3_Structures_F_Civ_Market"};
         units[] = {"DSDS_MysticNPC","DSDS_MechanicNPC","DSDS_StashSacks","DSDS_StashGarbage","DSDS_StashPallet"};
@@ -97,10 +97,10 @@ class CfgFunctions {
         class fpv_getSignal {file="\dsds_support\functions\Compatibility\fpvFullSignal.sqf";};
         class fpv_ppfx_start {file="\dsds_support\functions\Compatibility\fpvClearVideo.sqf";};
     };};
-    class SCRT {class Common {class common_unconsciousEventHandler {file="\dsds_support\functions\Compatibility\nativeReviveKeys.sqf";};};};
+    class SCRT {class UI {class ui_populateVehicleBox {file="\dsds_support\functions\Compatibility\nativeHQVehicleList.sqf";};};class Common {class common_unconsciousEventHandler {file="\dsds_support\functions\Compatibility\nativeReviveKeys.sqf";};};};
     class A3U {class REINF {class blackMarketVehiclePrice {file="\dsds_support\functions\Compatibility\nativeCivilBMPrice.sqf";};};};
     class A3A {
-        class REINF {class vehiclePrice {file="\dsds_support\functions\Compatibility\nativeCivilHQPrice.sqf";};};
+        class REINF {class addFiaVeh {file="\dsds_support\functions\Compatibility\nativeHQPurchase.sqf";};class vehiclePrice {file="\dsds_support\functions\Compatibility\nativeCivilHQPrice.sqf";};};
         class CREATE {class createUnit {file="\dsds_support\functions\Compatibility\nativeCreateUnit.sqf";};};
         class Missions {
             class convoy {file="\dsds_support\functions\Smuggling\nativeConvoy.sqf";};
@@ -108,6 +108,12 @@ class CfgFunctions {
     };
     class DSDS {
         class Casino {
+            class casinoSitePlan {};class rouletteVisual {};class casinoGameVisual {};class luckyVisual {};
+            class casinoPrepareSite {};
+            class casinoRestoreSite {};
+            class casinoFindSite {};
+            class casinoClear {};
+            class casinoPack {};
             class luckyAward {};
             class luckyBoost {};
             class luckyBoostPlan {};
@@ -151,6 +157,9 @@ class CfgFunctions {
             class casinoValidateSite {};
         };
         class Compatibility {
+            class initCampaignPersistence {preInit=1;};
+            class restoreCampaignData {};
+            class selfTreat {};
             file="\dsds_support\functions\Compatibility";
             class initGameplayHotfixes {postInit=1;};
             class initSilentFriendlyFire {postInit=1;};

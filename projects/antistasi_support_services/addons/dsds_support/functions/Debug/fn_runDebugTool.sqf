@@ -11,6 +11,16 @@ if ((_tool find "SUPPORT_")==0) exitWith {
  [_id] spawn DSDS_fnc_runSupportContract;
 };
 switch (_tool) do {
+ case "CASINO_PACK": {if ([] call DSDS_fnc_casinoPack) then {["Casino packed. Place it again from the HQ flag."] call _tell;};};
+ case "CASINO_MOVE": {
+  private _error=[_position,getDir _actor,true] call DSDS_fnc_casinoValidateSite;
+  if (_error!="") exitWith {[_error] call _tell;};
+  if (isNil "DSDS_casinoState" || {DSDS_casinoState getOrDefault ["class",""]==""}) exitWith {["No purchased casino to move."] call _tell;};
+  if ([] call DSDS_fnc_casinoPack) then {
+   [(getArray (configFile >> "DSDS_Casino" >> "buildings")) select 0,_position,getDir _actor] call DSDS_fnc_casinoSpawn;
+   [] call DSDS_fnc_casinoSave;
+  };
+ };
  case "LUCKY_TOKEN": {if (!isNil "DSDS_luckyPlayers") then {private _p=[getPlayerUID _actor] call DSDS_fnc_luckyProfile;_p set ["tokens",(_p get "tokens")+1];[] call DSDS_fnc_luckySave;[_actor,false,true] call DSDS_fnc_luckySync;};};
  case "LUCKY_RAID": {[getPlayerUID _actor] spawn DSDS_fnc_luckyRaid;};
  case "MYSTIC";case "MYSTIC_HERE": {

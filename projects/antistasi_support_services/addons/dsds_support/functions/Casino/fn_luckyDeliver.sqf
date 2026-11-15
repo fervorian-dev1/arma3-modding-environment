@@ -3,7 +3,7 @@ if (!isServer || {isRemoteExecuted}) exitWith {};
 private _p=[_uid] call DSDS_fnc_luckyProfile;_p set ["delivery",false];
 private _players=allPlayers select {alive _x && {getPlayerUID _x==_uid}};if (_players isEqualTo []) exitWith {};
 private _actor=_players select 0;private _hotel=missionNamespace getVariable ["DSDS_casinoBuilding",objNull];
-if (isNull _hotel || {_actor distance2D _hotel>50}) exitWith {_p set ["message","Return to Roxie to collect your rewards."];[_actor] call DSDS_fnc_luckySync;};
+if (isNull _hotel || {_actor distance2D _hotel>120}) exitWith {_p set ["message","Return to Roxie to collect your rewards."];[_actor] call DSDS_fnc_luckySync;};
 if (_kind=="CAR") then {
  if (_p get "cars">0) then {
   private _classes=getArray (configFile >> "DSDS_LuckyWheel" >> "hellcats");_classes=_classes select {isClass (configFile >> "CfgVehicles" >> _x) && {_x isKindOf "Car"} && {getNumber (configFile >> "CfgVehicles" >> _x >> "scope")==2}};

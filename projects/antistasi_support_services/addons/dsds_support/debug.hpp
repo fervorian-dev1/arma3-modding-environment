@@ -34,4 +34,6 @@ class DSDS_DebugMissions {
  class TOOL_SUPPORT_CHEMICAL {displayName="Test support - Chemical strike";handler="DSDS_fnc_runDebugTool";variant="SUPPORT_CHEMICAL";};
  class TOOL_LUCKY_TOKEN {displayName="Casino - grant yourself one lucky token";handler="DSDS_fnc_runDebugTool";variant="LUCKY_TOKEN";};
  class TOOL_LUCKY_RAID {displayName="Casino - start four-Osprey HQ raid";handler="DSDS_fnc_runDebugTool";variant="LUCKY_RAID";};
+ class TOOL_CASINO_PACK {displayName="Casino - pack / despawn";handler="DSDS_fnc_runDebugTool";variant="CASINO_PACK";};
+ class TOOL_CASINO_MOVE {displayName="Casino - move HERE";handler="DSDS_fnc_runDebugTool";variant="CASINO_MOVE";};
 };

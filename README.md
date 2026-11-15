@@ -12,7 +12,7 @@ This workspace contains editable projects, local build output, and setup notes. 
 - temp/: disposable working files (ignored by Git).
 - scripts/: repeatable local build helpers.
 
-Current companion: **v5.2**, with Dynamic Supply Drops **v1.2**. Adds Roxie's token-based Lucky Wheel, gummy-bear vehicle boosts, the campaign-persistent casino and KVN fiber-optic drones at Fence, retaining expanded Zeus DEBUG tools, Mystic persistence, civilian discounts and friendly parachute travel. See [handoff notes](docs/HANDOFF.md).
+Current companion: **v5.5**, with Dynamic Supply Drops **v1.2**. Includes automatic casino-site search, reversible plot leveling/vegetation clearance, graphical roulette/Lucky Wheel, the ground-level movable casino, reliable vendor/Oswald persistence and PiR self-treatment, plus Roxie's token-based Lucky Wheel, gummy-bear vehicle boosts, the campaign-persistent casino and KVN fiber-optic drones at Fence, retaining expanded Zeus DEBUG tools, Mystic persistence, civilian discounts and friendly parachute travel. See [handoff notes](docs/HANDOFF.md).
 
 
 ## Download and play

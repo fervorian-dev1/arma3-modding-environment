@@ -31,3 +31,14 @@ DSDS_nativeReviveBridge=true;
   sleep 5;
  };
 };
+
+if (hasInterface) then {[] spawn {
+ private _old=objNull;private _action=-1;
+ while {true} do {
+  if (!isNull player && {player!=_old}) then {
+   if (!isNull _old && {_action>=0}) then {_old removeAction _action;};_old=player;
+   _action=player addAction ["Treat yourself",{[] spawn DSDS_fnc_selfTreat;},nil,1.6,true,true,"","alive _this && lifeState _this != 'INCAPACITATED' && isNull objectParent _this && (damage _this > 0.001 || {(((getAllHitPointsDamage _this) param [2,[]]) findIf {_x>0.01})>=0}) && !(_this getVariable ['DSDS_selfTreatBusy',false]) && {(({_x in items _this} count ((missionNamespace getVariable ['PiR_changeMedKit',[]])+(missionNamespace getVariable ['PiR_changeIFAK',[]])+['PiR_apteka','PiR_bint']))>0)}",2];
+  };
+  sleep 1;
+ };
+};};

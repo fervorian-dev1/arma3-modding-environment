@@ -5,7 +5,7 @@ if (_op=="SYNC") exitWith {
  private _s=_args;_s params ["_npc","_tokens","_cars","_items","_gummies","_spin","_result","_message","_nonce","_money","_open","_earned"];
  player setVariable ["DSDS_luckyTokens",_tokens];uiNamespace setVariable ["DSDS_luckySnapshot",_s];
  if (_tokens>0 || {_open} || {_earned}) then {if (isNull (uiNamespace getVariable ["DSDS_luckyHUD",displayNull])) then {("DSDS_LuckyHUD" call BIS_fnc_rscLayer) cutRsc ["DSDS_LuckyHUD","PLAIN",0,false];};};
- private _hud=uiNamespace getVariable ["DSDS_luckyHUD",displayNull];if (!isNull _hud) then {(_hud displayCtrl 22300) ctrlSetText format ["ROXIE'S TOKENS  %1",_tokens];};
+ private _hud=uiNamespace getVariable ["DSDS_luckyHUD",displayNull];if (!isNull _hud) then {(_hud displayCtrl 22300) ctrlSetText format ["Tokens: %1",_tokens];};
  if (_earned) then {playSound "Hint";systemChat format ["Roxie: One less ex. Lucky token earned! Tokens: %1",_tokens];};
  if (_open) then {
   if (!isNull findDisplay 88470) then {closeDialog 0;};if (!isNull findDisplay 88472) then {closeDialog 0;};
@@ -31,8 +31,4 @@ if (_op!="RENDER") exitWith {};
 (_d displayCtrl 2204) ctrlEnable (_money>=150);
 (_d displayCtrl 2205) ctrlSetText format ["Collect Hellcat (%1)",_cars];(_d displayCtrl 2205) ctrlEnable (_cars>0);
 (_d displayCtrl 2206) ctrlSetText format ["Collect items (%1)",_items+_gummies];(_d displayCtrl 2206) ctrlEnable (_items+_gummies>0);
-private _angle=0;
-if (_spin isNotEqualTo []) then {_angle=((serverTime-(_spin select 0))*480) mod 360;} else {
- if (_result>=0) then {private _rows="true" configClasses (configFile >> "DSDS_LuckyWheel" >> "Rewards");private _sum=0;for "_i" from 0 to (_result-1) do {_sum=_sum+getNumber ((_rows select _i) >> "weight");};_angle=270-((_sum+getNumber ((_rows select _result) >> "weight")/2)*0.036);};
-};
-(_d displayCtrl 2210) ctrlSetAngle [_angle,0.5,0.5];
+[_d,_spin,_result,_tokens] call DSDS_fnc_luckyVisual;

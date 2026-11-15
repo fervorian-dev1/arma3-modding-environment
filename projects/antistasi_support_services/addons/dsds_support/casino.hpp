@@ -1,6 +1,6 @@
 class DSDS_Casino {
  purchasePrice=100000;minimumBet=100;maximumBet=10000;
- buildings[]={"Land_Hotel_01_F","Land_i_House_Big_02_V1_F"};
+ buildings[]={"Land_Hangar_F"};
  class Games {
   class BLACKJACK {label="Blackjack";dealer="Vivienne";handler="DSDS_fnc_casinoBlackjack";choices[]={"MAIN"};choiceLabels[]={"Blackjack"};actions[]={"HIT","STAND","DOUBLE"};actionLabels[]={"Hit","Stand","Double"};rules="Dealer stands on soft 17. Blackjack pays 3:2; wins pay 1:1. Double on the first two cards. No split or insurance. Closing stands your hand.";};
   class ROULETTE {label="Roulette";dealer="Celeste";handler="DSDS_fnc_casinoRoulette";choices[]={"RED","BLACK","ODD","EVEN","LOW","HIGH","DOZEN1","DOZEN2","DOZEN3","COLUMN1","COLUMN2","COLUMN3"};choiceLabels[]={"Red","Black","Odd","Even","1-18","19-36","1-12","13-24","25-36","Column 1","Column 2","Column 3"};actions[]={};actionLabels[]={};rules="European single zero. Even-money bets pay 1:1; dozens and columns 2:1; straight numbers 35:1. Zero loses all outside bets.";};
@@ -43,6 +43,7 @@ class Help: RscText {idc=2012;fade=0;x="safezoneX+0.06*safezoneW";y="safezoneY+0
 class DirectionLabel: RscText {idc=-1;fade=0;x="safezoneX+0.06*safezoneW";y="safezoneY+0.52*safezoneH";w="0.25*safezoneW";h="0.04*safezoneH";sizeEx=0.033;text="Direction (degrees)";};
 class Direction: RscEdit {idc=2013;fade=0;x="safezoneX+0.06*safezoneW";y="safezoneY+0.58*safezoneH";w="0.25*safezoneW";h="0.05*safezoneH";sizeEx=0.033;text="0";onKillFocus="if (getMarkerColor 'DSDS_CasinoPreview'!='') then {'DSDS_CasinoPreview' setMarkerDirLocal (parseNumber ctrlText (_this select 0));}";};
 class Map: RscMapControl {idc=2010;fade=0;x="safezoneX+0.34*safezoneW";y="safezoneY+0.16*safezoneH";w="0.6*safezoneW";h="0.67*safezoneH";sizeEx=0.033;onMouseButtonClick="['PLACE_CLICK',_this] call DSDS_fnc_casinoUI";};
+class FindSite: RscButton {idc=2016;x="safezoneX+0.06*safezoneW";y="safezoneY+0.65*safezoneH";w="0.25*safezoneW";h="0.05*safezoneH";text="Find suitable location";onButtonClick="['FIND_SITE',[]] call DSDS_fnc_casinoUI";};
 class Place: RscButton {idc=2014;fade=0;x="safezoneX+0.06*safezoneW";y="safezoneY+0.72*safezoneH";w="0.25*safezoneW";h="0.05*safezoneH";sizeEx=0.033;text="Place casino";onButtonClick="['BUILD',[]] call DSDS_fnc_casinoUI";};
 class Cancel: RscButton {idc=2015;fade=0;x="safezoneX+0.06*safezoneW";y="safezoneY+0.8*safezoneH";w="0.25*safezoneW";h="0.05*safezoneH";sizeEx=0.033;text="Cancel";onButtonClick="closeDialog 0";};
  };

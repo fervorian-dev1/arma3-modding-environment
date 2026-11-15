@@ -7,34 +7,45 @@ if (side group _actor!=missionNamespace getVariable ["teamPlayer",resistance]) e
 private _dsdsAuthorizedPlayer=_actor;private _uid=getPlayerUID _actor;if (_uid=="") exitWith {};
 private _tell={params ["_text"];["MESSAGE",[_text]] remoteExecCall ["DSDS_fnc_clientService",_actor];};
 private _cfg=configFile >> "DSDS_Casino";
-if (_op=="BEGIN_BUILD") exitWith {
+if (_op in ["BEGIN_BUILD","BEGIN_MOVE"]) exitWith {
+ private _moving=_op=="BEGIN_MOVE";
  private _flag=missionNamespace getVariable ["flagX",objNull];
  if (isNull _flag || {_actor distance _flag>6}) exitWith {["Buy the casino at your HQ flag."] call _tell;};
- if ((DSDS_casinoState getOrDefault ["position",[]]) isNotEqualTo [] || {missionNamespace getVariable ["DSDS_casinoBuildLock",false]}) exitWith {["The faction already owns a casino."] call _tell;};
+ if ((!_moving && {(DSDS_casinoState getOrDefault ["class",""])!=""}) || {missionNamespace getVariable ["DSDS_casinoBuildLock",false]}) exitWith {["The faction already owns a casino."] call _tell;};
  if (!isClass (configFile >> "CfgFaces" >> "Man_A3" >> "B_female_bun_01")) exitWith {["Enable Task Force Timberwolf Female Characters before buying the casino."] call _tell;};
+ if (_moving && {DSDS_casinoState getOrDefault ["class",""]==""}) exitWith {["Buy a casino before moving it."] call _tell;};
  private _classes=getArray (_cfg >> "buildings");private _index=_classes findIf {isClass (configFile >> "CfgVehicles" >> _x)};
  if (_index<0) exitWith {["Casino building assets are unavailable."] call _tell;};
- private _holder=_actor getVariable ["owner",_actor];private _price=getNumber (_cfg >> "purchasePrice");
+ private _holder=_actor getVariable ["owner",_actor];private _price=if (_moving) then {0} else {getNumber (_cfg >> "purchasePrice")};
  if ((_holder getVariable ["moneyX",0])<_price) exitWith {[format ["The casino costs %1 personal credits.",_price]] call _tell;};
  DSDS_casinoSequence=DSDS_casinoSequence+1;private _token=format ["build:%1:%2",_uid,DSDS_casinoSequence];
- _actor setVariable ["DSDS_casinoBuildToken",[_token,_classes select _index,serverTime+300]];
+ _actor setVariable ["DSDS_casinoBuildToken",[_token,_classes select _index,serverTime+300,_moving]];
  ["PLACE",[_token,_classes select _index,_price]] remoteExecCall ["DSDS_fnc_casinoClient",_actor];
+};
+if (_op=="FIND_SITE") exitWith {
+ private _pending=_actor getVariable ["DSDS_casinoBuildToken",[]];
+ if (count _pending!=4 || {(_pending select 0)!=(_args param [0,""])} || {serverTime>(_pending select 2)} || {_actor getVariable ["DSDS_casinoSearching",false]}) exitWith {};
+ private _center=_args param [1,getPosATL _actor,[[]]];
+ if (count _center<2 || {count _center>3} || {(_center findIf {!(_x isEqualType 0) || {!finite _x}})>=0}) then {_center=getPosATL _actor;};
+ _center=[(_center select 0) max 75 min (worldSize-75),(_center select 1) max 75 min (worldSize-75),0];
+ _actor setVariable ["DSDS_casinoSearching",true];
+ [_actor,_pending select 0,_center] spawn DSDS_fnc_casinoFindSite;
 };
 if (_op=="CANCEL_BUILD") exitWith {private _p=_actor getVariable ["DSDS_casinoBuildToken",[]];if (_p isNotEqualTo [] && {(_p select 0)==(_args param [0,""])}) then {_actor setVariable ["DSDS_casinoBuildToken",nil];};};
 if (_op=="PLACE") exitWith {
  private _pending=_actor getVariable ["DSDS_casinoBuildToken",[]];
  _args params [["_token","",[""]],["_pos",[],[[]]],["_dir",0,[0]]];
- if (count _pending!=3 || {_pending select 0!=_token} || {_pending select 2<serverTime} || {missionNamespace getVariable ["DSDS_casinoBuildLock",false]} || {(DSDS_casinoState get "position") isNotEqualTo []}) exitWith {["Placement authorization expired. Return to the flag."] call _tell;};
- private _error=[_pos,_dir] call DSDS_fnc_casinoValidateSite;
+ if (count _pending!=4 || {_pending select 0!=_token} || {_pending select 2<serverTime} || {missionNamespace getVariable ["DSDS_casinoBuildLock",false]} || {!(_pending select 3) && {(DSDS_casinoState get "class")!=""}}) exitWith {["Placement authorization expired. Return to the flag."] call _tell;};
+ private _error=[_pos,_dir,_pending select 3] call DSDS_fnc_casinoValidateSite;
  if (_error!="") exitWith {[_error] call _tell;};
  _pos=+_pos;_pos set [2,0];
- private _price=getNumber (_cfg >> "purchasePrice");
+ private _price=if (_pending select 3) then {0} else {getNumber (_cfg >> "purchasePrice")};
  if !([_actor,-_price] call DSDS_fnc_changeWallet) exitWith {["Insufficient personal credits."] call _tell;};
  _actor setVariable ["DSDS_casinoBuildToken",nil];DSDS_casinoBuildLock=true;
  DSDS_casinoState set ["pendingBuild",[_uid,_price]];
  private _holder=_actor getVariable ["owner",_actor];["player_"+_uid+"_moneyX",_holder getVariable ["moneyX",0]] call A3A_fnc_setStatVariable;
  [] call DSDS_fnc_casinoSave;
- DSDS_casinoBuildQueue pushBack [_actor,_uid,_pending select 1,_pos,_dir,_price];
+ DSDS_casinoBuildQueue pushBack [_actor,_uid,_pending select 1,_pos,_dir,_price,_pending select 3];
 };
 if (missionNamespace getVariable ["DSDS_casinoBuildLock",false]) exitWith {};
 private _pairs=missionNamespace getVariable ["DSDS_casinoDealers",[]];private _index=_pairs findIf {(_x select 1)==_dealer};

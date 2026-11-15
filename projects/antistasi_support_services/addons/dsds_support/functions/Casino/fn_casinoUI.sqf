@@ -5,14 +5,31 @@ if (_op=="PLACE_OPEN") exitWith {
  _args params ["_token","_class","_price"];
  if (!createDialog "DSDS_CasinoPlacementDialog") exitWith {};
  private _d=findDisplay 88471;_d setVariable ["DSDS_buildToken",_token];_d setVariable ["DSDS_buildPosition",[]];
- (_d displayCtrl 2011) ctrlSetText format ["Aurum Casino | %1 credits",_price];
- (_d displayCtrl 2012) ctrlSetText "Choose a clear, flat, dry site about 30 metres across. Click the map, set the direction, then place. No charge until placement is accepted.";
+ (_d displayCtrl 2011) ctrlSetText (if (_price==0) then {"Relocate / place owned casino"} else {format ["Aurum Casino | %1 credits",_price]});
+ (_d displayCtrl 2012) ctrlSetText "Click the map or use Find suitable location. The casino clears local vegetation and prepares a level pad. Existing structures, roads and steep cliffs are protected.";
+};
+if (_op=="FIND_SITE") exitWith {
+ private _d=findDisplay 88471;private _p=_d getVariable ["DSDS_buildPosition",getPosATL player];
+ if (_p isEqualTo []) then {_p=getPosATL player;};
+ (_d displayCtrl 2016) ctrlEnable false;(_d displayCtrl 2012) ctrlSetText "Searching nearby land. Vegetation can be cleared; existing structures and roads are protected.";
+ ["FIND_SITE",player,objNull,[_d getVariable ["DSDS_buildToken",""],_p]] remoteExecCall ["DSDS_fnc_casinoRequest",2];
+};
+if (_op=="SITE_RESULT") exitWith {
+ _args params ["_token","_site"];private _d=findDisplay 88471;
+ if (isNull _d || {_d getVariable ["DSDS_buildToken",""]!=_token}) exitWith {};
+ (_d displayCtrl 2016) ctrlEnable true;
+ if (_site isEqualTo []) exitWith {(_d displayCtrl 2012) ctrlSetText "No suitable nearby land found. Click a different area and search again.";};
+ _site params ["_pos","_dir"];_d setVariable ["DSDS_buildPosition",_pos];(_d displayCtrl 2013) ctrlSetText str _dir;
+ private _map=_d displayCtrl 2010;_map ctrlMapAnimAdd [0.4,0.08,_pos];ctrlMapAnimCommit _map;
+ if (getMarkerColor "DSDS_CasinoPreview"=="") then {createMarkerLocal ["DSDS_CasinoPreview",_pos];};
+ "DSDS_CasinoPreview" setMarkerPosLocal _pos;"DSDS_CasinoPreview" setMarkerShapeLocal "RECTANGLE";"DSDS_CasinoPreview" setMarkerSizeLocal [20,36];"DSDS_CasinoPreview" setMarkerDirLocal _dir;"DSDS_CasinoPreview" setMarkerColorLocal "ColorYellow";"DSDS_CasinoPreview" setMarkerBrushLocal "Border";
+ (_d displayCtrl 2012) ctrlSetText "Suitable site found. Review the map and press Place casino. Vegetation is cleared and a small level pad is prepared only when placed.";
 };
 if (_op=="PLACE_CLICK") exitWith {
  _args params ["_map","_button","_x","_y"];if (_button!=0) exitWith {};
  private _d=ctrlParent _map;private _p=_map ctrlMapScreenToWorld [_x,_y];private _pos=[_p select 0,_p select 1,0];_d setVariable ["DSDS_buildPosition",_pos];
  if (getMarkerColor "DSDS_CasinoPreview"=="") then {createMarkerLocal ["DSDS_CasinoPreview",_pos];};
- "DSDS_CasinoPreview" setMarkerPosLocal _pos;"DSDS_CasinoPreview" setMarkerShapeLocal "RECTANGLE";"DSDS_CasinoPreview" setMarkerSizeLocal [12,12];"DSDS_CasinoPreview" setMarkerColorLocal "ColorYellow";"DSDS_CasinoPreview" setMarkerBrushLocal "Border";
+ "DSDS_CasinoPreview" setMarkerPosLocal _pos;"DSDS_CasinoPreview" setMarkerShapeLocal "RECTANGLE";"DSDS_CasinoPreview" setMarkerSizeLocal [20,36];"DSDS_CasinoPreview" setMarkerColorLocal "ColorYellow";"DSDS_CasinoPreview" setMarkerBrushLocal "Border";
  "DSDS_CasinoPreview" setMarkerDirLocal (parseNumber ctrlText (_d displayCtrl 2013));
 };
 if (_op=="BUILD") exitWith {
@@ -41,7 +58,7 @@ if (_op=="GAME_OPEN") exitWith {
   while {!isNull _d && {alive player}} do {
    ["RENDER",[]] call DSDS_fnc_casinoUI;
    if (diag_tickTime>=_poll) then {_poll=diag_tickTime+0.5;["READ",player,_d getVariable ["DSDS_casinoDealer",objNull],[]] remoteExecCall ["DSDS_fnc_casinoRequest",2];};
-   sleep 0.1;
+   sleep 0.025;
   };
   if (!isNull _d) then {_d closeDisplay 2;};
  };
@@ -68,10 +85,14 @@ switch (_game) do {
   if (_p isNotEqualTo []) then {_body=format ["<t size='1.35'>Your hand: %1</t><br/>Total: %2<br/><br/><t size='1.35'>Dealer: %3%4</t>",[_p] call DSDS_fnc_casinoCardsText,[_p] call DSDS_fnc_casinoScore,[_b] call DSDS_fnc_casinoCardsText,if (_active) then {"   [hidden]"} else {format ["  (%1)",[_b] call DSDS_fnc_casinoScore]}];};
   (_d displayCtrl 1908) ctrlEnable (_phase=="playing" && {count _p==2} && {_balance>=_bet} && {_bet*2<=getNumber (configFile >> "DSDS_Casino" >> "maximumBet")});
  };
- case "ROULETTE": {if (_phase=="spinning") then {_body=format ["<t size='2.8' color='#d9b55c'>%1</t><br/>The wheel is spinning...",floor (diag_tickTime*15) mod 37];} else {if (_phase=="finished") then {_body="The ball has settled.";};};};
+ case "ROULETTE": {_body=if (_phase=="spinning") then {"The ball is in motion."} else {"Select a pocket or an outside bet, then spin."};};
  case "CRASH": {if (_active) then {_body=format ["<t size='3.2' color='#d9b55c'>%1x</t><br/>Cash out before the crash.",(floor (exp ((serverTime-_started)/9)*100))/100];};};
  case "CRAPS": {if (count _dice==2) then {_body=format ["<t size='2.4'>%1 + %2 = %3</t><br/><br/>%4",_dice select 0,_dice select 1,(_dice select 0)+(_dice select 1),if (_point==0) then {"Come-out roll"} else {format ["Point: %1",_point]}];};};
  case "BACCARAT": {if (_phase=="dealing") then {_body="The cards are being dealt...";} else {if (_p isNotEqualTo []) then {_body=format ["<t size='1.35'>Player: %1 (%2)</t><br/><br/><t size='1.35'>Banker: %3 (%4)</t>",[_p] call DSDS_fnc_casinoCardsText,[_p,true] call DSDS_fnc_casinoScore,[_b] call DSDS_fnc_casinoCardsText,[_b,true] call DSDS_fnc_casinoScore];};};};
 };
 (_d displayCtrl 1910) ctrlSetStructuredText parseText (_body+"<br/><br/><t color='#d9b55c'>"+_message+"</t>");
 
+
+if (_game=="ROULETTE") then {[_d,_s] call DSDS_fnc_rouletteVisual;};
+
+if (_game in ["BLACKJACK","CRASH"]) then {[_d,_s] call DSDS_fnc_casinoGameVisual;};

@@ -6,7 +6,7 @@ if (isServer) then {[] spawn {
  private _candidates=[];
  {
   private _class=configName _x;
-  if (getNumber (_x >> "scope")==2 && {getNumber (_x >> "side")==3} && {_class isKindOf "Car"} && {getNumber (_x >> "isUav")==0} && {getNumber (_x >> "transportSoldier")>=1} && {[_class,"CfgVehicles"] call DSD_fnc_isSupplyAssetAllowed}) then {
+  if ((toLower _class find "dch18_ucg_")!=0 && {getNumber (_x >> "scope")==2} && {getNumber (_x >> "side")==3} && {_class isKindOf "Car"} && {getNumber (_x >> "isUav")==0} && {getNumber (_x >> "transportSoldier")>=1} && {[_class,"CfgVehicles"] call DSD_fnc_isSupplyAssetAllowed}) then {
    private _armed=false;
    private _check={
     params ["_cfg"];
@@ -44,6 +44,7 @@ if (isServer) then {[] spawn {
 [] spawn {
  waitUntil {sleep 1;!isNil "A3A_faction_reb" && {!isNil "DSDS_civilTransportAdditions"}};
  private _cars=+(A3A_faction_reb getOrDefault ["vehiclesCivCar",[]]);
- {_cars pushBackUnique _x;} forEach DSDS_civilTransportAdditions;
+ _cars=_cars select {(toLower _x find "dch18_ucg_")!=0};
+ {_cars pushBackUnique _x;} forEach (DSDS_civilTransportAdditions select {(toLower _x find "dch18_ucg_")!=0});
  A3A_faction_reb set ["vehiclesCivCar",_cars];
 };
